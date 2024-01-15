@@ -34,6 +34,7 @@ class Classes extends \yii\db\ActiveRecord
     {
         return [
             'id',
+            'name',
             'created_by' => fn () => $this->createdBy->username ?? null,
             'updated_by' => fn () => $this->updatedBy->username ?? null,
             'deleted_by' => fn () => $this->deletedBy->username ?? null,
