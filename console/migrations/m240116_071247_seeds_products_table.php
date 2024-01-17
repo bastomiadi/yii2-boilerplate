@@ -26,7 +26,7 @@ class m240116_071247_seeds_products_table extends Migration
 
         for ($i=1; $i <= $this->count; $i++) { 
             $data[$i]['id'] = $i;
-            $data[$i]['product_name'] = $this->faker->word;
+            $data[$i]['product_name'] = $this->faker->name;
             $data[$i]['category_id'] = rand(1,50);
             $data[$i]['created_at'] = time();
             $data[$i]['updated_at'] = time();

@@ -207,30 +207,35 @@ class User extends ActiveRecord implements IdentityInterface
     //jwt token
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        //throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-        //$token = \Yii::$app->jwt->getParser()->parse((string) $token);
-        // $token = Yii::$app->jwt->parse((string) $token);
-        // return static::validationJwt($token);
 
         $claims = \Yii::$app->jwt->parse($token)->claims();
         $uid = $claims->get('uid');
+
         if (!is_numeric($uid)) {
             throw new ForbiddenHttpException('Invalid token provided');
         }
 
         return static::findOne(['id' => $uid, 'status' => self::STATUS_ACTIVE]);
+
     }
 
     //ini untuk menggenerate token JWT nya ketika misal pertama kali login
     public static function generateToken($id){
         $now = new \DateTimeImmutable('now', new \DateTimeZone(\Yii::$app->timeZone));
         $token = \Yii::$app->jwt->getBuilder()
+         // Configures the issuer (iss claim)
+            ->issuedBy('http://example.com')
+            // Configures the audience (aud claim)
+            ->permittedFor('http://example.org')
+            // Configures the id (jti claim)
+            ->identifiedBy('4f1g23a12aa')
             // Configures the time that the token was issued
             ->issuedAt($now)
             // Configures the time that the token can be used
             ->canOnlyBeUsedAfter($now)
+            //->canOnlyBeUsedAfter($now->modify('+1 minute'))
             // Configures the expiration time of the token
-            ->expiresAt($now->modify('+1 hour'))
+            ->expiresAt($now->modify('+60 minutes'))
             // Configures a new claim, called "uid", with user ID, assuming $user is the authenticated user object
             ->withClaim('uid', $id)
             // Builds a new token

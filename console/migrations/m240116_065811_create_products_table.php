@@ -27,6 +27,7 @@ class m240116_065811_create_products_table extends Migration
             'created_by' => $this->bigInteger()->notNull(),
             'updated_by' => $this->bigInteger()->notNull(),
             'deleted_by' => $this->bigInteger()->null(),
+            'isDeleted' => $this->boolean(),
             'FOREIGN KEY ([[category_id]]) REFERENCES {{%categories}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
             'FOREIGN KEY ([[created_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
             'FOREIGN KEY ([[updated_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',

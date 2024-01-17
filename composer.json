@@ -22,7 +22,8 @@
         "yii2tech/ar-softdelete": "^1.0",
         "mdmsoft/yii2-admin": "2.x-dev",
         "biladina/yii2-ajaxcrud-bs4": "~3.0",
-        "bizley/jwt": "3.0"
+        "bizley/jwt": "4.0",
+        "lcobucci/clock": "^3.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

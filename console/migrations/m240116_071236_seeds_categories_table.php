@@ -25,7 +25,7 @@ class m240116_071236_seeds_categories_table extends Migration
 
         for ($i=1; $i <= $this->count; $i++) { 
             $data[$i]['id'] = $i;
-            $data[$i]['category_name'] = $this->faker->fileName;
+            $data[$i]['category_name'] = $this->faker->name;
             $data[$i]['created_at'] = time();
             $data[$i]['updated_at'] = time();
             $data[$i]['deleted_at'] = null;

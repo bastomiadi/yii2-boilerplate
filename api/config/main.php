@@ -11,6 +11,7 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'api\controllers',
+    'timeZone' => 'Asia/Jakarta',
     'components' => [
         'jwt' => [
             'class' => \bizley\jwt\Jwt::class,
@@ -29,10 +30,10 @@ return [
                 $config = $jwt->getConfiguration();
                 return [
                     new \Lcobucci\JWT\Validation\Constraint\SignedWith($config->signer(), $config->verificationKey()),
-                    // new \Lcobucci\JWT\Validation\Constraint\LooseValidAt(
-                    //     new \Lcobucci\Clock\SystemClock(new \DateTimeZone(\Yii::$app->timeZone)),
-                    //     new \DateInterval('PT10S')
-                    // ),
+                    new \Lcobucci\JWT\Validation\Constraint\LooseValidAt(
+                        new \Lcobucci\Clock\SystemClock(new \DateTimeZone(\Yii::$app->timeZone)),
+                        new \DateInterval('PT10S')
+                    ),
                 ];
             }
         ],

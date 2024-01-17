@@ -3,16 +3,17 @@
 namespace api\modules\v1\controllers;
 
 use bizley\jwt\JwtHttpBearerAuth;
-use common\models\LoginForm;
 use common\models\User;
+use common\models\v1\Search\CategoriesSearch;
 use Yii;
 use yii\rest\Controller;
 
 /**
  * Default controller for the `v1` module
  */
-class AuthController extends Controller
+class CategoriesController extends Controller
 {
+
     //public $modelClass = 'common\models\User';
     public function behaviors()
     {
@@ -31,29 +32,35 @@ class AuthController extends Controller
     protected function verbs()
     {
         return [
-            'login' => ['POST'],
+            'index' => ['GET'],
             'data' => ['POST'],
         ];
     }
 
     //fungsi untuk login api
-    public function actionLogin(){
-        $model = new LoginForm();
-
-        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $model->login()) {
-            $response = [
+    public function actionIndex(){
+        $searchModel = new CategoriesSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        //$dataProvider->query->andWhere('id != 1');
+        $dataProvider->pagination->pageSize = 5;
+        if (!empty($dataProvider->getModels()))
+          {
+           $result = [
                 'isSuccess' => 200,
-                'message' => 'login berhasil!',
-                'id' => Yii::$app->user->identity->id,
-                'username' => Yii::$app->user->identity->username,
-                'email' => (!empty(Yii::$app->user->identity->email)) ? Yii::$app->user->identity->email : '',
-                'token' => User::generateToken(Yii::$app->user->identity->id),
+                'message' => 'sukses',
+                'data' => $dataProvider->getModels(),
+                'count' => $dataProvider->getCount(),
+                'totalCount' => $dataProvider->getTotalCount(),
+                'totalPage' => (int) (($dataProvider->getTotalCount() + $dataProvider->pagination->pageSize - 1) / $dataProvider->pagination->pageSize),
             ];
-            return $response;
-        } else {
-            $model->validate();
-            return $model;
-        }
+            return $result;
+          } else {
+            $result = [
+                'isSuccess' => 404,
+                'message' => 'Tidak Ada Data',
+            ];
+            return $result;
+          }
     }
 
     //hanya untuk tes token
