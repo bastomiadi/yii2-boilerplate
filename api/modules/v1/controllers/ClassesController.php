@@ -5,6 +5,7 @@ namespace api\modules\v1\controllers;
 use bizley\jwt\JwtHttpBearerAuth;
 use common\models\LoginForm;
 use common\models\User;
+use common\models\v1\Classes;
 use common\models\v1\search\ClassesSearch;
 use Yii;
 use yii\rest\Controller;
@@ -35,6 +36,7 @@ class ClassesController extends Controller
         return [
             'index' => ['GET'],
             'data' => ['POST'],
+            'create' => ['POST']
         ];
     }
 
@@ -79,5 +81,22 @@ class ClassesController extends Controller
             'data' => User::find()->all(),
             'success' => true,
         ]);
+    }
+
+    public function actionCreate()
+    {
+        $model = new Classes();
+        
+        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '')) {
+            $response = [
+                'isSuccess' => 200,
+                'message' => 'Sukses input data',
+                //'data' => Alamat::getAlamatByUid($model->user_id),
+            ];
+            return $response;
+        } else {
+            $model->validate();
+            return $model;
+        }
     }
 }
