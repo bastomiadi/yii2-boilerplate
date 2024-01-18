@@ -8,6 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-backend',
+    'name'=>'Yii2 Boilerplate',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
@@ -17,6 +18,9 @@ return [
             'layout' => 'left-menu',
             'mainLayout' => '@backend/views/layouts/main.php',
         ],
+        'gridview' =>  [
+            'class' => '\kartik\grid\Module'
+        ]
     ],
     'components' => [
         'i18n' => [
@@ -69,6 +73,7 @@ return [
             'site/*',
             'admin/*',
             'some-controller/some-action',
+            'debug/*'
             // The actions listed here will be allowed to everyone including guests.
             // So, 'admin/*' should not appear here in the production, of course.
             // But in the earlier stages of your development, you may probably want to

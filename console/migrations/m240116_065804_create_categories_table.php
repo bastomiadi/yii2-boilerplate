@@ -18,16 +18,15 @@ class m240116_065804_create_categories_table extends Migration
         }
 
         $this->createTable('{{%categories}}', [
-            'id' => $this->bigInteger()->notNull() . ' AUTO_INCREMENT',
+            'id' => $this->bigPrimaryKey(),
             'category_name' => $this->string(255)->notNull(),
-            'created_at' => $this->integer()->notNull(),
-            'updated_at' => $this->integer()->notNull(),
-            'deleted_at' => $this->integer(),
+            'created_at' => $this->bigInteger()->notNull(),
+            'updated_at' => $this->bigInteger()->notNull(),
+            'deleted_at' => $this->bigInteger(),
             'created_by' => $this->bigInteger()->notNull(),
             'updated_by' => $this->bigInteger()->notNull(),
             'deleted_by' => $this->bigInteger()->null(),
             'isDeleted' => $this->boolean(),
-            'PRIMARY KEY ([[id]])',
             'FOREIGN KEY ([[created_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
             'FOREIGN KEY ([[updated_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
             'FOREIGN KEY ([[deleted_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',

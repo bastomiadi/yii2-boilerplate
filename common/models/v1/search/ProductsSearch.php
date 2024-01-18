@@ -2,28 +2,29 @@
 
 namespace common\models\v1\Search;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\v1\Products;
 
 /**
- * ProductsSearch represents the model behind the search form of `common\models\v1\Products`.
+ * ProductsSearch represents the model behind the search form about `common\models\v1\Products`.
  */
 class ProductsSearch extends Products
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'category_id', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by', 'isDeleted'], 'integer'],
-            [['product_name'], 'safe'],
+            [['id', 'category', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
+            [['product_name', 'isDeleted'], 'safe'],
         ];
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function scenarios()
     {
@@ -42,8 +43,6 @@ class ProductsSearch extends Products
     {
         $query = Products::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -56,20 +55,19 @@ class ProductsSearch extends Products
             return $dataProvider;
         }
 
-        // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'category_id' => $this->category_id,
+            'category' => $this->category,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
             'deleted_by' => $this->deleted_by,
-            'isDeleted' => $this->isDeleted,
         ]);
 
-        $query->andFilterWhere(['like', 'product_name', $this->product_name]);
+        $query->andFilterWhere(['like', 'product_name', $this->product_name])
+            ->andFilterWhere(['like', 'isDeleted', $this->isDeleted]);
 
         return $dataProvider;
     }

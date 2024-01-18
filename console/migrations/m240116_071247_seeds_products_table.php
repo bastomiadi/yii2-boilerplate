@@ -27,7 +27,7 @@ class m240116_071247_seeds_products_table extends Migration
         for ($i=1; $i <= $this->count; $i++) { 
             $data[$i]['id'] = $i;
             $data[$i]['product_name'] = $this->faker->name;
-            $data[$i]['category_id'] = rand(1,50);
+            $data[$i]['category'] = rand(1,50);
             $data[$i]['created_at'] = time();
             $data[$i]['updated_at'] = time();
             $data[$i]['deleted_at'] = null;
@@ -36,7 +36,7 @@ class m240116_071247_seeds_products_table extends Migration
             $data[$i]['deleted_by'] = null;
         }
 
-        $this->batchInsert('{{%products}}', ['id', 'product_name', 'category_id', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], 
+        $this->batchInsert('{{%products}}', ['id', 'product_name', 'category', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], 
         $data);
     }
 

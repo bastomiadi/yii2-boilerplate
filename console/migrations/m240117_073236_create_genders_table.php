@@ -3,24 +3,18 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `{{%products}}`.
+ * Handles the creation of table `{{%genders}}`.
  */
-class m240116_065811_create_products_table extends Migration
+class m240117_073236_create_genders_table extends Migration
 {
-   /**
+    /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $tableOptions = null;
-        if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
-        }
-
-        $this->createTable('{{%products}}', [
+        $this->createTable('{{%genders}}', [
             'id' => $this->bigPrimaryKey(),
-            'product_name' => $this->string(255)->notNull(),
-            'category' => $this->bigInteger()->notNull(),
+            'gender_name' => $this->string()->notNull(),
             'created_at' => $this->bigInteger()->notNull(),
             'updated_at' => $this->bigInteger()->notNull(),
             'deleted_at' => $this->bigInteger(),
@@ -28,15 +22,13 @@ class m240116_065811_create_products_table extends Migration
             'updated_by' => $this->bigInteger()->notNull(),
             'deleted_by' => $this->bigInteger()->null(),
             'isDeleted' => $this->boolean(),
-            'FOREIGN KEY ([[category]]) REFERENCES {{%categories}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
             'FOREIGN KEY ([[created_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
             'FOREIGN KEY ([[updated_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
             'FOREIGN KEY ([[deleted_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
-            'INDEX idx_category ([[category]])',
             'INDEX idx_created_by ([[created_by]])',
             'INDEX idx_updated_by ([[updated_by]])',
             'INDEX idx_deleted_by ([[deleted_by]])',
-        ], $tableOptions);
+        ]);
     }
 
     /**
@@ -44,6 +36,6 @@ class m240116_065811_create_products_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%products}}');
+        $this->dropTable('{{%genders}}');
     }
 }

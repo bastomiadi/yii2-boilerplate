@@ -5,11 +5,10 @@ namespace common\models\v1;
 use Yii;
 
 /**
- * This is the model class for table "{{%products}}".
+ * This is the model class for table "{{%genders}}".
  *
  * @property int $id
- * @property string $product_name
- * @property int $category
+ * @property string $gender_name
  * @property int $created_at
  * @property int $updated_at
  * @property int|null $deleted_at
@@ -18,19 +17,19 @@ use Yii;
  * @property int|null $deleted_by
  * @property int|null $isDeleted
  *
- * @property Category $category0
  * @property User $createdBy
  * @property User $deletedBy
+ * @property Profile[] $profiles
  * @property User $updatedBy
  */
-class Products extends \yii\db\ActiveRecord
+class Genders extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return '{{%products}}';
+        return '{{%genders}}';
     }
 
     /**
@@ -39,10 +38,9 @@ class Products extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['product_name', 'category', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'required'],
-            [['category', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by', 'isDeleted'], 'integer'],
-            [['product_name'], 'string', 'max' => 255],
-            [['category'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::class, 'targetAttribute' => ['category' => 'id']],
+            [['gender_name'], 'required'],
+            [['created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by', 'isDeleted'], 'integer'],
+            [['gender_name'], 'string', 'max' => 255],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
             [['deleted_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['deleted_by' => 'id']],
@@ -56,8 +54,7 @@ class Products extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'product_name' => Yii::t('app', 'Product Name'),
-            'category' => Yii::t('app', 'Category'),
+            'gender_name' => Yii::t('app', 'Gender Name'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
             'deleted_at' => Yii::t('app', 'Deleted At'),
@@ -66,16 +63,6 @@ class Products extends \yii\db\ActiveRecord
             'deleted_by' => Yii::t('app', 'Deleted By'),
             'isDeleted' => Yii::t('app', 'Is Deleted'),
         ];
-    }
-
-    /**
-     * Gets query for [[Category0]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCategory0()
-    {
-        return $this->hasOne(Categories::class, ['id' => 'category']);
     }
 
     /**
@@ -96,6 +83,16 @@ class Products extends \yii\db\ActiveRecord
     public function getDeletedBy()
     {
         return $this->hasOne(User::class, ['id' => 'deleted_by']);
+    }
+
+    /**
+     * Gets query for [[Profiles]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProfiles()
+    {
+        return $this->hasMany(Profiles::class, ['gender' => 'id']);
     }
 
     /**

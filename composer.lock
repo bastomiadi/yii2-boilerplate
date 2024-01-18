@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d440feea0b61557f63a2caeba4963a3",
+    "content-hash": "2f7a31fa6dcda655dbd9559cb3a69e82",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -51,26 +51,25 @@
         },
         {
             "name": "biladina/yii2-ajaxcrud-bs4",
-            "version": "v3.0.0",
+            "version": "v2.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/biladina/yii2-ajaxcrud.git",
-                "reference": "9162994807244d3db6228c9f5be085f36ec9f3c1"
+                "reference": "17b30ed46b51d75bcfd34f461148cfa9ddfda2b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/biladina/yii2-ajaxcrud/zipball/9162994807244d3db6228c9f5be085f36ec9f3c1",
-                "reference": "9162994807244d3db6228c9f5be085f36ec9f3c1",
+                "url": "https://api.github.com/repos/biladina/yii2-ajaxcrud/zipball/17b30ed46b51d75bcfd34f461148cfa9ddfda2b2",
+                "reference": "17b30ed46b51d75bcfd34f461148cfa9ddfda2b2",
                 "shasum": ""
             },
             "require": {
                 "fortawesome/font-awesome": "^5.15",
-                "kartik-v/yii2-bootstrap5-dropdown": "@dev",
                 "kartik-v/yii2-editable": "^1.7.3",
                 "kartik-v/yii2-grid": "^3.0.4",
                 "kartik-v/yii2-mpdf": "^1.0.0",
                 "yiisoft/yii2": "*",
-                "yiisoft/yii2-bootstrap5": "*",
+                "yiisoft/yii2-bootstrap4": "*",
                 "yiisoft/yii2-gii": "*"
             },
             "type": "yii2-extension",
@@ -115,7 +114,7 @@
                 "issues": "https://github.com/biladina/yii2-ajaxcrud-bs4/issues?state=open",
                 "source": "https://github.com/biladina/yii2-ajaxcrud-bs4"
             },
-            "time": "2023-06-22T09:21:52+00:00"
+            "time": "2023-06-22T09:32:43+00:00"
         },
         {
             "name": "bizley/jwt",
@@ -185,16 +184,16 @@
         },
         {
             "name": "bower-asset/bootstrap",
-            "version": "v5.2.3",
+            "version": "v5.3.2",
             "source": {
                 "type": "git",
-                "url": "git@github.com:twbs/bootstrap.git",
-                "reference": "cb021439c683d9805e2864c58095b92d405e9b11"
+                "url": "https://github.com/twbs/bootstrap.git",
+                "reference": "344e912d04b5b6a04482113eff20ab416ff01048"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/cb021439c683d9805e2864c58095b92d405e9b11",
-                "reference": "cb021439c683d9805e2864c58095b92d405e9b11"
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/344e912d04b5b6a04482113eff20ab416ff01048",
+                "reference": "344e912d04b5b6a04482113eff20ab416ff01048"
             },
             "type": "bower-asset"
         },
@@ -765,25 +764,26 @@
             "time": "2023-07-22T19:34:37+00:00"
         },
         {
-            "name": "kartik-v/yii2-bootstrap5-dropdown",
-            "version": "v1.0.2",
+            "name": "kartik-v/yii2-bootstrap4-dropdown",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/kartik-v/yii2-bootstrap5-dropdown.git",
-                "reference": "459e4c06c64e49f89ac372ce7c2cabb961f56ec9"
+                "url": "https://github.com/kartik-v/yii2-bootstrap4-dropdown.git",
+                "reference": "b65783f2de8ff0733e3787c853a53e9f13bebac1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-bootstrap5-dropdown/zipball/459e4c06c64e49f89ac372ce7c2cabb961f56ec9",
-                "reference": "459e4c06c64e49f89ac372ce7c2cabb961f56ec9",
+                "url": "https://api.github.com/repos/kartik-v/yii2-bootstrap4-dropdown/zipball/b65783f2de8ff0733e3787c853a53e9f13bebac1",
+                "reference": "b65783f2de8ff0733e3787c853a53e9f13bebac1",
                 "shasum": ""
             },
             "require": {
-                "kartik-v/yii2-krajee-base": ">=2.0"
+                "kartik-v/yii2-krajee-base": ">=3.0"
             },
             "suggest": {
-                "yiisoft/yii2-bootstrap5": "The Yii 2 Bootstrap 4 extension must be installed separately for this extension to work."
+                "yiisoft/yii2-bootstrap4": "The Yii 2 Bootstrap 4 extension must be installed separately for this extension to work."
             },
+            "default-branch": true,
             "type": "yii2-extension",
             "extra": {
                 "branch-alias": {
@@ -792,7 +792,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "kartik\\bs5dropdown\\": "src"
+                    "kartik\\bs4dropdown\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -806,8 +806,8 @@
                     "homepage": "http://www.krajee.com/"
                 }
             ],
-            "description": "Enhanced Bootstrap 4 dropdown widget for Yii2 with nested submenu support",
-            "homepage": "https://github.com/kartik-v/yii2-bootstrap5-dropdown",
+            "description": "Enhanced Bootstrap 4.x dropdown widget for Yii2 with nested submenu support",
+            "homepage": "https://github.com/kartik-v/yii2-bootstrap4-dropdown",
             "keywords": [
                 "bootstrap",
                 "dropdown",
@@ -817,10 +817,10 @@
                 "yii2"
             ],
             "support": {
-                "issues": "https://github.com/kartik-v/yii2-bootstrap5-dropdown/issues",
-                "source": "https://github.com/kartik-v/yii2-bootstrap5-dropdown/tree/v1.0.2"
+                "issues": "https://github.com/kartik-v/yii2-bootstrap4-dropdown/issues",
+                "source": "https://github.com/kartik-v/yii2-bootstrap4-dropdown/tree/v1.0.4"
             },
-            "time": "2022-01-10T04:05:31+00:00"
+            "time": "2022-01-10T04:03:23+00:00"
         },
         {
             "name": "kartik-v/yii2-dialog",
@@ -1236,6 +1236,71 @@
                 }
             ],
             "time": "2023-07-31T11:33:59+00:00"
+        },
+        {
+            "name": "kartik-v/yii2-widget-select2",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-widget-select2.git",
+                "reference": "4b8ef7dd9780531fc997fa23a53a38a1f7674bec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-select2/zipball/4b8ef7dd9780531fc997fa23a53a38a1f7674bec",
+                "reference": "4b8ef7dd9780531fc997fa23a53a38a1f7674bec",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/yii2-krajee-base": ">=3.0.4",
+                "select2/select2": ">=4.0.0"
+            },
+            "default-branch": true,
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\select2\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "Enhanced Yii2 wrapper for the Select2 jQuery plugin (sub repo split from yii2-widgets).",
+            "homepage": "https://github.com/kartik-v/yii2-widget-select2",
+            "keywords": [
+                "dropdown",
+                "extension",
+                "form",
+                "jquery",
+                "plugin",
+                "select2",
+                "widget",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/kartik-v/yii2-widget-select2/issues",
+                "source": "https://github.com/kartik-v/yii2-widget-select2/tree/v2.2.5"
+            },
+            "funding": [
+                {
+                    "url": "https://opencollective.com/yii2-widget-select2",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2023-06-22T07:43:31+00:00"
         },
         {
             "name": "lcobucci/clock",
@@ -2025,6 +2090,48 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.0"
             },
             "time": "2021-07-14T16:46:02+00:00"
+        },
+        {
+            "name": "select2/select2",
+            "version": "4.0.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/select2/select2.git",
+                "reference": "45f2b83ceed5231afa7b3d5b12b58ad335edd82e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/select2/select2/zipball/45f2b83ceed5231afa7b3d5b12b58ad335edd82e",
+                "reference": "45f2b83ceed5231afa7b3d5b12b58ad335edd82e",
+                "shasum": ""
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "dist/js/select2.js"
+                    ],
+                    "styles": [
+                        "dist/css/select2.css"
+                    ],
+                    "files": [
+                        "dist/js/select2.js",
+                        "dist/js/i18n/*.js",
+                        "dist/css/select2.css"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Select2 is a jQuery based replacement for select boxes.",
+            "homepage": "https://select2.org/",
+            "support": {
+                "issues": "https://github.com/select2/select2/issues",
+                "source": "https://github.com/select2/select2/tree/4.0.13"
+            },
+            "time": "2020-01-28T05:01:22+00:00"
         },
         {
             "name": "setasign/fpdi",
@@ -7142,7 +7249,9 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "mdmsoft/yii2-admin": 20
+        "mdmsoft/yii2-admin": 20,
+        "kartik-v/yii2-widget-select2": 20,
+        "kartik-v/yii2-bootstrap4-dropdown": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

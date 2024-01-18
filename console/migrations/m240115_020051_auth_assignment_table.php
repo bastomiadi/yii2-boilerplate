@@ -7,6 +7,7 @@ use yii\db\Migration;
  */
 class m240115_020051_auth_assignment_table extends Migration
 {
+
      /**
      * @inheritdoc
      */
@@ -33,7 +34,7 @@ class m240115_020051_auth_assignment_table extends Migration
             ['member', 2, NULL],
             ['members', 2, NULL],
         ]);
-        
+
     }
 
     /**

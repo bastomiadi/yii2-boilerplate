@@ -32,9 +32,34 @@ class m240114_132529_seed_users_table extends Migration
         //     $user->save();
         // }
 
+        $this->insert('{{%user}}', [
+            'id' => 1,
+            'username' => 'superadmin',
+            'auth_key' => Yii::$app->security->generateRandomString(),
+            'password_hash' => Yii::$app->getSecurity()->generatePasswordHash('password'),
+            'password_reset_token' => null,
+            'email' => 'admin@mail.com',
+            'status' => 10,
+            'created_at' => time(),
+            'updated_at' => time(),
+            'verification_token' => Yii::$app->security->generateRandomString() . '_' . time(),
+        ]);
+
+        $this->insert('{{%user}}', [
+            'id' => 2,
+            'username' => 'member',
+            'auth_key' => Yii::$app->security->generateRandomString(),
+            'password_hash' => Yii::$app->getSecurity()->generatePasswordHash('password'),
+            'password_reset_token' => null,
+            'email' => 'member@mail.com',
+            'status' => 10,
+            'created_at' => time(),
+            'updated_at' => time(),
+            'verification_token' => Yii::$app->security->generateRandomString() . '_' . time(),
+        ]);
+
         $data = array();
         for ($i=1; $i <= $this->count; $i++) { 
-            $data[$i]['id'] = $i;
             $data[$i]['username'] = $this->faker->userName;
             $data[$i]['auth_key'] = Yii::$app->getSecurity()->generateRandomString();
             $data[$i]['password_hash'] = Yii::$app->getSecurity()->generatePasswordHash('password');
@@ -46,7 +71,7 @@ class m240114_132529_seed_users_table extends Migration
             $data[$i]['verification_token'] = Yii::$app->security->generateRandomString() . '_' . time();
         }
 
-        $this->batchInsert('{{%user}}', ['id', 'username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'status', 'created_at', 'updated_at', 'verification_token'], 
+        $this->batchInsert('{{%user}}', ['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'status', 'created_at', 'updated_at', 'verification_token'], 
         $data);
 
     }
