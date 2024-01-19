@@ -39,9 +39,9 @@ class Products extends \yii\db\ActiveRecord
             'created_by' => fn () => $this->createdBy->username ?? $this->createdBy,
             'updated_by' => fn () => $this->updatedBy->username ?? $this->updatedBy,
             'deleted_by' => fn () => $this->deletedBy->username ?? $this->deletedBy,
-            'created_at' => fn () => $this->created_at ? \Yii::$app->formatter->asDate($this->created_at, 'long') : null,
-            'updated_at' => fn () => $this->updated_at ? \Yii::$app->formatter->asDate($this->updated_at, 'long') : null,
-            'deleted_at' => fn () => $this->deleted_at ? \Yii::$app->formatter->asDate($this->deleted_at, 'long') : null,
+            'created_at' => fn () => $this->created_at ? \Yii::$app->formatter->asDatetime($this->created_at, 'long') : null,
+            'updated_at' => fn () => $this->updated_at ? \Yii::$app->formatter->asDatetime($this->updated_at, 'long') : null,
+            'deleted_at' => fn () => $this->deleted_at ? \Yii::$app->formatter->asDatetime($this->deleted_at, 'long') : null,
             'isDeleted'
         ];
     }
