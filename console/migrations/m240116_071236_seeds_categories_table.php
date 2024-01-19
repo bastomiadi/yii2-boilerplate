@@ -12,7 +12,7 @@ class m240116_071236_seeds_categories_table extends Migration
 
     function __construct() {
         $this->faker = \Faker\Factory::create();
-        $this->count = 50;
+        $this->count = 1000;
     }
 
     /**

@@ -29,7 +29,7 @@ class m240117_073237_create_profiles_table extends Migration
             'created_by' => $this->bigInteger()->notNull(),
             'updated_by' => $this->bigInteger()->notNull(),
             'deleted_by' => $this->bigInteger()->null(),
-            'isDeleted' => $this->boolean(),
+            'isDeleted' => $this->boolean()->notNull()->defaultValue(0),
             'FOREIGN KEY ([[user]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
             'FOREIGN KEY ([[gender]]) REFERENCES {{%genders}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
             'FOREIGN KEY ([[marital]]) REFERENCES {{%marital}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',

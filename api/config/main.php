@@ -1,10 +1,15 @@
 <?php
+
+use yii\web\Request;
+
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
     require __DIR__ . '/params.php',
     require __DIR__ . '/params-local.php'
 );
+
+//$baseUrl = str_replace('/api/web', '', (new Request())->getBaseUrl());
 
 return [
     'id' => 'app-api',
@@ -13,6 +18,19 @@ return [
     'controllerNamespace' => 'api\controllers',
     'timeZone' => 'Asia/Jakarta',
     'components' => [
+        'response' => [
+            'class' => 'yii\web\Response',
+            'on beforeSend' => function ($event) {
+                $response = $event->sender;
+                if ($response->data !== null && Yii::$app->request->get('suppress_response_code')) {
+                    $response->data = [
+                        'success' => $response->isSuccessful,
+                        'data' => $response->data,
+                    ];
+                    $response->statusCode = 200;
+                }
+            },
+        ],
         // 'authManager' => [
         //     'class' => 'yii\rbac\DbManager',
         // ],
@@ -41,11 +59,16 @@ return [
             }
         ],
         'request' => [
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
             'csrfParam' => '_csrf-api',
+            //'baseUrl' => $baseUrl,
         ],
         'user' => [
             'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
+            'enableSession' => false,
             'identityCookie' => ['name' => '_identity-api', 'httpOnly' => true],
         ],
         'session' => [
@@ -65,16 +88,18 @@ return [
             'errorAction' => 'site/error',
         ],
         'urlManager' => [
+            //'baseUrl' => $baseUrl,
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             //'enableStrictParsing' => true,
-            'rules' => [
-                //['class' => 'yii\rest\UrlRule', 'controller' => 'user'],
-                //['class' => 'yii\rest\UrlRule', 'controller' => 'auth'],
-                //'<controller:\w+>/<id:\d+>' => '<controller>/view',
-                //'<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
-                //'<controller:\w+>/<action:\w+>' => '<controller>/<action>',
-            ],
+            'rules' => include('routes.php')
+            // 'rules' => [
+            //     //['class' => 'yii\rest\UrlRule', 'controller' => 'user'],
+            //     //['class' => 'yii\rest\UrlRule', 'controller' => 'auth'],
+            //     //'<controller:\w+>/<id:\d+>' => '<controller>/view',
+            //     //'<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+            //     //'<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+            // ],
         ],
     ],
 
@@ -93,18 +118,18 @@ return [
         ],
     ],
     'params' => $params,
-    'as access' => [
-        'class' => 'mdm\admin\components\AccessControl',
-        'allowActions' => [
-            //'site/*',
-            //'admin/*',
-            //'some-controller/some-action',
-            //'debug/*'
-            // The actions listed here will be allowed to everyone including guests.
-            // So, 'admin/*' should not appear here in the production, of course.
-            // But in the earlier stages of your development, you may probably want to
-            // add a lot of actions here until you finally completed setting up rbac,
-            // otherwise you may not even take a first step.
-        ]
-    ],
+    // 'as access' => [
+    //     'class' => 'mdm\admin\components\AccessControl',
+    //     'allowActions' => [
+    //         //'site/*',
+    //         //'admin/*',
+    //         //'some-controller/some-action',
+    //         //'debug/*'
+    //         // The actions listed here will be allowed to everyone including guests.
+    //         // So, 'admin/*' should not appear here in the production, of course.
+    //         // But in the earlier stages of your development, you may probably want to
+    //         // add a lot of actions here until you finally completed setting up rbac,
+    //         // otherwise you may not even take a first step.
+    //     ]
+    // ],
 ];

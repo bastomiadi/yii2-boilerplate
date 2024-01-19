@@ -21,7 +21,7 @@ class m240114_121619_create_classes_table extends Migration
             'created_at' => $this->bigInteger()->notNull(),
             'updated_at' => $this->bigInteger()->notNull(),
             'deleted_at' => $this->bigInteger(),
-            'isDeleted' => $this->boolean(),
+            'isDeleted' => $this->boolean()->notNull()->defaultValue(0),
         ]);
         
         // add foreign key for table `user`

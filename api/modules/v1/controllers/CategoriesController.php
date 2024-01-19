@@ -4,10 +4,12 @@ namespace api\modules\v1\controllers;
 
 use bizley\jwt\JwtHttpBearerAuth;
 use common\models\User;
+use common\models\v1\Categories;
 use common\models\v1\Search\CategoriesSearch;
 use Yii;
 use yii\filters\AccessControl;
 use yii\rest\Controller;
+use yii\web\NotFoundHttpException;
 
 /**
  * Default controller for the `v1` module
@@ -32,7 +34,7 @@ class CategoriesController extends Controller
                 [
                     'allow' => true,
                     'actions' => ['index'],
-                    'roles' => ['admins'],
+                    'roles' => ['admins','member'],
                 ],
                 [
                     'allow' => true,
@@ -75,11 +77,13 @@ class CategoriesController extends Controller
     {
         return [
             'index' => ['GET'],
-            'data' => ['POST'],
+            'create' => ['POST'],
+            'update' => ['PUT','PATCH'],
+            'delete' => ['delete']
         ];
     }
 
-    //fungsi untuk login api
+    //menampilkan list dan filter
     public function actionIndex(){
         $searchModel = new CategoriesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -105,20 +109,59 @@ class CategoriesController extends Controller
           }
     }
 
-    //hanya untuk tes token
-    public function actionData()
+    public function actionCreate()
     {
+        $model = new Categories();
+        //$model->scenario = 'create';
+        //$u_id = Yii::$app->user->identity->id;
 
-        // $token = Yii::$app->jwt->parse((string) 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZXhhbXBsZS5jb20iLCJhdWQiOiJodHRwOi8vZXhhbXBsZS5vcmciLCJqdGkiOiI0ZjFnMjNhMTJhYSIsImlhdCI6MTcwNTI5NDgzNi43NjUwNjcsImV4cCI6MTcwNTI5ODQzNi43NjUwNjcsInVpZCI6MX0.NzxqM0kEGotdvI7RqTOwcHVKv6Mnk1bforCqtB2GX6g');
+        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '')) {
+            $model->save();
+        } else {
+            $model->validate();
+        }
 
-        // $result = Yii::$app->jwt->validate($token);
-
-        // print_r($result);
-        // die;
-
-        return $this->asJson([
-            'data' => User::find()->all(),
-            'success' => true,
-        ]);
+        return $model;
     }
+
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        //$model->scenario = 'update';
+
+        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '')) {
+            $model->save();
+        } else {
+            $model->validate();
+        }
+
+        return $model;
+    }
+
+    public function actionDelete($id)
+    {
+        $model = $this->findModel($id);
+        //$model->scenario = 'delete';
+
+        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '')) {
+            $model->delete();
+        } else {
+            $model->validate();
+        }
+
+        return $model;
+    }
+
+    protected function findModel($id)
+    {
+        if (($model = Categories::findOne($id)) !== null)
+        {
+            return $model;
+        }
+        else
+        {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
 }
