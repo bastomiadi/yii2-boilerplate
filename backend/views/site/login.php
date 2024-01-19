@@ -1,4 +1,6 @@
 <?php
+
+use yii\captcha\Captcha;
 use yii\helpers\Html;
 ?>
 <div class="card">
@@ -24,6 +26,11 @@ use yii\helpers\Html;
         ])
             ->label(false)
             ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
+
+        <?= $form->field($model, 'verifyCode')->widget(Captcha::class, [
+                'captchaAction' => 'site/captcha',
+                'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+        ])->label(false) ?>
 
         <div class="row">
             <div class="col-8">
