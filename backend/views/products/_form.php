@@ -1,6 +1,10 @@
 <?php
+
+use common\models\v1\Categories;
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\v1\Products */
@@ -13,22 +17,14 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'product_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'category')->textInput() ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
-    <?= $form->field($model, 'deleted_at')->textInput() ?>
-
-    <?= $form->field($model, 'created_by')->textInput() ?>
-
-    <?= $form->field($model, 'updated_by')->textInput() ?>
-
-    <?= $form->field($model, 'deleted_by')->textInput() ?>
-
-    <?= $form->field($model, 'isDeleted')->textInput() ?>
-
+    <?= $form->field($model, 'category')->widget(Select2::class, [
+        'data' => ArrayHelper::map(Categories::find()->all(), 'id','category_name'),
+        //'language' => 'de',
+        'options' => ['placeholder' => '...'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
   
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">

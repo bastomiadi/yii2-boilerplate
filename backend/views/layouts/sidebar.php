@@ -85,10 +85,17 @@ use yii\debug\models\search\Profile;
             ]);
             ?>
         </nav> -->
+        <?php
+            // echo '<pre>';
+            // print_r(MenuHelper::getAssignedMenu(Yii::$app->user->id));
+            // echo '</pre>';
+            // die;
+        
+        ?>
         <nav class="mt-2">
-            <?php
-                echo \hail812\adminlte\widgets\Menu::widget([
-                    'items' => MenuHelper::getAssignedMenu(Yii::$app->user->id)
+            <?= \hail812\adminlte\widgets\Menu::widget([
+                    'items' => MenuHelper::getAssignedMenu(Yii::$app->user->id),
+                    'submenuTemplate' => "\n<ul><u>\n{items}\n</u></ul>\n"
                 ]);
             ?>
         </nav>

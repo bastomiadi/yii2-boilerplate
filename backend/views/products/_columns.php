@@ -1,4 +1,9 @@
 <?php
+
+use common\models\v1\Categories;
+use common\models\v1\User;
+use kartik\grid\GridView;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 return [
@@ -19,8 +24,19 @@ return [
         'attribute'=>'product_name',
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'category',
+        'attribute' => 'category',
+        'value' => function($model) {
+            return $model->category0->category_name;
+        },
+        'filter' => ArrayHelper::map(Categories::find()->asArray()->all(), 'id', 'category_name'),
+        'filterType' => GridView::FILTER_SELECT2,
+        'filterWidgetOptions' => [
+            'options' => ['prompt' => '-'],
+            'pluginOptions' => [
+                'allowClear' => true,
+                'width'=> 'default'
+            ],
+        ],
     ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',
@@ -35,12 +51,49 @@ return [
         'attribute'=>'deleted_at',
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'created_by',
+        'attribute' => 'created_by',
+        'value' => function($model) {
+            return $model->createdBy->username;
+        },
+        'filter' => ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'),
+        'filterType' => GridView::FILTER_SELECT2,
+        'filterWidgetOptions' => [
+            'options' => ['prompt' => ''],
+            'pluginOptions' => [
+                'allowClear' => true,
+                'width'=> 'default'
+            ],
+        ],
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'updated_by',
+        'attribute' => 'updated_by',
+        'value' => function($model) {
+            return $model->updatedBy->username;
+        },
+        'filter' => ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'),
+        'filterType' => GridView::FILTER_SELECT2,
+        'filterWidgetOptions' => [
+            'options' => ['prompt' => ''],
+            'pluginOptions' => [
+                'allowClear' => true,
+                'width'=> 'default'
+            ],
+        ],
+    ],
+    [
+        'attribute' => 'deleted_by',
+        'value' => function($model) {
+            return $model->deletedBy->username ?? $model->deletedBy;
+        },
+        'filter' => ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'),
+        'filterType' => GridView::FILTER_SELECT2,
+        'filterWidgetOptions' => [
+            'options' => ['prompt' => ''],
+            'pluginOptions' => [
+                'allowClear' => true,
+                'width'=> 'default'
+            ],
+        ],
     ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',

@@ -13,6 +13,9 @@ return [
     'controllerNamespace' => 'api\controllers',
     'timeZone' => 'Asia/Jakarta',
     'components' => [
+        // 'authManager' => [
+        //     'class' => 'yii\rbac\DbManager',
+        // ],
         'jwt' => [
             'class' => \bizley\jwt\Jwt::class,
             'signer' => \bizley\jwt\Jwt::HS256,
@@ -83,6 +86,25 @@ return [
         'v2' => [
             'class' => 'api\modules\v2\Module',
         ],
+        'admin' => [
+            'class' => 'mdm\admin\Module',
+            'layout' => 'left-menu',
+            'mainLayout' => '@backend/views/layouts/main.php',
+        ],
     ],
     'params' => $params,
+    'as access' => [
+        'class' => 'mdm\admin\components\AccessControl',
+        'allowActions' => [
+            //'site/*',
+            //'admin/*',
+            //'some-controller/some-action',
+            //'debug/*'
+            // The actions listed here will be allowed to everyone including guests.
+            // So, 'admin/*' should not appear here in the production, of course.
+            // But in the earlier stages of your development, you may probably want to
+            // add a lot of actions here until you finally completed setting up rbac,
+            // otherwise you may not even take a first step.
+        ]
+    ],
 ];

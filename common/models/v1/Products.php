@@ -3,6 +3,8 @@
 namespace common\models\v1;
 
 use Yii;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%products}}".
@@ -25,6 +27,24 @@ use Yii;
  */
 class Products extends \yii\db\ActiveRecord
 {
+
+    // for rest api field showing
+    public function fields()
+    {
+        return [
+            'id',
+            'product_name',
+            'created_by' => fn () => $this->category0->category_name ?? $this->category0,
+            'created_by' => fn () => $this->createdBy->username ?? $this->createdBy,
+            'updated_by' => fn () => $this->updatedBy->username ?? $this->updatedBy,
+            'deleted_by' => fn () => $this->deletedBy->username ?? $this->deletedBy,
+            'created_at' => fn () => $this->created_at ? \Yii::$app->formatter->asDate($this->created_at, 'long') : null,
+            'updated_at' => fn () => $this->updated_at ? \Yii::$app->formatter->asDate($this->updated_at, 'long') : null,
+            'deleted_at' => fn () => $this->deleted_at ? \Yii::$app->formatter->asDate($this->deleted_at, 'long') : null,
+            'isDeleted'
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -33,13 +53,24 @@ class Products extends \yii\db\ActiveRecord
         return '{{%products}}';
     }
 
+     /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+            'blameable' => BlameableBehavior::class,
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['product_name', 'category', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'required'],
+            [['product_name', 'category'], 'required'],
             [['category', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by', 'isDeleted'], 'integer'],
             [['product_name'], 'string', 'max' => 255],
             [['category'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::class, 'targetAttribute' => ['category' => 'id']],

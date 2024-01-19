@@ -6,6 +6,7 @@ use bizley\jwt\JwtHttpBearerAuth;
 use common\models\User;
 use common\models\v1\Search\CategoriesSearch;
 use Yii;
+use yii\filters\AccessControl;
 use yii\rest\Controller;
 
 /**
@@ -22,6 +23,47 @@ class CategoriesController extends Controller
             'class' => JwtHttpBearerAuth::class,
             'optional' => [
                 'login',
+            ],
+        ];
+        $behaviors['access'] = [
+            'class' => AccessControl::class,
+            'only' => ['index', 'logout', 'signup'],
+            'rules' => [
+                [
+                    'allow' => true,
+                    'actions' => ['index'],
+                    'roles' => ['admins'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['view'],
+                    'roles' => ['viewPost'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['create'],
+                    'roles' => ['createPost'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['update'],
+                    'roles' => ['updatePost'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['delete'],
+                    'roles' => ['deletePost'],
+                ],
+                // [
+                //     'allow' => true,
+                //     'actions' => ['login', 'signup'],
+                //     'roles' => ['?'],
+                // ],
+                // [
+                //     'allow' => true,
+                //     'actions' => ['logout'],
+                //     'roles' => ['@'],
+                // ],
             ],
         ];
 

@@ -32,9 +32,9 @@ class Categories extends \yii\db\ActiveRecord
         return [
             'id',
             'category_name',
-            'created_by' => fn () => $this->createdBy->username ?? null,
-            'updated_by' => fn () => $this->updatedBy->username ?? null,
-            'deleted_by' => fn () => $this->deletedBy->username ?? null,
+            'created_by' => fn () => $this->createdBy->username ?? $this->createdBy,
+            'updated_by' => fn () => $this->updatedBy->username ?? $this->updatedBy,
+            'deleted_by' => fn () => $this->deletedBy->username ?? $this->deletedBy,
             'created_at' => fn () => $this->created_at ? \Yii::$app->formatter->asDate($this->created_at, 'long') : null,
             'updated_at' => fn () => $this->updated_at ? \Yii::$app->formatter->asDate($this->updated_at, 'long') : null,
             'deleted_at' => fn () => $this->deleted_at ? \Yii::$app->formatter->asDate($this->deleted_at, 'long') : null,
