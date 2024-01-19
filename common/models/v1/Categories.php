@@ -62,7 +62,9 @@ class Categories extends \yii\db\ActiveRecord
             'softDeleteBehavior' => [
                 'class' => SoftDeleteBehavior::class,
                 'softDeleteAttributeValues' => [
-                    'isDeleted' => true
+                    'isDeleted' => true,
+                    'deleted_at' => time(),
+                    'deleted_by' => Yii::$app->user->identity->id
                 ],
                 'replaceRegularDelete' => true // mutate native `delete()` method
             ],

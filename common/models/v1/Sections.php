@@ -4,6 +4,7 @@ namespace common\models\v1;
 
 use common\models\User;
 use Yii;
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 
@@ -37,9 +38,9 @@ class Sections extends \yii\db\ActiveRecord
             'id',
             'name',
             'classes' => fn() => $this->classes0->name,
-            'created_by' => fn () => $this->createdBy->username ?? null,
-            'updated_by' => fn () => $this->updatedBy->username ?? null,
-            'deleted_by' => fn () => $this->deletedBy->username ?? null,
+            'created_by' => fn () => $this->createdBy->username ?? $this->createdBy,
+            'updated_by' => fn () => $this->updatedBy->username ?? $this->updatedBy,
+            'deleted_by' => fn () => $this->deletedBy->username ?? $this->deletedBy,
             'created_at' => fn () => $this->created_at ? \Yii::$app->formatter->asDate($this->created_at, 'long') : null,
             'updated_at' => fn () => $this->updated_at ? \Yii::$app->formatter->asDate($this->updated_at, 'long') : null,
             'deleted_at' => fn () => $this->deleted_at ? \Yii::$app->formatter->asDate($this->deleted_at, 'long') : null,
@@ -58,11 +59,23 @@ class Sections extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    /**
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
             TimestampBehavior::class,
             'blameable' => BlameableBehavior::class,
+            'softDeleteBehavior' => [
+                'class' => SoftDeleteBehavior::class,
+                'softDeleteAttributeValues' => [
+                    'isDeleted' => true,
+                    'deleted_at' => time(),
+                    'deleted_by' => Yii::$app->user->identity->id
+                ],
+                'replaceRegularDelete' => true // mutate native `delete()` method
+            ],
         ];
     }
 

@@ -3,6 +3,9 @@
 namespace common\models\v1;
 
 use Yii;
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%marital}}".
@@ -24,12 +27,49 @@ use Yii;
  */
 class Marital extends \yii\db\ActiveRecord
 {
+
+    // for rest api field showing
+    public function fields()
+    {
+        return [
+            'id',
+            'marital_name',
+            'created_by' => fn () => $this->createdBy->username ?? $this->createdBy,
+            'updated_by' => fn () => $this->updatedBy->username ?? $this->createdBy,
+            'deleted_by' => fn () => $this->deletedBy->username ?? $this->deletedBy,
+            'created_at' => fn () => $this->created_at ? \Yii::$app->formatter->asDate($this->created_at, 'long') : null,
+            'updated_at' => fn () => $this->updated_at ? \Yii::$app->formatter->asDate($this->updated_at, 'long') : null,
+            'deleted_at' => fn () => $this->deleted_at ? \Yii::$app->formatter->asDate($this->deleted_at, 'long') : null,
+            'isDeleted'
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return '{{%marital}}';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+            'blameable' => BlameableBehavior::class,
+            'softDeleteBehavior' => [
+                'class' => SoftDeleteBehavior::class,
+                'softDeleteAttributeValues' => [
+                    'isDeleted' => true,
+                    'deleted_at' => time(),
+                    'deleted_by' => Yii::$app->user->identity->id
+                ],
+                'replaceRegularDelete' => true // mutate native `delete()` method
+            ],
+        ];
     }
 
     /**

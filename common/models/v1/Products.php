@@ -3,6 +3,7 @@
 namespace common\models\v1;
 
 use Yii;
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 
@@ -56,11 +57,23 @@ class Products extends \yii\db\ActiveRecord
      /**
      * {@inheritdoc}
      */
+    /**
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
             TimestampBehavior::class,
             'blameable' => BlameableBehavior::class,
+            'softDeleteBehavior' => [
+                'class' => SoftDeleteBehavior::class,
+                'softDeleteAttributeValues' => [
+                    'isDeleted' => true,
+                    'deleted_at' => time(),
+                    'deleted_by' => Yii::$app->user->identity->id
+                ],
+                'replaceRegularDelete' => true // mutate native `delete()` method
+            ],
         ];
     }
 

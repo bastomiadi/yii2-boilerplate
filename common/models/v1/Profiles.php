@@ -3,6 +3,9 @@
 namespace common\models\v1;
 
 use Yii;
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%profiles}}".
@@ -31,6 +34,26 @@ use Yii;
  */
 class Profiles extends \yii\db\ActiveRecord
 {
+     
+    // for rest api field showing
+    public function fields()
+    {
+        return [
+            'id',
+            'user' => fn () => $this->user0->username ?? $this->user0,
+            'first_name', 
+            'gender' => fn () => $this->gender0->gender_name ?? $this->gender0,
+            'marital' => fn () => $this->marital0->marital_name ?? $this->marital0,
+            'created_by' => fn () => $this->createdBy->username ?? $this->createdBy,
+            'updated_by' => fn () => $this->updatedBy->username ?? $this->createdBy,
+            'deleted_by' => fn () => $this->deletedBy->username ?? $this->deletedBy,
+            'created_at' => fn () => $this->created_at ? \Yii::$app->formatter->asDate($this->created_at, 'long') : null,
+            'updated_at' => fn () => $this->updated_at ? \Yii::$app->formatter->asDate($this->updated_at, 'long') : null,
+            'deleted_at' => fn () => $this->deleted_at ? \Yii::$app->formatter->asDate($this->deleted_at, 'long') : null,
+            'isDeleted'
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -42,10 +65,30 @@ class Profiles extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+            'blameable' => BlameableBehavior::class,
+            'softDeleteBehavior' => [
+                'class' => SoftDeleteBehavior::class,
+                'softDeleteAttributeValues' => [
+                    'isDeleted' => true,
+                    'deleted_at' => time(),
+                    'deleted_by' => Yii::$app->user->identity->id
+                ],
+                'replaceRegularDelete' => true // mutate native `delete()` method
+            ],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
-            [['user', 'first_name', 'gender', 'marital', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'required'],
+            [['user', 'first_name', 'gender', 'marital'], 'required'],
             [['user', 'gender', 'marital', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by', 'isDeleted'], 'integer'],
             [['address'], 'string'],
             [['date_of_birth'], 'safe'],
