@@ -15,11 +15,11 @@ class m240118_023157_seed_marital_table extends Migration
     {
 
         $this->batchInsert('{{%marital}}', ['marital_name','created_at','updated_at','deleted_at','created_by','updated_by','deleted_by','isDeleted',], [
-            ['Married', time(), time(), NULL, 1, 1, NULL, NULL],
-            ['Widowed', time(), time(), NULL, 1, 1, NULL, NULL],
-            ['Separated', time(), time(), NULL, 1, 1, NULL, NULL],
-            ['Divorced', time(), time(), NULL, 1, 1, NULL, NULL],
-            ['Single', time(), time(), NULL, 1, 1, NULL, NULL],
+            ['Married', time(), time(), NULL, 1, 1, NULL, 0],
+            ['Widowed', time(), time(), NULL, 1, 1, NULL, 0],
+            ['Separated', time(), time(), NULL, 1, 1, NULL, 0],
+            ['Divorced', time(), time(), NULL, 1, 1, NULL, 0],
+            ['Single', time(), time(), NULL, 1, 1, NULL, 0],
         ]);
             
     }

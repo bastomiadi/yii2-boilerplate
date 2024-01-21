@@ -43,7 +43,7 @@ class m240118_023214_seed_profile_table extends Migration
             $data[$key]['created_by'] = $value->id;
             $data[$key]['updated_by'] = $value->id;
             $data[$key]['deleted_by'] = null;
-            $data[$key]['isDeleted'] = null;
+            $data[$key]['isDeleted'] = 0;
         }
 
         $this->batchInsert('{{%profiles}}', ['user','first_name','last_name','phone_number','address','gender','marital','profile_image','date_of_birth', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by', 'isDeleted'], 

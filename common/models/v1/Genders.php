@@ -64,7 +64,7 @@ class Genders extends \yii\db\ActiveRecord
                 'softDeleteAttributeValues' => [
                     'isDeleted' => true,
                     'deleted_at' => time(),
-                    'deleted_by' => Yii::$app->user->identity->id
+                    'deleted_by' => Yii::$app->user->identity->id ?? $this->deletedBy
                 ],
                 'replaceRegularDelete' => true // mutate native `delete()` method
             ],

@@ -49,6 +49,11 @@ use yii\helpers\Html;
 
         <?php \yii\bootstrap4\ActiveForm::end(); ?>
 
+        <?= yii\authclient\widgets\AuthChoice::widget([
+            'baseAuthUrl' => ['site/auth'],
+            'popupMode' => false,
+        ]) ?>
+
         <div class="social-auth-links text-center mb-3">
             <p>- OR -</p>
             <a href="#" class="btn btn-block btn-primary">

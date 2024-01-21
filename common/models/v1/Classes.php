@@ -37,7 +37,7 @@ class Classes extends \yii\db\ActiveRecord
             'id',
             'name',
             'created_by' => fn () => $this->createdBy->username ?? $this->createdBy,
-            'updated_by' => fn () => $this->updatedBy->username ?? $this->createdBy,
+            'updated_by' => fn () => $this->updatedBy->username ?? $this->updatedBy,
             'deleted_by' => fn () => $this->deletedBy->username ?? $this->deletedBy,
             'created_at' => fn () => $this->created_at ? \Yii::$app->formatter->asDatetime($this->created_at, 'long') : null,
             'updated_at' => fn () => $this->updated_at ? \Yii::$app->formatter->asDatetime($this->updated_at, 'long') : null,
@@ -67,7 +67,7 @@ class Classes extends \yii\db\ActiveRecord
                 'softDeleteAttributeValues' => [
                     'isDeleted' => true,
                     'deleted_at' => time(),
-                    'deleted_by' => Yii::$app->user->identity->id
+                    'deleted_by' => Yii::$app->user->identity->id ?? $this->deletedBy
                 ],
                 'replaceRegularDelete' => true // mutate native `delete()` method
             ],
