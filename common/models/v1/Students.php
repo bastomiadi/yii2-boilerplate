@@ -3,6 +3,7 @@
 namespace common\models\v1;
 
 use common\models\User;
+use ruturajmaniyar\mod\audit\behaviors\AuditEntryBehaviors;
 use Yii;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use yii\behaviors\BlameableBehavior;
@@ -80,6 +81,9 @@ class Students extends \yii\db\ActiveRecord
                     'deleted_by' => Yii::$app->user->identity->id ?? $this->deletedBy
                 ],
                 'replaceRegularDelete' => true // mutate native `delete()` method
+            ],
+            'auditEntryBehaviors' => [
+                'class' => AuditEntryBehaviors::class
             ],
         ];
     }

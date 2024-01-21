@@ -1,18 +1,21 @@
 <?php
 
+use common\models\v1\Categories;
 use common\models\v1\User;
 use yii\db\Migration;
+
 
 /**
  * Class m240116_071247_seeds_products_table
  */
 class m240116_071247_seeds_products_table extends Migration
 {
-    public $faker, $count;
+    public $faker, $count, $chunk;
 
     function __construct() {
         $this->faker = \Faker\Factory::create();
-        $this->count = 1500;
+        $this->count = 10000;
+        $this->chunk = 1000;
     }
 
     /**
@@ -22,12 +25,11 @@ class m240116_071247_seeds_products_table extends Migration
     {
         $data = array();
         $users = User::find()->all();
-        //$categories = 
+        $categories = Categories::find()->all();
 
         for ($i=1; $i <= $this->count; $i++) { 
-            $data[$i]['id'] = $i;
             $data[$i]['product_name'] = $this->faker->name;
-            $data[$i]['category'] = rand(1,50);
+            $data[$i]['category'] = $this->faker->randomElement($categories)->id;
             $data[$i]['created_at'] = time();
             $data[$i]['updated_at'] = time();
             $data[$i]['deleted_at'] = null;
@@ -36,8 +38,12 @@ class m240116_071247_seeds_products_table extends Migration
             $data[$i]['deleted_by'] = null;
         }
 
-        $this->batchInsert('{{%products}}', ['id', 'product_name', 'category', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], 
-        $data);
+        $chunk_data = array_chunk($data, $this->chunk);
+        if (isset($chunk_data) && !empty($chunk_data)){
+            foreach ($chunk_data as $key => $value) {
+                $this->batchInsert('{{%products}}', ['product_name', 'category', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], $value);
+            }
+        }
     }
 
     /**

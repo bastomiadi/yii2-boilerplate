@@ -35,7 +35,6 @@ class m240115_020019_auth_item_table extends Migration
         */
        $this->batchInsert('{{%auth_item}}',
            ['name', 'type', 'description', 'rule_name', 'data', 'created_at', 'updated_at'], [
-               
                ['/admin/assignment/*', 2, NULL, NULL, NULL, 0, 0],
                ['/admin/assignment/index', 2, NULL, NULL, NULL, 0, 0],
                ['/admin/menu/*', 2, NULL, NULL, NULL, 0, 0],
@@ -60,11 +59,14 @@ class m240115_020019_auth_item_table extends Migration
                ['/products/*', 2, NULL, NULL, NULL, 0, 0],
                ['/products/create', 2, NULL, NULL, NULL, 0, 0],
                ['/products/index', 2, NULL, NULL, NULL, 0, 0],
-               ['admin', 2, 'Permission for Admins roles', NULL, NULL, 0, 0],
-               ['admins', 1, 'Role for Super Administrator', NULL, NULL, 0, 0],
-               ['member', 2, 'Permission for Member roles', NULL, NULL, 0, 0],
-               ['members', 1, 'Role for Member or registered user', NULL, NULL, 0, 0],
-
+               ['/site/profile', 2, NULL, NULL, NULL, 0, 0],
+               ['/site/index', 2, NULL, NULL, NULL, 0, 0],
+               ['admin_web', 2, 'Permission for Web Admins', NULL, NULL, 0, 0],
+               ['admin', 1, 'Role for Super Administrator', NULL, NULL, 0, 0],
+               ['member_web', 2, 'Permission for Web Members', NULL, NULL, 0, 0],
+               ['member', 1, 'Role for Member users', NULL, NULL, 0, 0],
+               ['admin_restful', 2, 'Permission for Restful Admins', NULL, NULL, 0, 0],
+               ['member_restful', 2, 'Permission for Restful Members', NULL, NULL, 0, 0],
            ]);
    }
 

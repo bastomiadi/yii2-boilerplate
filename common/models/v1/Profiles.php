@@ -2,6 +2,7 @@
 
 namespace common\models\v1;
 
+use ruturajmaniyar\mod\audit\behaviors\AuditEntryBehaviors;
 use Yii;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use yii\behaviors\BlameableBehavior;
@@ -34,6 +35,8 @@ use yii\behaviors\TimestampBehavior;
  */
 class Profiles extends \yii\db\ActiveRecord
 {
+
+    public $file;
      
     // for rest api field showing
     public function fields()
@@ -79,6 +82,9 @@ class Profiles extends \yii\db\ActiveRecord
                 ],
                 'replaceRegularDelete' => true // mutate native `delete()` method
             ],
+            'auditEntryBehaviors' => [
+                'class' => AuditEntryBehaviors::class
+            ],
         ];
     }
 
@@ -97,6 +103,7 @@ class Profiles extends \yii\db\ActiveRecord
             [['user'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user' => 'id']],
             [['gender'], 'exist', 'skipOnError' => true, 'targetClass' => Genders::class, 'targetAttribute' => ['gender' => 'id']],
             [['marital'], 'exist', 'skipOnError' => true, 'targetClass' => Marital::class, 'targetAttribute' => ['marital' => 'id']],
+            [['file'], 'file'],
         ];
     }
 

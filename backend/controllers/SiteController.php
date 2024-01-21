@@ -3,17 +3,22 @@
 namespace backend\controllers;
 
 use common\models\LoginForm;
+use common\models\v1\Profiles;
 use Yii;
+use yii\bootstrap4\Html;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Response;
+use yii\web\UploadedFile;
 
 /**
  * Site controller
  */
 class SiteController extends Controller
 {
+
     /**
      * {@inheritdoc}
      */
@@ -28,7 +33,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index', 'profile'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -82,6 +87,7 @@ class SiteController extends Controller
         $this->layout = 'blank';
 
         $model = new LoginForm();
+        $model->scenario = 'web';
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
@@ -103,5 +109,34 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    public function actionProfile()
+    {
+        $request = Yii::$app->request;
+        $model = Profiles::find()->where(['user'=>Yii::$app->user->identity->id])->one();
+
+        // print_r(Url::base(true));
+        // die;
+
+        if ($model->load($request->post())) {
+            $model->file = UploadedFile::getInstance($model, 'file');
+            if ($model->file && $model->validate()) { 
+                unlink(Yii::getAlias('@image-profile/') . $model->profile_image);
+                $filename = $model->file->baseName . '.' . $model->file->extension;
+                $save_file_to_path = Yii::getAlias('@image-profile/') . $filename;
+                $model->file->saveAs($save_file_to_path);
+                $model->profile_image = $filename;
+            }
+            $model->save();
+            return $this->redirect(['profile']);
+        }
+        else
+        {
+            return $this->render('profile', [
+                'model' => $model,
+            ]);
+        }
+        
     }
 }

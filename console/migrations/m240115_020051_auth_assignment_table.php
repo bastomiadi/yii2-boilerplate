@@ -29,10 +29,10 @@ class m240115_020051_auth_assignment_table extends Migration
         ], $tableOptions);
 
         $this->batchInsert('{{%auth_assignment}}', ['item_name', 'user_id', 'created_at'], [
+            ['admin_web', 1, NULL],
             ['admin', 1, NULL],
-            ['admins', 1, NULL],
+            ['member_web', 2, NULL],
             ['member', 2, NULL],
-            ['members', 2, NULL],
         ]);
 
     }
