@@ -26,8 +26,61 @@ Installation
 ```bash
 git clone https://github.com/bastomiadi/yii2-boilerplate2.git
 ```
+**2.** Install required dependency with composer
 
-**2.** Run php init and set your database config in /common/config/main-local.php. If the database does not exist, create the database first.
+```bash
+cd yii2-boilerplate2
+composer update
+```
+
+**3.** Run php init 
+
+```bash
+
+php init
+  Yii Application Initialization Tool v1.0
+
+  Which environment do you want the application to be initialized in?
+
+[0] Development
+ [1] Production
+
+Your choice [0-1, or "q" to quit] 0
+
+Initialize the application under 'Development' environment? [yes|no] yes
+
+Start initialization ...
+
+  exist common/config/main-local.php
+        ...overwrite? [Yes|No|All|Quit] All
+overwrite common/config/main-local.php
+unchanged common/config/params-local.php
+unchanged yii
+overwrite backend/config/main-local.php
+unchanged backend/config/params-local.php
+unchanged backend/web/index-test.php
+unchanged backend/web/index.php
+unchanged api/web/index-test.php
+unchanged api/web/index.php
+overwrite frontend/config/main-local.php
+unchanged frontend/config/params-local.php
+unchanged frontend/web/index-test.php
+unchanged frontend/web/index.php
+unchanged console/config/main-local.php
+unchanged console/config/params-local.php
+ generate cookie validation key in backend/config/main-local.php
+ generate cookie validation key in frontend/config/main-local.php
+  chmod 0777 backend/runtime
+  chmod 0777 backend/web/assets
+  chmod 0777 frontend/runtime
+  chmod 0777 frontend/web/assets
+  chmod 0755 yii
+  chmod 0755 tests/codeception/bin/yii
+
+... initialization completed.`
+```
+
+**4.** Set your database config in /common/config/main-local.php. If the database does not exist, create the database first.
 
 ```bash
 # /common/config/main-local.php file
@@ -40,7 +93,7 @@ git clone https://github.com/bastomiadi/yii2-boilerplate2.git
             'tablePrefix' => 'tbl_'
         ],
 ```
-**3.** Run migrate 
+**5.** Run migrate 
 ```bash
 php yii migrate/fresh
 
@@ -129,10 +182,10 @@ Total 25 new migrations to be applied:
 Apply the above migrations? (yes|no) [no]:yes
 ```
 
-**4.** Run development server:
+**6.** Run development server:
 
 ```bash
-cd yii2-boilerplate
+cd yii2-boilerplate2
 php yii serve --docroot="backend/web/"
 Server started on http://localhost:8080/
 
@@ -142,7 +195,7 @@ Quit the server with CTRL-C or COMMAND-C.
 
 ```
 
-**5.** Open in browser http://localhost:8080
+**7.** Open in browser http://localhost:8080
 ```bash
 Default user and password
 +----+-------------+-------------+

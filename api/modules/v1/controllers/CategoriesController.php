@@ -28,45 +28,45 @@ class CategoriesController extends Controller
             ],
         ];
         $behaviors['access'] = [
-            'class' => AccessControl::class,
-            'only' => ['index', 'logout', 'signup'],
-            'rules' => [
-                [
-                    'allow' => true,
-                    'actions' => ['index'],
-                    'roles' => ['admins','member'],
-                ],
-                [
-                    'allow' => true,
-                    'actions' => ['view'],
-                    'roles' => ['viewPost'],
-                ],
-                [
-                    'allow' => true,
-                    'actions' => ['create'],
-                    'roles' => ['createPost'],
-                ],
-                [
-                    'allow' => true,
-                    'actions' => ['update'],
-                    'roles' => ['updatePost'],
-                ],
-                [
-                    'allow' => true,
-                    'actions' => ['delete'],
-                    'roles' => ['deletePost'],
-                ],
-                // [
-                //     'allow' => true,
-                //     'actions' => ['login', 'signup'],
-                //     'roles' => ['?'],
-                // ],
-                // [
-                //     'allow' => true,
-                //     'actions' => ['logout'],
-                //     'roles' => ['@'],
-                // ],
-            ],
+            'class' => 'mdm\admin\components\AccessControl',
+            // 'only' => ['index', 'logout', 'signup'],
+            // 'rules' => [
+            //     [
+            //         'allow' => true,
+            //         'actions' => ['index'],
+            //         'roles' => ['admin','member'],
+            //     ],
+            //     [
+            //         'allow' => true,
+            //         'actions' => ['view'],
+            //         'roles' => ['viewPost'],
+            //     ],
+            //     [
+            //         'allow' => true,
+            //         'actions' => ['create'],
+            //         'roles' => ['createPost'],
+            //     ],
+            //     [
+            //         'allow' => true,
+            //         'actions' => ['update'],
+            //         'roles' => ['updatePost'],
+            //     ],
+            //     [
+            //         'allow' => true,
+            //         'actions' => ['delete'],
+            //         'roles' => ['deletePost'],
+            //     ],
+            //     // [
+            //     //     'allow' => true,
+            //     //     'actions' => ['login', 'signup'],
+            //     //     'roles' => ['?'],
+            //     // ],
+            //     // [
+            //     //     'allow' => true,
+            //     //     'actions' => ['logout'],
+            //     //     'roles' => ['@'],
+            //     // ],
+            // ],
         ];
 
         return $behaviors;

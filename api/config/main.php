@@ -9,8 +9,6 @@ $params = array_merge(
     require __DIR__ . '/params-local.php'
 );
 
-//$baseUrl = str_replace('/api/web', '', (new Request())->getBaseUrl());
-
 return [
     'id' => 'app-api',
     'basePath' => dirname(__DIR__),
@@ -31,9 +29,6 @@ return [
                 }
             },
         ],
-        // 'authManager' => [
-        //     'class' => 'yii\rbac\DbManager',
-        // ],
         'jwt' => [
             'class' => \bizley\jwt\Jwt::class,
             'signer' => \bizley\jwt\Jwt::HS256,
@@ -63,7 +58,6 @@ return [
                 'application/json' => 'yii\web\JsonParser',
             ],
             'csrfParam' => '_csrf-api',
-            //'baseUrl' => $baseUrl,
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -88,7 +82,6 @@ return [
             'errorAction' => 'site/error',
         ],
         'urlManager' => [
-            //'baseUrl' => $baseUrl,
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             //'enableStrictParsing' => true,
@@ -121,6 +114,7 @@ return [
     // 'as access' => [
     //     'class' => 'mdm\admin\components\AccessControl',
     //     'allowActions' => [
+    //         //'v1/categories/index'
     //         //'site/*',
     //         //'admin/*',
     //         //'some-controller/some-action',
