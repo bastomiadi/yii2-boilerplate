@@ -43,6 +43,8 @@ class m240115_020112_create_menu_table extends Migration
             [13, 'Gii', 1, '/gii/default/index', NULL, NULL],
             [14, 'Profile', NULL, '/site/profile', NULL, NULL],
             [15, 'Dashboard', NULL, '/site/index', NULL, NULL],
+            [16, 'Logs Audit', NULL, '/audit-entry/index', NULL, NULL],
+            [17, 'Users', 10, '/user/index', NULL, NULL],
         ]);
         
     }

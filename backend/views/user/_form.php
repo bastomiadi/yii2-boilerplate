@@ -29,7 +29,6 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'verification_token')->textInput(['maxlength' => true]) ?>
 
-  
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">
 	        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
