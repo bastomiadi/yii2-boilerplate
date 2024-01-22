@@ -44,48 +44,67 @@ composer update
 **3.** Run php init 
 
 ```bash
-
 php init
-  Yii Application Initialization Tool v1.0
 
-  Which environment do you want the application to be initialized in?
+Yii Application Initialization Tool v1.0
 
-[0] Development
- [1] Production
+Which environment do you want the application to be initialized in?
 
-Your choice [0-1, or "q" to quit] 0
+  [0] Development
+  [1] Production
 
-Initialize the application under 'Development' environment? [yes|no] yes
+  Your choice [0-1, or "q" to quit] 0
 
-Start initialization ...
+  Initialize the application under 'Development' environment? [yes|no] yes
 
-  exist common/config/main-local.php
-        ...overwrite? [Yes|No|All|Quit] All
-overwrite common/config/main-local.php
-unchanged common/config/params-local.php
-unchanged yii
-overwrite backend/config/main-local.php
-unchanged backend/config/params-local.php
-unchanged backend/web/index-test.php
-unchanged backend/web/index.php
-unchanged api/web/index-test.php
-unchanged api/web/index.php
-overwrite frontend/config/main-local.php
-unchanged frontend/config/params-local.php
-unchanged frontend/web/index-test.php
-unchanged frontend/web/index.php
-unchanged console/config/main-local.php
-unchanged console/config/params-local.php
- generate cookie validation key in backend/config/main-local.php
- generate cookie validation key in frontend/config/main-local.php
-  chmod 0777 backend/runtime
-  chmod 0777 backend/web/assets
-  chmod 0777 frontend/runtime
-  chmod 0777 frontend/web/assets
-  chmod 0755 yii
-  chmod 0755 tests/codeception/bin/yii
+  Start initialization ...
 
-... initialization completed.`
+   generate api/config/codeception-local.php
+   generate api/config/main-local.php
+   generate api/config/params-local.php
+   generate api/config/test-local.php
+  unchanged api/web/index-test.php
+  unchanged api/web/index.php
+  unchanged api/web/robots.txt
+   generate backend/config/codeception-local.php
+   generate backend/config/main-local.php
+   generate backend/config/params-local.php
+   generate backend/config/test-local.php
+   generate backend/web/index-test.php
+   generate backend/web/index.php
+   generate backend/web/robots.txt
+   generate common/config/codeception-local.php
+   generate common/config/main-local.php
+   generate common/config/params-local.php
+   generate common/config/test-local.php
+   generate console/config/main-local.php
+   generate console/config/params-local.php
+   generate console/config/test-local.php
+   generate frontend/config/codeception-local.php
+   generate frontend/config/main-local.php
+   generate frontend/config/params-local.php
+   generate frontend/config/test-local.php
+   generate frontend/web/index-test.php
+   generate frontend/web/index.php
+   generate frontend/web/robots.txt
+   generate yii
+   generate yii_test
+   generate yii_test.bat
+   generate cookie validation key in backend/config/main-local.php
+   generate cookie validation key in common/config/codeception-local.php
+   generate cookie validation key in frontend/config/main-local.php
+   generate cookie validation key in api/config/main-local.php
+      chmod 0777 backend/runtime
+      chmod 0777 backend/web/assets
+      chmod 0777 console/runtime
+      chmod 0777 frontend/runtime
+      chmod 0777 frontend/web/assets
+      chmod 0777 api/runtime
+      chmod 0777 api/web/assets
+      chmod 0755 yii
+      chmod 0755 yii_test
+
+  ... initialization completed.`
 ```
 
 **4.** Set your database config in /common/config/main-local.php. If the database does not exist, create the database first.
