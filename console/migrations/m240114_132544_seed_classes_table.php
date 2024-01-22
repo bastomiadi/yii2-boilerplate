@@ -27,7 +27,7 @@ class m240114_132544_seed_classes_table extends Migration
         for ($i = 0; $i < $this->count; $i++) {
             $classes = new Classes();
             $classes->detachBehavior('blameable');
-            //$classes->disableBehaviour('softDeleteBehavior');
+            $classes->detachBehavior('auditEntryBehaviors');
             $classes->name = $this->faker->name;
             $classes->created_by = $this->faker->randomElement($users)->id;
             $classes->save();

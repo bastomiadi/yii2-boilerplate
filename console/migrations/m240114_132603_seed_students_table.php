@@ -30,6 +30,7 @@ class m240114_132603_seed_students_table extends Migration
         for ($i = 0; $i < $this->count; $i++) {
             $students = new Students();
             $students->detachBehavior('blameable');
+            $students->detachBehavior('auditEntryBehaviors');
             $students->sections = $this->faker->randomElement($sections)->id;
             $students->classes = $this->faker->randomElement($classes)->id;
             $students->name = $this->faker->name;

@@ -28,6 +28,7 @@ class m240114_132551_seed_sections_table extends Migration
         for ($i = 0; $i < $this->count; $i++) {
             $sections = new Sections();
             $sections->detachBehavior('blameable');
+            $sections->detachBehavior('auditEntryBehaviors');
             $sections->name = $this->faker->name;
             $sections->classes = $this->faker->randomElement($classes)->id;
             $sections->created_by = $this->faker->randomElement($users)->id;
