@@ -25,6 +25,14 @@ Installation
 
 ```bash
 git clone https://github.com/bastomiadi/yii2-boilerplate2.git
+Cloning into 'yii2-boilerplate2'...
+remote: Enumerating objects: 605, done.
+remote: Counting objects: 100% (605/605), done.
+remote: Compressing objects: 100% (353/353), done.
+remote: Total 605 (delta 313), reused 499 (delta 207), pack-reused 0
+Receiving objects: 100% (605/605), 265.57 KiB | 3.96 MiB/s, done.
+Resolving deltas: 100% (313/313), done.
+
 ```
 **2.** Install required dependency with composer
 
@@ -209,7 +217,10 @@ Default user and password
 Usage
 -----
 You can find how it works with the read code, controller and views etc. Finnally... Happy Coding!
-..Restful Api and Docs Work in progress
+..
+
+Restful Api and Docs Work in progress.. :  [Restful Doc](https://elements.getpostman.com/redirect?entityId=2886585-9f0f4c62-619f-4c37-b5ba-7d6b50fe15ee&entityType=collection) 
+
 
 Changelog
 --------

@@ -1,4 +1,4 @@
-suite_namespace: frontend\tests\unit
+suite_namespace: api\tests\unit
 actor: UnitTester
 modules:
     enabled:
