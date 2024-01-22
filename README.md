@@ -16,7 +16,7 @@ This project is still early in its development... please feel free to contribute
 ------------------------------------------------------------
 Screenshoot |
 -------------------------------------------------------------------------------
-![Dashboard](screenshoot/dashboard.png?raw=true)
+![Dashboard](screenshot/web/dashboard.png?raw=true)
 
 Installation
 ------------
@@ -140,7 +140,6 @@ Document root is "backend/web/"
 Quit the server with CTRL-C or COMMAND-C.
 [Mon Jan 22 08:45:01 2024] PHP 8.1.10 Development Server (http://localhost:8080) started
 
-php yii serve --docroot="backend/web/"
 ```
 
 **5.** Open in browser http://localhost:8080
