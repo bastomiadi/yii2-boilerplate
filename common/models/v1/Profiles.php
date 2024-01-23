@@ -134,6 +134,26 @@ class Profiles extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[CreatedBy]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCreatedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'created_by']);
+    }
+
+    /**
+     * Gets query for [[DeletedBy]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDeletedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'deleted_by']);
+    }
+
+    /**
      * Gets query for [[Gender0]].
      *
      * @return \yii\db\ActiveQuery
@@ -151,6 +171,16 @@ class Profiles extends \yii\db\ActiveRecord
     public function getMarital0()
     {
         return $this->hasOne(Marital::class, ['id' => 'marital']);
+    }
+
+    /**
+     * Gets query for [[UpdatedBy]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUpdatedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
 
     /**

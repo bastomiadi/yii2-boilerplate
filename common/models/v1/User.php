@@ -34,6 +34,18 @@ use Yii;
  */
 class User extends ModelsUser
 {
+
+    // for rest api field showing
+    public function fields()
+    {
+        return [
+           'id',
+           'username',
+           'email',
+           'profiles' => fn () => $this->profiles,
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -48,7 +60,7 @@ class User extends ModelsUser
     public function rules()
     {
         return [
-            [['username', 'auth_key', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
+            [['username','email'], 'required'],
             [['status', 'created_at', 'updated_at'], 'integer'],
             [['username', 'password_hash', 'password_reset_token', 'email', 'verification_token'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
@@ -88,6 +100,36 @@ class User extends ModelsUser
     // }
 
     /**
+     * Gets query for [[Categories]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategories()
+    {
+        return $this->hasMany(Categories::class, ['created_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Categories0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategories0()
+    {
+        return $this->hasMany(Categories::class, ['updated_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Categories1]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategories1()
+    {
+        return $this->hasMany(Categories::class, ['deleted_by' => 'id']);
+    }
+
+    /**
      * Gets query for [[Classes]].
      *
      * @return \yii\db\ActiveQuery
@@ -118,6 +160,36 @@ class User extends ModelsUser
     }
 
     /**
+     * Gets query for [[Genders]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGenders()
+    {
+        return $this->hasMany(Genders::class, ['created_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Genders0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGenders0()
+    {
+        return $this->hasMany(Genders::class, ['updated_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Genders1]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGenders1()
+    {
+        return $this->hasMany(Genders::class, ['deleted_by' => 'id']);
+    }
+
+    /**
      * Gets query for [[ItemNames]].
      *
      * @return \yii\db\ActiveQuery
@@ -125,6 +197,106 @@ class User extends ModelsUser
     public function getItemNames()
     {
         return $this->hasMany(AuthItem::class, ['name' => 'item_name'])->viaTable('{{%auth_assignment}}', ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Maritals]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMaritals()
+    {
+        return $this->hasMany(Marital::class, ['created_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Maritals0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMaritals0()
+    {
+        return $this->hasMany(Marital::class, ['updated_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Maritals1]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMaritals1()
+    {
+        return $this->hasMany(Marital::class, ['deleted_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Products]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProducts()
+    {
+        return $this->hasMany(Products::class, ['created_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Products0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProducts0()
+    {
+        return $this->hasMany(Products::class, ['updated_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Products1]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProducts1()
+    {
+        return $this->hasMany(Products::class, ['deleted_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Profiles]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProfiles()
+    {
+        return $this->hasMany(Profiles::class, ['user' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Profiles0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProfiles0()
+    {
+        return $this->hasMany(Profiles::class, ['created_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Profiles1]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProfiles1()
+    {
+        return $this->hasMany(Profiles::class, ['updated_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Profiles2]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProfiles2()
+    {
+        return $this->hasMany(Profiles::class, ['deleted_by' => 'id']);
     }
 
     /**

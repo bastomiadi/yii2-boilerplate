@@ -4,7 +4,8 @@ namespace api\modules\v1\controllers;
 
 use bizley\jwt\JwtHttpBearerAuth;
 use common\models\LoginForm;
-use common\models\User;
+use common\models\v1\Profiles;
+use common\models\v1\User;
 use Yii;
 use yii\rest\Controller;
 
@@ -33,6 +34,8 @@ class AuthController extends Controller
         return [
             'login' => ['POST'],
             'data' => ['POST'],
+            'update-profile' => ['PUT'],
+            'get-profile' => ['GET']
         ];
     }
 
@@ -54,6 +57,38 @@ class AuthController extends Controller
             $model->validate();
             return $model;
         }
+    }
+
+    //update profile
+    public function actionUpdateProfile($id){
+
+        $profile = Profiles::find()->where(['user'=>$id])->one();
+
+        if ($profile->load(Yii::$app->getRequest()->getBodyParams(), '') && $profile->save()) {
+            $response = [
+                'isSuccess' => 200,
+                'message' => 'Sukses',
+                'data' => $profile,
+            ];
+            return $response;
+        } else {
+            $profile->validate();
+            return $profile;
+        }
+        
+    }
+
+    //get profile
+    public function actionGetProfile(){
+
+        $user = User::findOne(Yii::$app->user->identity->id);
+
+        $response = [
+            'isSuccess' => 200,
+            'message' => 'Sukses',
+            'data' => $user,
+        ];
+        return $response;
     }
 
     //hanya untuk tes token
