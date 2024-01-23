@@ -21,8 +21,11 @@ class StudentsController extends Controller
         $behaviors['authenticator'] = [
             'class' => JwtHttpBearerAuth::class,
             'optional' => [
-                'login',
+                //'login',
             ],
+        ];
+        $behaviors['access'] = [
+            'class' => 'mdm\admin\components\AccessControl',
         ];
 
         return $behaviors;

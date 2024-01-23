@@ -26,6 +26,9 @@ class ClassesController extends Controller
                 //'login',
             ],
         ];
+        $behaviors['access'] = [
+            'class' => 'mdm\admin\components\AccessControl',
+        ];
 
         return $behaviors;
     }

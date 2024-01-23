@@ -34,7 +34,7 @@ class AuthController extends Controller
         return [
             'login' => ['POST'],
             'data' => ['POST'],
-            'update-profile' => ['PUT'],
+            'update-profile' => ['PUT','PATCH'],
             'get-profile' => ['GET']
         ];
     }

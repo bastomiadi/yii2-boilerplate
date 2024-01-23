@@ -24,49 +24,11 @@ class CategoriesController extends Controller
         $behaviors['authenticator'] = [
             'class' => JwtHttpBearerAuth::class,
             'optional' => [
-                'login',
+                //'login',
             ],
         ];
         $behaviors['access'] = [
             'class' => 'mdm\admin\components\AccessControl',
-            // 'only' => ['index', 'logout', 'signup'],
-            // 'rules' => [
-            //     [
-            //         'allow' => true,
-            //         'actions' => ['index'],
-            //         'roles' => ['admin','member'],
-            //     ],
-            //     [
-            //         'allow' => true,
-            //         'actions' => ['view'],
-            //         'roles' => ['viewPost'],
-            //     ],
-            //     [
-            //         'allow' => true,
-            //         'actions' => ['create'],
-            //         'roles' => ['createPost'],
-            //     ],
-            //     [
-            //         'allow' => true,
-            //         'actions' => ['update'],
-            //         'roles' => ['updatePost'],
-            //     ],
-            //     [
-            //         'allow' => true,
-            //         'actions' => ['delete'],
-            //         'roles' => ['deletePost'],
-            //     ],
-            //     // [
-            //     //     'allow' => true,
-            //     //     'actions' => ['login', 'signup'],
-            //     //     'roles' => ['?'],
-            //     // ],
-            //     // [
-            //     //     'allow' => true,
-            //     //     'actions' => ['logout'],
-            //     //     'roles' => ['@'],
-            //     // ],
-            // ],
         ];
 
         return $behaviors;
@@ -141,6 +103,9 @@ class CategoriesController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
+
+        // print_r($model);
+        // die;
         //$model->scenario = 'delete';
 
         if ($model->load(Yii::$app->getRequest()->getBodyParams(), '')) {
