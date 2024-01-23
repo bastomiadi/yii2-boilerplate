@@ -3,11 +3,9 @@
 namespace api\modules\v1\controllers;
 
 use bizley\jwt\JwtHttpBearerAuth;
-use common\models\User;
 use common\models\v1\Categories;
 use common\models\v1\Search\CategoriesSearch;
 use Yii;
-use yii\filters\AccessControl;
 use yii\rest\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -29,6 +27,9 @@ class CategoriesController extends Controller
         ];
         $behaviors['access'] = [
             'class' => 'mdm\admin\components\AccessControl',
+            'allowActions' => [
+            
+            ]
         ];
 
         return $behaviors;
