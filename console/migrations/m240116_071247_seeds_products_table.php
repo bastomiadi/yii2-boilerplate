@@ -14,7 +14,7 @@ class m240116_071247_seeds_products_table extends Migration
 
     function __construct() {
         $this->faker = \Faker\Factory::create();
-        $this->count = 10000;
+        $this->count = 1000000;
         $this->chunk = 1000;
     }
 
