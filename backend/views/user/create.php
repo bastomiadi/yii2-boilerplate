@@ -10,5 +10,7 @@ use yii\helpers\Html;
 <div class="user-create">
     <?= $this->render('_form', [
         'model' => $model,
+        //'signup_form' => $signup_form,
+        'profiles' => $profiles
     ]) ?>
 </div>

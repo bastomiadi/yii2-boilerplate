@@ -2,7 +2,6 @@
 
 namespace common\models\v1;
 
-use common\models\User;
 use ruturajmaniyar\mod\audit\behaviors\AuditEntryBehaviors;
 use Yii;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
@@ -62,9 +61,6 @@ class Students extends \yii\db\ActiveRecord
         return '{{%students}}';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     /**
      * {@inheritdoc}
      */

@@ -94,7 +94,8 @@ class Profiles extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user', 'first_name', 'gender', 'marital'], 'required'],
+            //[['user', 'first_name', 'gender', 'marital'], 'required'],
+            [['first_name'], 'required'],
             [['user', 'gender', 'marital', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by', 'isDeleted'], 'integer'],
             [['address'], 'string'],
             [['date_of_birth'], 'safe'],

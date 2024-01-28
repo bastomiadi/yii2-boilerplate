@@ -11,10 +11,13 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\models\User;
+use common\models\v1\Profiles;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\base\Model;
 
 /**
  * Site controller
@@ -153,14 +156,23 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
-        $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-            return $this->goHome();
+        $model = new User();
+        $model->scenario = User::SCENARIO_SIGNUP;
+        $profiles = new Profiles();
+        $profiles->detachBehavior('auditEntryBehaviors');
+
+        if ($model->load(Yii::$app->request->post()) && $profiles->load(Yii::$app->request->post()) && Model::validateMultiple([$model,$profiles])) {
+            if($model->save() && $model->sendEmail($model)){
+                $profiles->user = $model->id;
+                $profiles->save();
+                Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+                return $this->goHome();
+            }
         }
 
         return $this->render('signup', [
             'model' => $model,
+            'profiles' => $profiles
         ]);
     }
 
@@ -256,4 +268,5 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
+
 }

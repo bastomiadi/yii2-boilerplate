@@ -1,6 +1,13 @@
 <?php
+
+use common\models\v1\Genders;
+use common\models\v1\Marital;
+use common\models\v1\User;
+use kartik\datecontrol\DateControl;
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\v1\User */
@@ -9,25 +16,65 @@ use yii\bootstrap4\ActiveForm;
 
 <div class="user-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['autocomplete' => 'off'],]); ?>
+
+    <?php //form->field($model, 'username')->textInput(['maxlength' => true, 'readonly'=> $model->isNewRecord ? false : true]) ?>
 
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'password_hash')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'password_reset_token')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
+    <?= $form->field($model, 'password',['inputOptions' => ['autocomplete' => 'off']])->passwordInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
+    <?= $form->field($model, 'password_repeat',['inputOptions' => ['autocomplete' => 'off']])->passwordInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'updated_at')->textInput() ?>
+    <?= $form->field($profiles, 'first_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'verification_token')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($profiles, 'date_of_birth')->widget(DateControl::class, [
+        'type' => DateControl::FORMAT_DATE,
+        'saveFormat' => 'php:Y-m-d',
+        'widgetOptions' => [
+            'pluginOptions' => [
+                'autoclose' => true
+            ]
+        ]
+    ]);?>
+
+    <?= $form->field($profiles, 'last_name')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($profiles, 'phone_number')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($profiles, 'address')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($profiles, 'gender')->widget(Select2::class, [
+        'data' => ArrayHelper::map(Genders::find()->all(), 'id','gender_name'),
+        //'language' => 'de',
+        'options' => ['placeholder' => '...'],
+        'pluginOptions' => [
+            'initialize' => true,
+            'allowClear' => true
+        ],
+    ]); ?>
+
+    <?= $form->field($profiles, 'marital')->widget(Select2::class, [
+        'data' => ArrayHelper::map(Marital::find()->all(), 'id','marital_name'),
+        //'language' => 'de',
+        'options' => ['placeholder' => '...'],
+        'pluginOptions' => [
+            'initialize' => true,
+            'allowClear' => true
+        ],
+    ]); ?>
+
+    <?= $form->field($model, 'status')->widget(Select2::class, [
+        'data' => [10 => 'Active', 9 => 'Inactive', 0 => 'Deleted'],
+        //'language' => 'de',
+        'options' => ['placeholder' => '...'],
+        'pluginOptions' => [
+            'initialize' => true,
+            'allowClear' => true
+        ],
+    ]); ?>
 
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">

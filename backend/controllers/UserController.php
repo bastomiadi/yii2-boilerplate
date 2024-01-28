@@ -2,10 +2,12 @@
 
 namespace backend\controllers;
 
+use common\models\v1\Profiles;
 use Yii;
 use common\models\v1\User;
 use common\models\v1\Search\UserSearch;
 use frontend\models\SignupForm;
+use yii\base\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -24,7 +26,7 @@ class UserController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['post'],
                     'bulkdelete' => ['post'],
@@ -86,8 +88,10 @@ class UserController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new User();  
-        $signup_form = new SignupForm();
+        //$model = new User();  
+        $model = new User();
+        $profiles = new Profiles();
+        $model->scenario = User::SCENARIO_CREATE;
 
         if($request->isAjax)
         {
@@ -101,20 +105,26 @@ class UserController extends Controller
                     'title' => Yii::t('yii2-ajaxcrud', 'Create New')." User",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
+                        //'signup_form' => $signup_form,
+                        'profiles' => $profiles
                     ]),
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
                         Html::button(Yii::t('yii2-ajaxcrud', 'Create'), ['class' => 'btn btn-primary', 'type' => 'submit'])
                 ];
             }
-            else if($model->load($request->post()) && $model->save())
+            else if($model->load($request->post()) && $profiles->load($request->post()) && Model::validateMultiple([$model, $profiles]))
             {
-                return [
-                    'forceReload' => '#crud-datatable-pjax',
-                    'title' => Yii::t('yii2-ajaxcrud', 'Create New')." User",
-                    'content' => '<span class="text-success">'.Yii::t('yii2-ajaxcrud', 'Create').' User '.Yii::t('yii2-ajaxcrud', 'Success').'</span>',
-                    'footer' =>  Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
-                        Html::a(Yii::t('yii2-ajaxcrud', 'Create More'), ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
-                ];
+                if ($model->save()) {
+                    $profiles->user = $model->id;
+                    $profiles->save();
+                    return [
+                        'forceReload' => '#crud-datatable-pjax',
+                        'title' => Yii::t('yii2-ajaxcrud', 'Create New')." User",
+                        'content' => '<span class="text-success">'.Yii::t('yii2-ajaxcrud', 'Create').' User '.Yii::t('yii2-ajaxcrud', 'Success').'</span>',
+                        'footer' =>  Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
+                            Html::a(Yii::t('yii2-ajaxcrud', 'Create More'), ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                    ];
+                }
             }
             else
             {
@@ -122,6 +132,8 @@ class UserController extends Controller
                     'title' => Yii::t('yii2-ajaxcrud', 'Create New')." User",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
+                        //'signup_form' => $signup_form,
+                        'profiles' => $profiles
                     ]),
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
                         Html::button(Yii::t('yii2-ajaxcrud', 'Save'), ['class' => 'btn btn-primary', 'type' => 'submit'])
@@ -141,7 +153,8 @@ class UserController extends Controller
             {
                 return $this->render('create', [
                     'model' => $model,
-                    'signup_form' => $signup_form
+                    //'signup_form' => $signup_form,
+                    'profiles' => $profiles
                 ]);
             }
         }
@@ -158,7 +171,9 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $request = Yii::$app->request;
-        $model = $this->findModel($id);       
+        $model = $this->findModel($id);      
+        $profiles = Profiles::find()->where(['user'=>$model->id])->one();
+        $model->scenario = User::SCENARIO_UPDATE;
 
         if($request->isAjax)
         {
@@ -172,6 +187,7 @@ class UserController extends Controller
                     'title' => Yii::t('yii2-ajaxcrud', 'Update')." User #".$id,
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
+                        'profiles' => $profiles
                     ]),
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
                         Html::button(Yii::t('yii2-ajaxcrud', 'Save'), ['class' => 'btn btn-primary', 'type' => 'submit'])
@@ -184,6 +200,7 @@ class UserController extends Controller
                     'title' => "User #".$id,
                     'content' => $this->renderAjax('view', [
                         'model' => $model,
+                        'profiles' => $profiles
                     ]),
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
                         Html::a(Yii::t('yii2-ajaxcrud', 'Update'), ['update', 'id' => $id],['class' => 'btn btn-primary', 'role' => 'modal-remote'])
@@ -195,6 +212,7 @@ class UserController extends Controller
                     'title' => Yii::t('yii2-ajaxcrud', 'Update')." User #".$id,
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
+                        'profiles' => $profiles
                     ]),
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
                         Html::button(Yii::t('yii2-ajaxcrud', 'Save'), ['class' => 'btn btn-primary', 'type' => 'submit'])
@@ -214,6 +232,7 @@ class UserController extends Controller
             {
                 return $this->render('update', [
                     'model' => $model,
+                    'profiles' => $profiles
                 ]);
             }
         }
