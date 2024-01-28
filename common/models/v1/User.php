@@ -171,26 +171,26 @@ class User extends ActiveRecord implements IdentityInterface {
      * @inheritdoc
      */
     public function beforeSave($insert) {
-        // if(strlen($this->password) > 0) {
-        //     $this->password_hash = Yii::$app->getSecurity()->generatePasswordHash($this->password);
-        // }
-        // return parent::beforeSave($insert);
-
-        if (parent::beforeSave($insert)) {
-            if($insert) {
-                $this->password_hash = $this->setPassword($this->password);
-            }
-            else {
-                if(strlen($this->password) > 0) {
-                    $this->password_hash = $this->setPassword($this->password);
-                }
-                else {
-                    $this->password_hash = $this->hash;
-                }
-            }
-            return true;
+        if(strlen($this->password) > 0) {
+            $this->setPassword($this->password);
         }
-        return false;
+        return parent::beforeSave($insert);
+
+        // if (parent::beforeSave($insert)) {
+        //     if($insert) {
+        //         $this->setPassword($this->password);
+        //     }
+        //     else {
+        //         if(strlen($this->password) > 0) {
+        //             $this->setPassword($this->password);
+        //         }
+        //         else {
+        //             $this->password_hash = $this->hash;
+        //         }
+        //     }
+        //     return true;
+        // }
+        // return false;
     }
 
      /**
