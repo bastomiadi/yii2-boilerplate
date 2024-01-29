@@ -1,5 +1,6 @@
 <?php
 
+use common\models\v1\AuthItem;
 use common\models\v1\Genders;
 use common\models\v1\Marital;
 use common\models\v1\User;
@@ -68,6 +69,16 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'status')->widget(Select2::class, [
         'data' => [10 => 'Active', 9 => 'Inactive', 0 => 'Deleted'],
+        //'language' => 'de',
+        'options' => ['placeholder' => '...'],
+        'pluginOptions' => [
+            'initialize' => true,
+            'allowClear' => true
+        ],
+    ]); ?>
+
+    <?= $form->field($auth_assignment, 'item_name')->widget(Select2::class, [
+        'data' => ArrayHelper::map(AuthItem::find()->where(['type'=>1])->all(), 'name','name'),
         //'language' => 'de',
         'options' => ['placeholder' => '...'],
         'pluginOptions' => [

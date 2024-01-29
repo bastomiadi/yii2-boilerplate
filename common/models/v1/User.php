@@ -112,26 +112,26 @@ class User extends ActiveRecord implements IdentityInterface {
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.', 'on' => [self::SCENARIO_CREATE, self::SCENARIO_SIGNUP]],
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.', 'on' => [self::SCENARIO_CREATE, self::SCENARIO_SIGNUP]],
 
-            [
-                'username',
-                'unique',
-                'targetClass' => '\common\models\User',
-                'message' => Yii::t('app', 'This username has already been taken.'),
-                'when' => function ($model){
-                    return $model->username != Yii::$app->user->identity->username;
-                },
-                'on' => self::SCENARIO_UPDATE
-            ],
-            [
-                'email',
-                'unique',
-                'targetClass' => '\common\models\User',
-                'message' => Yii::t('app','This email address has already been taken.'),
-                'when' => function ($model){
-                    return $model->email != Yii::$app->user->identity->email;
-                },
-                'on' => self::SCENARIO_UPDATE
-            ],
+            // [
+            //     'username',
+            //     'unique',
+            //     'targetClass' => '\common\models\User',
+            //     'message' => Yii::t('app', 'This username has already been taken.'),
+            //     'when' => function ($model){
+            //         return $model->username != Yii::$app->user->identity->username;
+            //     },
+            //     'on' => self::SCENARIO_UPDATE
+            // ],
+            // [
+            //     'email',
+            //     'unique',
+            //     'targetClass' => '\common\models\User',
+            //     'message' => Yii::t('app','This email address has already been taken.'),
+            //     'when' => function ($model){
+            //         return $model->email != Yii::$app->user->identity->email;
+            //     },
+            //     'on' => self::SCENARIO_UPDATE
+            // ],
 
             [['username', 'password'], 'required', 'on' => self::SCENARIO_LOGIN],
             [['username', 'password', 'password_repeat', 'email', 'status'], 'required', 'on' => self::SCENARIO_CREATE],
@@ -384,10 +384,10 @@ class User extends ActiveRecord implements IdentityInterface {
      *
      * @return \yii\db\ActiveQuery
      */
-    // public function getAuthAssignments()
-    // {
-    //     return $this->hasMany(AuthAssignment::class, ['user_id' => 'id']);
-    // }
+    public function getAuthAssignments()
+    {
+        return $this->hasMany(AuthAssignment::class, ['user_id' => 'id']);
+    }
 
     /**
      * Gets query for [[Categories]].

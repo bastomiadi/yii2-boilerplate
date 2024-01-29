@@ -1,5 +1,6 @@
 <?php
 
+use common\models\v1\User;
 use yii\db\Migration;
 
 /**
@@ -14,6 +15,12 @@ class m240115_020051_auth_assignment_table extends Migration
     public function safeUp()
     {
         $tableOptions = null;
+        $users = User::find()->all();
+        $auth = Yii::$app->authManager;
+        // You should previously init it once, e.c. in migration, like this: $auth->createRole('member');
+        //$admin = $auth->getRole('member');
+        $member = $auth->getRole('member');
+        $member_web = $auth->getRole('member_web');
 
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
@@ -28,11 +35,16 @@ class m240115_020051_auth_assignment_table extends Migration
             'FOREIGN KEY ([[item_name]]) REFERENCES {{%auth_item}} ([[name]]) ON DELETE CASCADE ON UPDATE CASCADE',
         ], $tableOptions);
 
+        foreach ($users as $key => $value) {
+            $auth->assign($member, $value->id);
+            //$auth->assign($member_web, $value->id);
+        }
+
         $this->batchInsert('{{%auth_assignment}}', ['item_name', 'user_id', 'created_at'], [
-            ['admin_web', 1, NULL],
+            //['admin_web', 1, NULL],
             ['admin', 1, NULL],
-            ['member_web', 2, NULL],
-            ['member', 2, NULL],
+            //['member_web', 2, NULL],
+            //['member', 2, NULL],
         ]);
 
     }

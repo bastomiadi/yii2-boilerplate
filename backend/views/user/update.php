@@ -9,7 +9,8 @@ use yii\helpers\Html;
 
     <?= $this->render('_form', [
          'model' => $model,
-         'profiles' => $profiles
+         'profiles' => $profiles,
+         'auth_assignment' => $auth_assignment
     ]) ?>
 
 </div>

@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use common\models\v1\AuthAssignment;
+use common\models\v1\AuthItem;
 use common\models\v1\Profiles;
 use Yii;
 use common\models\v1\User;
@@ -88,10 +90,10 @@ class UserController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        //$model = new User();  
         $model = new User();
         $profiles = new Profiles();
         $model->scenario = User::SCENARIO_CREATE;
+        $auth_assignment = new AuthAssignment();
 
         if($request->isAjax)
         {
@@ -105,16 +107,18 @@ class UserController extends Controller
                     'title' => Yii::t('yii2-ajaxcrud', 'Create New')." User",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
-                        //'signup_form' => $signup_form,
-                        'profiles' => $profiles
+                        'profiles' => $profiles,
+                        'auth_assignment' => $auth_assignment
                     ]),
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
                         Html::button(Yii::t('yii2-ajaxcrud', 'Create'), ['class' => 'btn btn-primary', 'type' => 'submit'])
                 ];
             }
-            else if($model->load($request->post()) && $profiles->load($request->post()) && Model::validateMultiple([$model, $profiles]))
+            else if($model->load($request->post()) && $auth_assignment->load($request->post()) && $profiles->load($request->post()) && Model::validateMultiple([$model, $auth_assignment, $profiles]))
             {
                 if ($model->save()) {
+                    $auth_assignment->user_id = $model->id;
+                    $auth_assignment->save();
                     $profiles->user = $model->id;
                     $profiles->save();
                     return [
@@ -132,8 +136,8 @@ class UserController extends Controller
                     'title' => Yii::t('yii2-ajaxcrud', 'Create New')." User",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
-                        //'signup_form' => $signup_form,
-                        'profiles' => $profiles
+                        'profiles' => $profiles,
+                        'auth_assignment' => $auth_assignment
                     ]),
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
                         Html::button(Yii::t('yii2-ajaxcrud', 'Save'), ['class' => 'btn btn-primary', 'type' => 'submit'])
@@ -145,16 +149,22 @@ class UserController extends Controller
             /*
             *   Process for non-ajax request
             */
-            if ($model->load($request->post()) && $model->save())
+            if($model->load($request->post()) && $auth_assignment->load($request->post()) && $profiles->load($request->post()) && Model::validateMultiple([$model, $auth_assignment, $profiles]))
             {
-                return $this->redirect(['view', 'id' => $model->id]);
+                if ($model->save()) {
+                    $auth_assignment->user_id = $model->id;
+                    $auth_assignment->save();
+                    $profiles->user = $model->id;
+                    $profiles->save();
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
             else
             {
                 return $this->render('create', [
                     'model' => $model,
-                    //'signup_form' => $signup_form,
-                    'profiles' => $profiles
+                    'profiles' => $profiles,
+                    'auth_assignment' => $auth_assignment
                 ]);
             }
         }
@@ -173,6 +183,7 @@ class UserController extends Controller
         $request = Yii::$app->request;
         $model = $this->findModel($id);      
         $profiles = Profiles::find()->where(['user'=>$model->id])->one();
+        $auth_assignment = AuthAssignment::find()->where(['user_id'=>$model->id])->one();
         $model->scenario = User::SCENARIO_UPDATE;
 
         if($request->isAjax)
@@ -187,20 +198,25 @@ class UserController extends Controller
                     'title' => Yii::t('yii2-ajaxcrud', 'Update')." User #".$id,
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
-                        'profiles' => $profiles
+                        'profiles' => $profiles,
+                        'auth_assignment' => $auth_assignment
                     ]),
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
                         Html::button(Yii::t('yii2-ajaxcrud', 'Save'), ['class' => 'btn btn-primary', 'type' => 'submit'])
                 ];   
             }
-            else if($model->load($request->post()) && $model->save())
+            else if($model->load($request->post()) && $auth_assignment->load($request->post()) && $profiles->load($request->post()) && Model::validateMultiple([$model, $auth_assignment, $profiles]))
             {
+                $model->save();
+                $profiles->save();
+                $auth_assignment->save();
                 return [
                     'forceReload' => '#crud-datatable-pjax',
                     'title' => "User #".$id,
                     'content' => $this->renderAjax('view', [
                         'model' => $model,
-                        'profiles' => $profiles
+                        'profiles' => $profiles,
+                        'auth_assignment' => $auth_assignment
                     ]),
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
                         Html::a(Yii::t('yii2-ajaxcrud', 'Update'), ['update', 'id' => $id],['class' => 'btn btn-primary', 'role' => 'modal-remote'])
@@ -212,7 +228,8 @@ class UserController extends Controller
                     'title' => Yii::t('yii2-ajaxcrud', 'Update')." User #".$id,
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
-                        'profiles' => $profiles
+                        'profiles' => $profiles,
+                        'auth_assignment' => $auth_assignment
                     ]),
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
                         Html::button(Yii::t('yii2-ajaxcrud', 'Save'), ['class' => 'btn btn-primary', 'type' => 'submit'])
@@ -224,15 +241,19 @@ class UserController extends Controller
             /*
             *   Process for non-ajax request
             */
-            if ($model->load($request->post()) && $model->save())
+            if($model->load($request->post()) && $auth_assignment->load($request->post()) && $profiles->load($request->post()) && Model::validateMultiple([$model, $auth_assignment, $profiles]))
             {
+                $model->save();
+                $profiles->save();
+                $auth_assignment->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             else
             {
                 return $this->render('update', [
                     'model' => $model,
-                    'profiles' => $profiles
+                    'profiles' => $profiles,
+                    'auth_assignment' => $auth_assignment
                 ]);
             }
         }
