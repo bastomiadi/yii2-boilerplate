@@ -1,6 +1,7 @@
 <?php
 
 use common\models\v1\User;
+use yii\db\Expression;
 use yii\db\Migration;
 
 /**
@@ -26,8 +27,8 @@ class m240116_071236_seeds_categories_table extends Migration
         for ($i=1; $i <= $this->count; $i++) { 
             $data[$i]['id'] = $i;
             $data[$i]['category_name'] = $this->faker->name;
-            $data[$i]['created_at'] = time();
-            $data[$i]['updated_at'] = time();
+            $data[$i]['created_at'] = new Expression('NOW()');
+            $data[$i]['updated_at'] = new Expression('NOW()');
             $data[$i]['deleted_at'] = null;
             $data[$i]['created_by'] = $this->faker->randomElement($users)->id;
             $data[$i]['updated_by'] = $this->faker->randomElement($users)->id;

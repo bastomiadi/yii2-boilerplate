@@ -2,11 +2,13 @@
 
 namespace common\models\v1;
 
-use common\models\User as ModelsUser;
 use mdm\admin\models\AuthItem;
+use ruturajmaniyar\mod\audit\behaviors\AuditEntryBehaviors;
 use Yii;
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 use yii\web\ForbiddenHttpException;
 use yii\web\IdentityInterface;
 
@@ -22,19 +24,45 @@ use yii\web\IdentityInterface;
  * @property int $status
  * @property int $created_at
  * @property int $updated_at
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property int|null $deleted_by
+ * @property int|null $deleted_at
  * @property string|null $verification_token
  *
  * @property AuthAssignment[] $authAssignments
+ * @property Category[] $categories
+ * @property Category[] $categories0
+ * @property Category[] $categories1
  * @property Class[] $classes
  * @property Class[] $classes0
  * @property Class[] $classes1
+ * @property User $createdBy
+ * @property User $deletedBy
+ * @property Gender[] $genders
+ * @property Gender[] $genders0
+ * @property Gender[] $genders1
  * @property AuthItem[] $itemNames
+ * @property Marital[] $maritals
+ * @property Marital[] $maritals0
+ * @property Marital[] $maritals1
+ * @property Product[] $products
+ * @property Product[] $products0
+ * @property Product[] $products1
+ * @property Profile[] $profiles
+ * @property Profile[] $profiles0
+ * @property Profile[] $profiles1
+ * @property Profile[] $profiles2
  * @property Section[] $sections
  * @property Section[] $sections0
  * @property Section[] $sections1
  * @property Student[] $students
  * @property Student[] $students0
  * @property Student[] $students1
+ * @property User $updatedBy
+ * @property User[] $users
+ * @property User[] $users0
+ * @property User[] $users1
  */
 class User extends ActiveRecord implements IdentityInterface {
 
@@ -77,6 +105,18 @@ class User extends ActiveRecord implements IdentityInterface {
     {
         return [
             TimestampBehavior::class,
+            'softDeleteBehavior' => [
+                'class' => SoftDeleteBehavior::class,
+                'softDeleteAttributeValues' => [
+                    'status' => self::STATUS_DELETED,
+                    'deleted_at' => new Expression('NOW()'),
+                    'deleted_by' => Yii::$app->user->identity->id ?? $this->deletedBy
+                ],
+                'replaceRegularDelete' => true // mutate native `delete()` method
+            ],
+            'auditEntryBehaviors' => [
+                'class' => AuditEntryBehaviors::class
+            ],
         ];
     }
 
@@ -98,7 +138,7 @@ class User extends ActiveRecord implements IdentityInterface {
     public function rules()
     {
         return [
-            [['status', 'created_at', 'updated_at'], 'integer'],
+            [['status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'deleted_by', 'deleted_at'], 'integer'],
             [['username', 'password_hash', 'password_reset_token', 'email', 'verification_token', 'password_repeat'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['password_reset_token'], 'unique'],
@@ -111,6 +151,10 @@ class User extends ActiveRecord implements IdentityInterface {
 
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.', 'on' => [self::SCENARIO_CREATE, self::SCENARIO_SIGNUP]],
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.', 'on' => [self::SCENARIO_CREATE, self::SCENARIO_SIGNUP]],
+
+            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
+            [['deleted_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['deleted_by' => 'id']],
+            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
 
             [
                 'username',
@@ -145,6 +189,7 @@ class User extends ActiveRecord implements IdentityInterface {
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
 
             [['verification_token'], 'default', 'on' => self::SCENARIO_SIGNUP, 'value' => $this->generateEmailVerificationToken()],
+
         ];
     }
 
@@ -163,6 +208,10 @@ class User extends ActiveRecord implements IdentityInterface {
             'status' => Yii::t('app', 'Status'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
+            'created_by' => Yii::t('app', 'Created By'),
+            'updated_by' => Yii::t('app', 'Updated By'),
+            'deleted_by' => Yii::t('app', 'Deleted By'),
+            'deleted_at' => Yii::t('app', 'Deleted At'),
             'verification_token' => Yii::t('app', 'Verification Token'),
         ];
     }
@@ -380,6 +429,25 @@ class User extends ActiveRecord implements IdentityInterface {
     }
 
     /**
+     * Sends confirmation email to user
+     * @param User $user user model to with email should be send
+     * @return bool whether the email was sent
+     */
+    public function sendEmail($user)
+    {
+        return Yii::$app
+            ->mailer
+            ->compose(
+                ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
+                ['user' => $user]
+            )
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setTo($this->email)
+            ->setSubject('Account registration at ' . Yii::$app->name)
+            ->send();
+    }
+
+    /**
      * Gets query for [[AuthAssignments]].
      *
      * @return \yii\db\ActiveQuery
@@ -447,6 +515,26 @@ class User extends ActiveRecord implements IdentityInterface {
     public function getClasses1()
     {
         return $this->hasMany(Classes::class, ['updated_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[CreatedBy]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCreatedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'created_by']);
+    }
+
+    /**
+     * Gets query for [[DeletedBy]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDeletedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'deleted_by']);
     }
 
     /**
@@ -649,23 +737,44 @@ class User extends ActiveRecord implements IdentityInterface {
         return $this->hasMany(Students::class, ['updated_by' => 'id']);
     }
 
-     /**
-     * Sends confirmation email to user
-     * @param User $user user model to with email should be send
-     * @return bool whether the email was sent
+    /**
+     * Gets query for [[UpdatedBy]].
+     *
+     * @return \yii\db\ActiveQuery
      */
-    public function sendEmail($user)
+    public function getUpdatedBy()
     {
-        return Yii::$app
-            ->mailer
-            ->compose(
-                ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
-                ['user' => $user]
-            )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo($this->email)
-            ->setSubject('Account registration at ' . Yii::$app->name)
-            ->send();
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
+    }
+
+    /**
+     * Gets query for [[Users]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsers()
+    {
+        return $this->hasMany(User::class, ['created_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Users0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsers0()
+    {
+        return $this->hasMany(User::class, ['deleted_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Users1]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsers1()
+    {
+        return $this->hasMany(User::class, ['updated_by' => 'id']);
     }
 
 }

@@ -7,6 +7,7 @@ use Yii;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "{{%marital}}".
@@ -65,7 +66,7 @@ class Marital extends \yii\db\ActiveRecord
                 'class' => SoftDeleteBehavior::class,
                 'softDeleteAttributeValues' => [
                     'isDeleted' => true,
-                    'deleted_at' => time(),
+                    'deleted_at' => new Expression('NOW()'),
                     'deleted_by' => Yii::$app->user->identity->id ?? $this->deletedBy
                 ],
                 'replaceRegularDelete' => true // mutate native `delete()` method

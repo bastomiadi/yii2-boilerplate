@@ -3,6 +3,7 @@
 use common\models\v1\Genders;
 use common\models\v1\Marital;
 use common\models\v1\User;
+use yii\db\Expression;
 use yii\db\Migration;
 
 /**
@@ -37,8 +38,8 @@ class m240118_023214_seed_profile_table extends Migration
             $data[$key]['marital'] = $this->faker->randomElement($marital)->id;;
             $data[$key]['profile_image' ] = $this->faker->imageUrl($width = 640, $height = 480);
             $data[$key]['date_of_birth'] = $this->faker->date($format = 'Y-m-d', $max = 'now');
-            $data[$key]['created_at'] = time();
-            $data[$key]['updated_at'] = time();
+            $data[$key]['created_at'] = new Expression('NOW()');
+            $data[$key]['updated_at'] = new Expression('NOW()');
             $data[$key]['deleted_at'] = null;
             $data[$key]['created_by'] = $value->id;
             $data[$key]['updated_by'] = $value->id;

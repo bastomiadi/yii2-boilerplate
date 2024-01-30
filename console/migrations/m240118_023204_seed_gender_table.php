@@ -1,5 +1,6 @@
 <?php
 
+use yii\db\Expression;
 use yii\db\Migration;
 
 /**
@@ -13,11 +14,11 @@ class m240118_023204_seed_gender_table extends Migration
     public function safeUp()
     {
         $this->batchInsert('{{%genders}}', ['gender_name', 'created_at','updated_at','deleted_at','created_by','updated_by','deleted_by','isDeleted',], [
-            ['Tidak diketahui', time(), time(), NULL, 1, 1, NULL, 0],
-            ['Laki-Laki', time(), time(), NULL, 1, 1, NULL, 0],
-            ['Perempuan', time(), time(), NULL, 1, 1, NULL, 0],
-            ['Tidak Dapat Ditentukan', time(), time(), NULL, 1, 1, NULL, 0],
-            ['Tidak Mengisi', time(), time(), NULL, 1, 1, NULL, 0],
+            ['Tidak diketahui', new Expression('NOW()'), new Expression('NOW()'), NULL, 1, 1, NULL, 0],
+            ['Laki-Laki', new Expression('NOW()'), new Expression('NOW()'), NULL, 1, 1, NULL, 0],
+            ['Perempuan', new Expression('NOW()'), new Expression('NOW()'), NULL, 1, 1, NULL, 0],
+            ['Tidak Dapat Ditentukan', new Expression('NOW()'), new Expression('NOW()'), NULL, 1, 1, NULL, 0],
+            ['Tidak Mengisi', new Expression('NOW()'), new Expression('NOW()'), NULL, 1, 1, NULL, 0],
         ]);
     }
 
