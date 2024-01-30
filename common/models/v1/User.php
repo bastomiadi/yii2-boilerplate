@@ -87,7 +87,7 @@ class User extends ActiveRecord implements IdentityInterface {
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_LOGIN] = ['username', 'password'];
         $scenarios[self::SCENARIO_CREATE] = ['username', 'password', 'password_repeat', 'email', 'auth_key', 'status'];
-        $scenarios[self::SCENARIO_UPDATE] = ['username', 'password', 'password_repeat', 'email'];
+        $scenarios[self::SCENARIO_UPDATE] = ['username', 'password', 'password_repeat', 'email', 'status'];
         $scenarios[self::SCENARIO_SIGNUP] = ['username', 'password', 'password_repeat', 'email', 'auth_key', 'status', 'verification_token'];
         return $scenarios;
     }
@@ -112,26 +112,26 @@ class User extends ActiveRecord implements IdentityInterface {
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.', 'on' => [self::SCENARIO_CREATE, self::SCENARIO_SIGNUP]],
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.', 'on' => [self::SCENARIO_CREATE, self::SCENARIO_SIGNUP]],
 
-            // [
-            //     'username',
-            //     'unique',
-            //     'targetClass' => '\common\models\User',
-            //     'message' => Yii::t('app', 'This username has already been taken.'),
-            //     'when' => function ($model){
-            //         return $model->username != Yii::$app->user->identity->username;
-            //     },
-            //     'on' => self::SCENARIO_UPDATE
-            // ],
-            // [
-            //     'email',
-            //     'unique',
-            //     'targetClass' => '\common\models\User',
-            //     'message' => Yii::t('app','This email address has already been taken.'),
-            //     'when' => function ($model){
-            //         return $model->email != Yii::$app->user->identity->email;
-            //     },
-            //     'on' => self::SCENARIO_UPDATE
-            // ],
+            [
+                'username',
+                'unique',
+                'targetClass' => '\common\models\User',
+                'message' => Yii::t('app', 'This username has already been taken by another user.'),
+                'when' => function ($model){
+                    return $model->isAttributeChanged('username');
+                },
+                'on' => self::SCENARIO_UPDATE
+            ],
+            [
+                'email',
+                'unique',
+                'targetClass' => '\common\models\User',
+                'message' => Yii::t('app','This email address has already been taken by another user.'),
+                'when' => function ($model){
+                    return $model->isAttributeChanged('email');
+                },
+                'on' => self::SCENARIO_UPDATE
+            ],
 
             [['username', 'password'], 'required', 'on' => self::SCENARIO_LOGIN],
             [['username', 'password', 'password_repeat', 'email', 'status'], 'required', 'on' => self::SCENARIO_CREATE],
