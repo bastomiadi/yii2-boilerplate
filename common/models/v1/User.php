@@ -220,26 +220,52 @@ class User extends ActiveRecord implements IdentityInterface {
      * @inheritdoc
      */
     public function beforeSave($insert) {
-        if(strlen($this->password) > 0) {
-            $this->setPassword($this->password);
-        }
-        return parent::beforeSave($insert);
-
-        // if (parent::beforeSave($insert)) {
-        //     if($insert) {
-        //         $this->setPassword($this->password);
-        //     }
-        //     else {
-        //         if(strlen($this->password) > 0) {
-        //             $this->setPassword($this->password);
-        //         }
-        //         else {
-        //             $this->password_hash = $this->hash;
-        //         }
-        //     }
-        //     return true;
+        // if(strlen($this->password) > 0) {
+        //     $this->setPassword($this->password);
         // }
-        // return false;
+        // return parent::beforeSave($insert);
+
+        // // if (parent::beforeSave($insert)) {
+        // //     if($insert) {
+        // //         $this->setPassword($this->password);
+        // //     }
+        // //     else {
+        // //         if(strlen($this->password) > 0) {
+        // //             $this->setPassword($this->password);
+        // //         }
+        // //         else {
+        // //             $this->password_hash = $this->hash;
+        // //         }
+        // //     }
+        // //     return true;
+        // // }
+        // // return false;
+
+        if (parent::beforeSave($insert)) {
+            if($insert) {
+                $this->setPassword($this->password);
+            }
+            else {
+                if(strlen($this->password) > 0) {
+                    $this->setPassword($this->password);
+                }
+                else {
+                    $this->password = $this->hash;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterFind() {
+        $this->hash = $this->password;
+        $this->password = '';
+        $this->auth_key = '';
+        parent::afterFind();
     }
 
      /**

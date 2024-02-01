@@ -158,6 +158,7 @@ class SiteController extends Controller
     {
         $model = new User();
         $model->scenario = User::SCENARIO_SIGNUP;
+        $model->detachBehavior('auditEntryBehaviors');
         $profiles = new Profiles();
         $profiles->detachBehavior('auditEntryBehaviors');
 
