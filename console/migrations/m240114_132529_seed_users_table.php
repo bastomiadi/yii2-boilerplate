@@ -41,8 +41,8 @@ class m240114_132529_seed_users_table extends Migration
             'password_reset_token' => null,
             'email' => 'admin@mail.com',
             'status' => 10,
-            'created_at' => new Expression('NOW()'),
-            'updated_at' => new Expression('NOW()'),
+            'created_at' => new Expression('unix_timestamp(NOW())'),
+            'updated_at' => new Expression('unix_timestamp(NOW())'),
             'verification_token' => Yii::$app->security->generateRandomString() . '_' . time(),
         ]);
 
@@ -54,8 +54,8 @@ class m240114_132529_seed_users_table extends Migration
             'password_reset_token' => null,
             'email' => 'member@mail.com',
             'status' => 10,
-            'created_at' => new Expression('NOW()'),
-            'updated_at' => new Expression('NOW()'),
+            'created_at' => new Expression('unix_timestamp(NOW())'),
+            'updated_at' => new Expression('unix_timestamp(NOW())'),
             'verification_token' => Yii::$app->security->generateRandomString() . '_' . time(),
         ]);
 
@@ -67,8 +67,8 @@ class m240114_132529_seed_users_table extends Migration
             $data[$i]['password_reset_token'] = null;
             $data[$i]['email'] = $this->faker->email;
             $data[$i]['status'] = User::STATUS_ACTIVE;
-            $data[$i]['created_at'] = new Expression('NOW()');
-            $data[$i]['updated_at'] = new Expression('NOW()');
+            $data[$i]['created_at'] = new Expression('unix_timestamp(NOW())');
+            $data[$i]['updated_at'] = new Expression('unix_timestamp(NOW())');
             $data[$i]['verification_token'] = Yii::$app->security->generateRandomString() . '_' . time();
         }
 

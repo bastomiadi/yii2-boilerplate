@@ -65,7 +65,7 @@ class Genders extends \yii\db\ActiveRecord
                 'class' => SoftDeleteBehavior::class,
                 'softDeleteAttributeValues' => [
                     'isDeleted' => true,
-                    'deleted_at' => new Expression('NOW()'),
+                    'deleted_at' => new Expression('unix_timestamp(NOW())'),
                     'deleted_by' => Yii::$app->user->identity->id ?? $this->deletedBy
                 ],
                 'replaceRegularDelete' => true // mutate native `delete()` method

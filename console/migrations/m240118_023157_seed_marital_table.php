@@ -16,11 +16,11 @@ class m240118_023157_seed_marital_table extends Migration
     {
 
         $this->batchInsert('{{%marital}}', ['marital_name','created_at','updated_at','deleted_at','created_by','updated_by','deleted_by','isDeleted',], [
-            ['Married', new Expression('NOW()'), new Expression('NOW()'), NULL, 1, 1, NULL, 0],
-            ['Widowed', new Expression('NOW()'), new Expression('NOW()'), NULL, 1, 1, NULL, 0],
-            ['Separated', new Expression('NOW()'), new Expression('NOW()'), NULL, 1, 1, NULL, 0],
-            ['Divorced', new Expression('NOW()'), new Expression('NOW()'), NULL, 1, 1, NULL, 0],
-            ['Single', new Expression('NOW()'), new Expression('NOW()'), NULL, 1, 1, NULL, 0],
+            ['Married', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
+            ['Widowed', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
+            ['Separated', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
+            ['Divorced', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
+            ['Single', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
         ]);
             
     }

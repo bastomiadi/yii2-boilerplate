@@ -31,8 +31,8 @@ class m240116_071247_seeds_products_table extends Migration
         for ($i=1; $i <= $this->count; $i++) { 
             $data[$i]['product_name'] = $this->faker->name;
             $data[$i]['category'] = $this->faker->randomElement($categories)->id;
-            $data[$i]['created_at'] = new Expression('NOW()');
-            $data[$i]['updated_at'] = new Expression('NOW()');
+            $data[$i]['created_at'] = new Expression('unix_timestamp(NOW())');
+            $data[$i]['updated_at'] = new Expression('unix_timestamp(NOW())');
             $data[$i]['deleted_at'] = null;
             $data[$i]['created_by'] = $this->faker->randomElement($users)->id;
             $data[$i]['updated_by'] = $this->faker->randomElement($users)->id;

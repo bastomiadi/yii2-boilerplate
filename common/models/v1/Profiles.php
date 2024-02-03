@@ -78,7 +78,7 @@ class Profiles extends \yii\db\ActiveRecord
                 'class' => SoftDeleteBehavior::class,
                 'softDeleteAttributeValues' => [
                     'isDeleted' => true,
-                    'deleted_at' => new Expression('NOW()'),
+                    'deleted_at' => new Expression('unix_timestamp(NOW())'),
                     'deleted_by' => Yii::$app->user->identity->id ?? $this->deletedBy
                 ],
                 'replaceRegularDelete' => true // mutate native `delete()` method
@@ -105,7 +105,7 @@ class Profiles extends \yii\db\ActiveRecord
             [['user'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user' => 'id']],
             [['gender'], 'exist', 'skipOnError' => true, 'targetClass' => Genders::class, 'targetAttribute' => ['gender' => 'id']],
             [['marital'], 'exist', 'skipOnError' => true, 'targetClass' => Marital::class, 'targetAttribute' => ['marital' => 'id']],
-            [['file'], 'file'],
+            [['file'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png',],
         ];
     }
 

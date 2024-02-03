@@ -12,6 +12,12 @@ class m240114_121619_create_classes_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            // https://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+        }
+
         $this->createTable('{{%classes}}', [
             'id' => $this->bigPrimaryKey(),
             'name' => $this->string()->notNull(),
@@ -22,7 +28,7 @@ class m240114_121619_create_classes_table extends Migration
             'updated_at' => $this->bigInteger()->notNull(),
             'deleted_at' => $this->bigInteger(),
             'isDeleted' => $this->boolean()->notNull()->defaultValue(0),
-        ]);
+        ], $tableOptions);
         
         // add foreign key for table `user`
         $this->addForeignKey(
