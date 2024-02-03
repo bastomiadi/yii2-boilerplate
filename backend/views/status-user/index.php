@@ -7,16 +7,16 @@ use yii2ajaxcrud\ajaxcrud\CrudAsset;
 use yii2ajaxcrud\ajaxcrud\BulkButtonWidget;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\v1\Search\CategoriesSearch */
+/* @var $searchModel common\models\v1\search\StatusUserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Categories');
+$this->title = Yii::t('app', 'Status Users');
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
 
 ?>
-<div class="categories-index">
+<div class="status-user-index">
     <div id="ajaxCrudDatatable">
         <?=GridView::widget([
             'id' => 'crud-datatable',
@@ -27,7 +27,7 @@ CrudAsset::register($this);
             'toolbar' => [
                 ['content'=>
                     Html::a(Yii::t('yii2-ajaxcrud', 'Create New'), ['create'],
-                    ['role' => 'modal-remote', 'title' => Yii::t('yii2-ajaxcrud', 'Create New').' Categories', 'class' => 'btn btn-outline-primary']).
+                    ['role' => 'modal-remote', 'title' => Yii::t('yii2-ajaxcrud', 'Create New').' Status Users', 'class' => 'btn btn-outline-primary']).
                     Html::a('<i class="fa fa-redo"></i>', [''],
                     ['data-pjax' => 1, 'class' => 'btn btn-outline-success', 'title' => Yii::t('yii2-ajaxcrud', 'Reset Grid')]).
                     '{toggleData}'.
@@ -60,7 +60,6 @@ CrudAsset::register($this);
     </div>
 </div>
 <?php Modal::begin([
-    "size" => "modal-xl",
     "id" => "ajaxCrudModal",
     "footer" => "", // always need it for jquery plugin
     "clientOptions" => [

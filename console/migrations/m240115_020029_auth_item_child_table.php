@@ -61,6 +61,8 @@ class m240115_020029_auth_item_child_table extends Migration
             ['admin_web', '/audit-entry/index'],
             ['admin_web', '/user/*'],
             ['admin_web', '/user/index'],
+            ['admin_web', '/status-user/*'],
+            ['admin_web', '/status-user/index'],
 
             //for restful permission v1
             ['admin_restful','/v1/categories/index'],

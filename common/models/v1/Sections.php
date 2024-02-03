@@ -61,9 +61,6 @@ class Sections extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    /**
-     * {@inheritdoc}
-     */
     public function behaviors()
     {
         return [

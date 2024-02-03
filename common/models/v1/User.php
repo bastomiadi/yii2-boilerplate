@@ -71,13 +71,14 @@ class User extends ActiveRecord implements IdentityInterface {
     const SCENARIO_UPDATE = 'update';
     const SCENARIO_SIGNUP = 'signup';
 
-    const STATUS_DELETED = 0;
+    const STATUS_DELETED = 1;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
     public $password;
     public $password_repeat;
     public $hash;
+    public $auth;
 
     // for rest api field showing
     public function fields()
@@ -151,7 +152,8 @@ class User extends ActiveRecord implements IdentityInterface {
 
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.', 'on' => [self::SCENARIO_CREATE, self::SCENARIO_SIGNUP]],
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.', 'on' => [self::SCENARIO_CREATE, self::SCENARIO_SIGNUP]],
-
+            
+            [['status'], 'exist', 'skipOnError' => true, 'targetClass' => StatusUser::class, 'targetAttribute' => ['status' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['deleted_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['deleted_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
@@ -263,6 +265,7 @@ class User extends ActiveRecord implements IdentityInterface {
      */
     public function afterFind() {
         $this->hash = $this->password;
+        $this->auth = $this->auth_key;
         $this->password = '';
         $this->auth_key = '';
         parent::afterFind();
@@ -731,6 +734,46 @@ class User extends ActiveRecord implements IdentityInterface {
     public function getSections1()
     {
         return $this->hasMany(Sections::class, ['updated_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Status0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatus0()
+    {
+        return $this->hasOne(StatusUser::class, ['id' => 'status']);
+    }
+
+    /**
+     * Gets query for [[StatusUsers]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatusUsers()
+    {
+        return $this->hasMany(StatusUser::class, ['created_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[StatusUsers0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatusUsers0()
+    {
+        return $this->hasMany(StatusUser::class, ['deleted_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[StatusUsers1]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatusUsers1()
+    {
+        return $this->hasMany(StatusUser::class, ['updated_by' => 'id']);
     }
 
     /**

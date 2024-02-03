@@ -66,6 +66,8 @@ class m240115_020019_auth_item_table extends Migration
                ['/audit-entry/index', 2, NULL, NULL, NULL, new Expression('NOW()'), new Expression('NOW()')],
                ['/user/*', 2, NULL, NULL, NULL, new Expression('NOW()'), new Expression('NOW()')],
                ['/user/index', 2, NULL, NULL, NULL, new Expression('NOW()'), new Expression('NOW()')],
+               ['/status-user/*', 2, NULL, NULL, NULL, new Expression('NOW()'), new Expression('NOW()')],
+               ['/status-user/index', 2, NULL, NULL, NULL, new Expression('NOW()'), new Expression('NOW()')],
 
                //for restful permission v1
                ['/v1/categories/index', 2, NULL, NULL, NULL, new Expression('NOW()'), new Expression('NOW()')],

@@ -5,29 +5,29 @@ namespace common\models\v1;
 use ruturajmaniyar\mod\audit\behaviors\AuditEntryBehaviors;
 use Yii;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
-use yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 
 /**
- * This is the model class for table "{{%categories}}".
+ * This is the model class for table "{{%status_user}}".
  *
  * @property int $id
- * @property string $category_name
+ * @property string $status
+ * @property int $created_by
+ * @property int|null $updated_by
+ * @property int|null $deleted_by
  * @property int $created_at
  * @property int $updated_at
  * @property int|null $deleted_at
- * @property int $created_by
- * @property int $updated_by
- * @property int|null $deleted_by
+ * @property int $isDeleted
  *
  * @property User $createdBy
  * @property User $deletedBy
- * @property Product[] $products
  * @property User $updatedBy
+ * @property User[] $users
  */
-class Categories extends \yii\db\ActiveRecord
+class StatusUser extends \yii\db\ActiveRecord
 {
 
     // for rest api field showing
@@ -35,7 +35,7 @@ class Categories extends \yii\db\ActiveRecord
     {
         return [
             'id',
-            'category_name',
+            'status',
             'created_by' => fn () => $this->createdBy->username ?? $this->createdBy,
             'updated_by' => fn () => $this->updatedBy->username ?? $this->updatedBy,
             'deleted_by' => fn () => $this->deletedBy->username ?? $this->deletedBy,
@@ -51,7 +51,7 @@ class Categories extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%categories}}';
+        return '{{%status_user}}';
     }
 
     /**
@@ -83,12 +83,12 @@ class Categories extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['category_name'], 'required'],
-            [['created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
-            [['category_name'], 'string', 'max' => 255],
+            [['status'], 'required'],
+            [['created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at', 'isDeleted'], 'integer'],
+            [['status'], 'string', 'max' => 255],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
-            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
             [['deleted_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['deleted_by' => 'id']],
+            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
         ];
     }
 
@@ -99,24 +99,15 @@ class Categories extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'category_name' => Yii::t('app', 'Category Name'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
-            'deleted_at' => Yii::t('app', 'Deleted At'),
+            'status' => Yii::t('app', 'Status'),
             'created_by' => Yii::t('app', 'Created By'),
             'updated_by' => Yii::t('app', 'Updated By'),
             'deleted_by' => Yii::t('app', 'Deleted By'),
+            'created_at' => Yii::t('app', 'Created At'),
+            'updated_at' => Yii::t('app', 'Updated At'),
+            'deleted_at' => Yii::t('app', 'Deleted At'),
+            'isDeleted' => Yii::t('app', 'Is Deleted'),
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery|SoftDeleteQueryBehavior
-     */
-    public static function find()
-    {
-        $query = parent::find();
-        $query->attachBehavior('softDelete', SoftDeleteQueryBehavior::class);
-        return $query;
     }
 
     /**
@@ -140,16 +131,6 @@ class Categories extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Products]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProducts()
-    {
-        return $this->hasMany(Products::class, ['category_id' => 'id']);
-    }
-
-    /**
      * Gets query for [[UpdatedBy]].
      *
      * @return \yii\db\ActiveQuery
@@ -157,5 +138,15 @@ class Categories extends \yii\db\ActiveRecord
     public function getUpdatedBy()
     {
         return $this->hasOne(User::class, ['id' => 'updated_by']);
+    }
+
+    /**
+     * Gets query for [[Users]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsers()
+    {
+        return $this->hasMany(User::class, ['created_by' => 'id']);
     }
 }

@@ -19,7 +19,7 @@ class m130524_201442_init extends Migration
             'password_hash' => $this->string()->notNull(),
             'password_reset_token' => $this->string()->unique(),
             'email' => $this->string()->notNull()->unique(),
-            'status' => $this->smallInteger()->notNull()->defaultValue(9),
+            'status' => $this->bigInteger()->notNull()->defaultValue(9),
             'created_at' => $this->bigInteger()->notNull(),
             'updated_at' => $this->bigInteger()->notNull(),
             'created_by' => $this->bigInteger()->null(),
@@ -28,7 +28,18 @@ class m130524_201442_init extends Migration
             'deleted_at' => $this->bigInteger()->null(),
         ], $tableOptions);
 
-         // add foreign key for table `user`
+        // add foreign key for table `user`
+        $this->addForeignKey(
+            '{{%fk-users-status}}',
+            '{{%user}}',
+            'status',
+            '{{%status_user}}',
+            'id',
+            'CASCADE',
+            'CASCADE'
+        );
+
+        // add foreign key for table `user`
         $this->addForeignKey(
             '{{%fk-users-created_by}}',
             '{{%user}}',

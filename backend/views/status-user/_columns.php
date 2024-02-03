@@ -1,7 +1,5 @@
 <?php
 
-use common\models\v1\Profiles;
-use common\models\v1\StatusUser;
 use common\models\v1\User;
 use kartik\grid\GridView;
 use yii\helpers\ArrayHelper;
@@ -16,60 +14,59 @@ return [
         'class' => 'kartik\grid\SerialColumn',
         'width' => '30px',
     ],
-        // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'id',
-    // ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'username',
+        'attribute'=>'id',
     ],
-    // [
-    //     'class'=>'\kartik\grid\DataColumn',
-    //     'attribute'=>'auth_key',
-    // ],
-    // [
-    //     'class'=>'\kartik\grid\DataColumn',
-    //     'attribute'=>'password_hash',
-    // ],
-    // [
-    //     'class'=>'\kartik\grid\DataColumn',
-    //     'attribute'=>'password_reset_token',
-    // ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'email',
+        'attribute'=>'status',
     ],
     [
-        'attribute' => 'status',
+        'attribute' => 'created_by',
         'value' => function($model) {
-            return $model->status0->status;
+            return $model->createdBy->username;
         },
-        'filter' => ArrayHelper::map(StatusUser::find()->asArray()->all(), 'id', 'status'),
+        'filter' => ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'),
         'filterType' => GridView::FILTER_SELECT2,
         'filterWidgetOptions' => [
-            'options' => ['prompt' => '-'],
+            'options' => ['prompt' => '----'],
             'pluginOptions' => [
                 'allowClear' => true,
                 'width'=> 'default'
             ],
         ],
     ],
-    // [
-    //     'attribute' => 'first_name',
-    //     'value' => function($model) {
-    //         return $model->profiles[0]->first_name;
-    //     },
-    //     'filter' => ArrayHelper::map(Profiles::find()->asArray()->all(), 'id', 'first_name'),
-    //     'filterType' => GridView::FILTER_SELECT2,
-    //     'filterWidgetOptions' => [
-    //         'options' => ['prompt' => '-'],
-    //         'pluginOptions' => [
-    //             'allowClear' => true,
-    //             'width'=> 'default'
-    //         ],
-    //     ],
-    // ],
+    [
+        'attribute' => 'updated_by',
+        'value' => function($model) {
+            return $model->updatedBy->username;
+        },
+        'filter' => ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'),
+        'filterType' => GridView::FILTER_SELECT2,
+        'filterWidgetOptions' => [
+            'options' => ['prompt' => ''],
+            'pluginOptions' => [
+                'allowClear' => true,
+                'width'=> 'default'
+            ],
+        ],
+    ],
+    [
+        'attribute' => 'deleted_by',
+        'value' => function($model) {
+            return $model->deletedBy->username ?? null;
+        },
+        'filter' => ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'),
+        'filterType' => GridView::FILTER_SELECT2,
+        'filterWidgetOptions' => [
+            'options' => ['prompt' => ''],
+            'pluginOptions' => [
+                'allowClear' => true,
+                'width'=> 'default'
+            ],
+        ],
+    ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'created_at',
@@ -78,9 +75,13 @@ return [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'updated_at',
     // ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'deleted_at',
+    ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'verification_token',
+        // 'attribute'=>'isDeleted',
     // ],
     [
         'class' => 'kartik\grid\ActionColumn',

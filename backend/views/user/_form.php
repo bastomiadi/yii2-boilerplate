@@ -3,6 +3,7 @@
 use common\models\v1\AuthItem;
 use common\models\v1\Genders;
 use common\models\v1\Marital;
+use common\models\v1\StatusUser;
 use common\models\v1\User;
 use kartik\datecontrol\DateControl;
 use kartik\select2\Select2;
@@ -68,7 +69,7 @@ use yii\helpers\ArrayHelper;
     ]); ?>
 
     <?= $form->field($model, 'status')->widget(Select2::class, [
-        'data' => [10 => 'Active', 9 => 'Inactive', 0 => 'Deleted'],
+        'data' => ArrayHelper::map(StatusUser::find()->all(), 'id','status'),
         //'language' => 'de',
         'options' => ['placeholder' => '...'],
         'pluginOptions' => [

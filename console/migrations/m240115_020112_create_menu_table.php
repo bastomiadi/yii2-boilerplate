@@ -28,25 +28,23 @@ class m240115_020112_create_menu_table extends Migration
         ], $tableOptions);
 
         $this->batchInsert('{{%menu}}', ['id', 'name', 'parent', 'route', 'order', 'data'], [
-            [1, 'Rbac', NULL, NULL, 0, NULL],
-            [2, 'Roles', 1, '/admin/role/index', NULL, NULL],
-            [3, 'Permissions', 1, '/admin/permission/index', NULL, NULL],
-            [4, 'Routes', 1, '/admin/route/index', NULL, NULL],
-            [5, 'Menus', 1, '/admin/menu/index', NULL, NULL],
-            [6, 'Assignments', 1, '/admin/assignment/index', NULL, NULL],
-            [7, 'User Management', NULL, NULL, 1, NULL],
-            [8, 'List Users', 7, '/admin/user/index', NULL, NULL],
-            [9, 'Add User', 7, '/admin/user/signup', NULL, NULL],
-            [10, 'Masters', NULL, NULL, NULL, NULL],
-            [11, 'Products', 10, '/products/index', NULL, NULL],
-            [12, 'Categories', 10, '/categories/index', NULL, NULL],
-            [13, 'Gii', 1, '/gii/default/index', NULL, NULL],
-            [14, 'Profile', NULL, '/site/profile', NULL, NULL],
-            [15, 'Dashboard', NULL, '/site/index', NULL, NULL],
-            [16, 'Logs Audit', NULL, '/audit-entry/index', NULL, NULL],
-            [17, 'Users', 10, '/user/index', NULL, NULL],
+            [1, 'User Management', NULL, NULL, NULL, NULL],
+            [2, 'Rbac', 1, NULL, 0, NULL],
+            [3, 'Roles', 2, '/admin/role/index', NULL, NULL],
+            [4, 'Permissions', 2, '/admin/permission/index', NULL, NULL],
+            [5, 'Routes', 2, '/admin/route/index', NULL, NULL],
+            [6, 'Menus', 2, '/admin/menu/index', NULL, NULL],
+            [7, 'Assignments', 2, '/admin/assignment/index', NULL, NULL],
+            [8, 'List Users', 1, '/user/index', NULL, NULL],
+            [9, 'Masters', NULL, NULL, NULL, NULL],
+            [10, 'Products', 9, '/products/index', NULL, NULL],
+            [11, 'Categories', 9, '/categories/index', NULL, NULL],
+            [12, 'Gii', 1, '/gii/default/index', NULL, NULL],
+            [13, 'Profile', NULL, '/site/profile', NULL, NULL],
+            [14, 'Dashboard', NULL, '/site/index', NULL, NULL],
+            [15, 'Logs Audit', NULL, '/audit-entry/index', NULL, NULL],
+            [16, 'Status User', 1, '/status-user/index', NULL, NULL],
         ]);
-        
     }
 
     /**
