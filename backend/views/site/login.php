@@ -1,7 +1,9 @@
 <?php
 
-use yii\captcha\Captcha;
+use common\components\CaptchaRefreshable;
 use yii\helpers\Html;
+$this->title = 'Login';
+// $this->params['breadcrumbs'] = [['label' => $this->title]];
 ?>
 <div class="card">
     <div class="card-body login-card-body">
@@ -27,13 +29,17 @@ use yii\helpers\Html;
             ->label(false)
             ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
 
-        <?= $form->field($model, 'verifyCode')->widget(Captcha::class, [
-                'captchaAction' => 'site/captcha',
-                'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                'imageOptions' => [
-                    'id' => 'my-captcha-image'
-                ]
-        ])->label(false) ?>
+        <?php 
+        // $form->field($model, 'verifyCode')->widget(Captcha::class, [
+        //         'captchaAction' => 'site/captcha',
+        //         'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+        //         'imageOptions' => [
+        //             'id' => 'captcha-login'
+        //         ]
+        // ])->label(false) 
+        ?>
+
+        <?= $form->field($model, 'verifyCode')->widget(CaptchaRefreshable::class)->label(false) ?>
         
         <div class="row">
             <div class="col-8">
@@ -77,3 +83,11 @@ use yii\helpers\Html;
     </div>
     <!-- /.login-card-body -->
 </div>
+<?php $this->registerJs("
+    $('#captcha-login').on('click', function(e){
+        e.preventDefault();
+        //console.log(e);
+        $('#captcha-login img').yiiCaptcha('refresh');
+
+    })
+"); ?>

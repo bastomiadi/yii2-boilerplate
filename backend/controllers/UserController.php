@@ -2,19 +2,19 @@
 
 namespace backend\controllers;
 
+use \yii\web\Response;
 use common\models\v1\AuthAssignment;
 use common\models\v1\AuthItem;
 use common\models\v1\Profiles;
-use Yii;
-use common\models\v1\User;
 use common\models\v1\Search\UserSearch;
+use common\models\v1\User;
 use frontend\models\SignupForm;
+use Yii;
 use yii\base\Model;
+use yii\filters\VerbFilter;
+use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use \yii\web\Response;
-use yii\helpers\Html;
 
 /**
  * UserController implements the CRUD actions for User model.

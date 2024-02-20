@@ -1,10 +1,10 @@
 <?php
-use yii\helpers\Url;
-use yii\helpers\Html;
-use yii\bootstrap4\Modal;
 use kartik\grid\GridView;
-use yii2ajaxcrud\ajaxcrud\CrudAsset;
 use yii2ajaxcrud\ajaxcrud\BulkButtonWidget;
+use yii2ajaxcrud\ajaxcrud\CrudAsset;
+use yii\bootstrap4\Modal;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\v1\Search\CategoriesSearch */

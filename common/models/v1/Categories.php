@@ -3,9 +3,9 @@
 namespace common\models\v1;
 
 use ruturajmaniyar\mod\audit\behaviors\AuditEntryBehaviors;
-use Yii;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
+use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;

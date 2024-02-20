@@ -1,6 +1,7 @@
 <?php
 namespace common\components;
 
+use Yii;
 use yii\captcha\CaptchaAction;
 
 class MathCaptchaAction extends CaptchaAction

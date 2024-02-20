@@ -1,6 +1,7 @@
 <?php
 
 use common\models\v1\Categories;
+use common\models\v1\Products;
 use common\models\v1\User;
 use yii\db\Expression;
 use yii\db\Migration;
@@ -15,7 +16,7 @@ class m240116_071247_seeds_products_table extends Migration
 
     function __construct() {
         $this->faker = \Faker\Factory::create();
-        $this->count = 1000000;
+        $this->count = 1000;
         $this->chunk = 1000;
     }
 
@@ -39,12 +40,43 @@ class m240116_071247_seeds_products_table extends Migration
             $data[$i]['deleted_by'] = null;
         }
 
-        $chunk_data = array_chunk($data, $this->chunk);
-        if (isset($chunk_data) && !empty($chunk_data)){
-            foreach ($chunk_data as $key => $value) {
-                $this->batchInsert('{{%products}}', ['product_name', 'category', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], $value);
+        // $chunk_data = array_chunk($data, $this->chunk);
+        // if (isset($chunk_data) && !empty($chunk_data)){
+        //     foreach ($chunk_data as $key => $value) {
+        //         $this->batchInsert('{{%products}}', ['product_name', 'category', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], $value);
+        //     }
+        // }
+
+        // Specify the size of each chunk
+        $chunkSize = 100; // You can adjust this based on your needs
+
+        // Get the database connection
+        $db = Yii::$app->db;
+
+        // Start a database transaction
+        $transaction = $db->beginTransaction();
+
+        try {
+
+            // Loop through the data in chunks
+            foreach (array_chunk($data, $chunkSize) as $chunk) {
+                // Use batchInsert to insert the chunk into the database
+                $db->createCommand()->batchInsert('{{%products}}', ['product_name', 'category', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], $chunk)->execute();
             }
+
+            // Commit the transaction
+            $transaction->commit();
+
+            // Do any other necessary post-insertion tasks
+
+        } catch (\Exception $e) {
+            // If an exception occurs, roll back the transaction
+            $transaction->rollBack();
+
+            // Handle the exception as needed
+            throw $e;
         }
+
     }
 
     /**

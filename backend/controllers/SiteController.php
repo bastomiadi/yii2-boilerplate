@@ -6,8 +6,8 @@ use common\models\LoginForm;
 use common\models\v1\Profiles;
 use Yii;
 use yii\bootstrap4\Html;
-use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Response;
@@ -58,7 +58,8 @@ class SiteController extends Controller
                 'class' => \yii\web\ErrorAction::class,
             ],
             'captcha' => [
-                'class' => \common\components\MathCaptchaAction::class,
+                //'class' => \common\components\MathCaptchaAction::class,
+                'class' => \common\components\CaptchaRefreshableAction::class,
             ],
         ];
     }
@@ -80,6 +81,8 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        $this->createAction('captcha')->getVerifyCode(true);
+        
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }

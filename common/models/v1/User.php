@@ -4,8 +4,8 @@ namespace common\models\v1;
 
 use mdm\admin\models\AuthItem;
 use ruturajmaniyar\mod\audit\behaviors\AuditEntryBehaviors;
-use Yii;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
+use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;

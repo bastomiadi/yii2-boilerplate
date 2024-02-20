@@ -31,7 +31,8 @@
         "kartik-v/yii2-datecontrol": "dev-master",
         "ruturajmaniyar/yii2-audit-log": "dev-master",
         "wbraganca/yii2-dynamicform": "*",
-        "buttflattery/yii2-formwizard": "@dev"
+        "buttflattery/yii2-formwizard": "@dev",
+        "kartik-v/yii2-icons": "^1.4"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
