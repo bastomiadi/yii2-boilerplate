@@ -39,7 +39,7 @@ $this->title = 'Login';
         // ])->label(false) 
         ?>
 
-        <?= $form->field($model, 'verifyCode')->widget(CaptchaRefreshable::class)->label(false) ?>
+        <?php //echo $form->field($model, 'verifyCode')->widget(CaptchaRefreshable::class)->label(false) ?>
         
         <div class="row">
             <div class="col-8">

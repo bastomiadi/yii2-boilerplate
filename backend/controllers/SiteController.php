@@ -29,7 +29,8 @@ class SiteController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['login', 'error', 'captcha'],
+                        //'actions' => ['login', 'error', 'captcha'],
+                        'actions' => ['login', 'error'],
                         'allow' => true,
                     ],
                     [
@@ -57,10 +58,10 @@ class SiteController extends Controller
             'error' => [
                 'class' => \yii\web\ErrorAction::class,
             ],
-            'captcha' => [
-                //'class' => \common\components\MathCaptchaAction::class,
-                'class' => \common\components\CaptchaRefreshableAction::class,
-            ],
+            // 'captcha' => [
+            //     //'class' => \common\components\MathCaptchaAction::class,
+            //     'class' => \common\components\CaptchaRefreshableAction::class,
+            // ],
         ];
     }
 
@@ -81,7 +82,7 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        $this->createAction('captcha')->getVerifyCode(true);
+        //$this->createAction('captcha')->getVerifyCode(true);
         
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -90,7 +91,7 @@ class SiteController extends Controller
         $this->layout = 'blank';
 
         $model = new LoginForm();
-        $model->scenario = 'web';
+        //$model->scenario = 'web';
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
