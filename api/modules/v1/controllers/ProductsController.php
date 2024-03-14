@@ -4,9 +4,11 @@ namespace api\modules\v1\controllers;
 
 use bizley\jwt\JwtHttpBearerAuth;
 use common\models\User;
+use common\models\v1\Products;
 use common\models\v1\Search\ProductsSearch;
 use Yii;
 use yii\rest\Controller;
+use yii\web\NotFoundHttpException;
 
 /**
  * Default controller for the `v1` module
@@ -36,6 +38,9 @@ class ProductsController extends Controller
     {
         return [
             'index' => ['GET'],
+            'create' => ['POST'],
+            'update' => ['PUT','PATCH'],
+            'delete' => ['delete'],
             'data' => ['POST'],
         ];
     }
@@ -66,6 +71,35 @@ class ProductsController extends Controller
           }
     }
 
+    public function actionCreate()
+    {
+        $model = new Products();
+        //$model->scenario = 'create';
+        //$u_id = Yii::$app->user->identity->id;
+
+        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '')) {
+            $model->save();
+        } else {
+            $model->validate();
+        }
+
+        return $model;
+    }
+
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        //$model->scenario = 'update';
+
+        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '')) {
+            $model->save();
+        } else {
+            $model->validate();
+        }
+
+        return $model;
+    }
+
     //hanya untuk tes token
     public function actionData()
     {
@@ -81,5 +115,34 @@ class ProductsController extends Controller
             'data' => User::find()->all(),
             'success' => true,
         ]);
+    }
+
+    public function actionDelete($id)
+    {
+        $model = $this->findModel($id);
+
+        // print_r($model);
+        // die;
+        //$model->scenario = 'delete';
+
+        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '')) {
+            $model->delete();
+        } else {
+            $model->validate();
+        }
+
+        return $model;
+    }
+
+    protected function findModel($id)
+    {
+        if (($model = Products::findOne($id)) !== null)
+        {
+            return $model;
+        }
+        else
+        {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
     }
 }

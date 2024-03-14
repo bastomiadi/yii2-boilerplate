@@ -9,6 +9,7 @@ use common\models\v1\Classes;
 use common\models\v1\search\ClassesSearch;
 use Yii;
 use yii\rest\Controller;
+use yii\web\NotFoundHttpException;
 
 /**
  * Default controller for the `v1` module
@@ -38,8 +39,10 @@ class ClassesController extends Controller
     {
         return [
             'index' => ['GET'],
+            'create' => ['POST'],
+            'update' => ['PUT','PATCH'],
+            'delete' => ['delete'],
             'data' => ['POST'],
-            'create' => ['POST']
         ];
     }
 
@@ -89,17 +92,58 @@ class ClassesController extends Controller
     public function actionCreate()
     {
         $model = new Classes();
-        
+        //$model->scenario = 'create';
+        //$u_id = Yii::$app->user->identity->id;
+
         if ($model->load(Yii::$app->getRequest()->getBodyParams(), '')) {
-            $response = [
-                'isSuccess' => 200,
-                'message' => 'Sukses input data',
-                //'data' => Alamat::getAlamatByUid($model->user_id),
-            ];
-            return $response;
+            $model->save();
         } else {
             $model->validate();
+        }
+
+        return $model;
+    }
+
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        //$model->scenario = 'update';
+
+        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '')) {
+            $model->save();
+        } else {
+            $model->validate();
+        }
+
+        return $model;
+    }
+
+    public function actionDelete($id)
+    {
+        $model = $this->findModel($id);
+
+        // print_r($model);
+        // die;
+        //$model->scenario = 'delete';
+
+        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '')) {
+            $model->delete();
+        } else {
+            $model->validate();
+        }
+
+        return $model;
+    }
+
+    protected function findModel($id)
+    {
+        if (($model = Classes::findOne($id)) !== null)
+        {
             return $model;
+        }
+        else
+        {
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 }
