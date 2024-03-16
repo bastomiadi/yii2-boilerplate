@@ -2,10 +2,10 @@
 
 namespace common\models\v1\Search;
 
+use common\models\v1\Categories;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\v1\Categories;
 
 /**
  * CategoriesSearch represents the model behind the search form about `common\models\v1\Categories`.
@@ -18,7 +18,7 @@ class CategoriesSearch extends Categories
     public function rules()
     {
         return [
-            [['id', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
+            [['id', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by', 'isDeleted', 'restored_by', 'restored_at'], 'integer'],
             [['category_name', 'isDeleted'], 'safe'],
         ];
     }
@@ -63,6 +63,9 @@ class CategoriesSearch extends Categories
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
             'deleted_by' => $this->deleted_by,
+            'isDeleted' => $this->isDeleted,
+            'restored_by' => $this->restored_by,
+            'restored_at' => $this->restored_at,
         ]);
 
         $query->andFilterWhere(['like', 'category_name', $this->category_name])

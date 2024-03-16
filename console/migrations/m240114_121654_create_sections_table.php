@@ -29,6 +29,8 @@ class m240114_121654_create_sections_table extends Migration
             'updated_at' => $this->bigInteger()->notNull(),
             'deleted_at' => $this->bigInteger(),
             'isDeleted' => $this->boolean()->notNull()->defaultValue(0),
+            'restored_by' => $this->bigInteger()->null(),
+            'restored_at' => $this->bigInteger(),
         ],$tableOptions);
 
          // add foreign key for table `classes`
@@ -99,6 +101,13 @@ class m240114_121654_create_sections_table extends Migration
         // create index for column `deleted_by`
         $this->createIndex(
             '{{%idx-sections-deleted_by}}',
+            '{{%user}}',
+            'id'
+        );
+
+        // create index for column `restored_by`
+        $this->createIndex(
+            '{{%idx-sections-restored_by}}',
             '{{%user}}',
             'id'
         );

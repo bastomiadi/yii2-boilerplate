@@ -46,7 +46,9 @@ class Sections extends \yii\db\ActiveRecord
             'created_at' => fn () => $this->created_at ? \Yii::$app->formatter->asDatetime($this->created_at, 'long') : null,
             'updated_at' => fn () => $this->updated_at ? \Yii::$app->formatter->asDatetime($this->updated_at, 'long') : null,
             'deleted_at' => fn () => $this->deleted_at ? \Yii::$app->formatter->asDatetime($this->deleted_at, 'long') : null,
-            'isDeleted'
+            'isDeleted',
+            'restored_by' => fn () => $this->restoredBy->username ?? $this->restoredBy,
+            'restored_at' => fn () => $this->restored_at ? \Yii::$app->formatter->asDatetime($this->restored_at, 'long') : null,
         ];
     }
 
@@ -73,6 +75,13 @@ class Sections extends \yii\db\ActiveRecord
                     'deleted_at' => new Expression('unix_timestamp(NOW())'),
                     'deleted_by' => Yii::$app->user->identity->id ?? $this->deletedBy
                 ],
+                'restoreAttributeValues' => [
+                    'isDeleted' => false,
+                    'deleted_at' => NULL,
+                    'deleted_by' => NULL,
+                    'restored_by' =>  Yii::$app->user->identity->id ?? $this->restoredBy,
+                    'restored_at' => new Expression('unix_timestamp(NOW())'),
+                ],
                 'replaceRegularDelete' => true // mutate native `delete()` method
             ],
             'auditEntryBehaviors' => [
@@ -88,13 +97,14 @@ class Sections extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'classes'], 'required'],
-            [['classes', 'created_by', 'updated_by', 'deleted_by', 'isDeleted'], 'integer'],
+            [['classes', 'created_by', 'updated_by', 'deleted_by', 'isDeleted', 'restored_by', 'restored_at'], 'integer'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['name'], 'string', 'max' => 255],
             [['classes'], 'exist', 'skipOnError' => true, 'targetClass' => Classes::class, 'targetAttribute' => ['classes' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['deleted_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['deleted_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
+            [['restored_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['restored_by' => 'id']],
         ];
     }
 
@@ -114,6 +124,8 @@ class Sections extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('app', 'Updated At'),
             'deleted_at' => Yii::t('app', 'Deleted At'),
             'isDeleted' => Yii::t('app', 'Is Deleted'),
+            'restored_by' => Yii::t('app', 'Restored By'),
+            'restored_at' => Yii::t('app', 'Restored At'),
         ];
     }
 
@@ -145,6 +157,16 @@ class Sections extends \yii\db\ActiveRecord
     public function getDeletedBy()
     {
         return $this->hasOne(User::class, ['id' => 'deleted_by']);
+    }
+
+    /**
+     * Gets query for [[RestoredBy]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRestoredBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'restored_by']);
     }
 
     /**

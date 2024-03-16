@@ -2,10 +2,10 @@
 
 namespace common\models\v1\Search;
 
+use common\models\v1\Products;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\v1\Products;
 
 /**
  * ProductsSearch represents the model behind the search form about `common\models\v1\Products`.
@@ -18,7 +18,7 @@ class ProductsSearch extends Products
     public function rules()
     {
         return [
-            [['id', 'category', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
+            [['id', 'category', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by', 'restored_by', 'restored_at'], 'integer'],
             [['product_name', 'isDeleted'], 'safe'],
         ];
     }
@@ -64,6 +64,8 @@ class ProductsSearch extends Products
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
             'deleted_by' => $this->deleted_by,
+            'restored_by' => $this->restored_by,
+            'restored_at' => $this->restored_at,
         ]);
 
         $query->andFilterWhere(['like', 'product_name', $this->product_name])

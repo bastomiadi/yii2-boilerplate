@@ -43,6 +43,7 @@ class StudentsController extends Controller
             'update' => ['PUT','PATCH'],
             'delete' => ['DELETE'],
             'data' => ['POST'],
+            'restore' => ['POST'],
         ];
     }
 
@@ -125,7 +126,21 @@ class StudentsController extends Controller
         try {
             $model->delete();
             $transaction->commit();
-            return ['message' => 'deleted successfully.', 'data'=> $this->findModel($id)];   
+            return ['message' => 'deleted successfully.', 'data' => $this->findModel($id)];   
+        } catch (\Throwable $e) { // PHP >= 7.0
+            $transaction->rollBack();
+            throw $e;
+        }
+    }
+
+    public function actionRestore($id)
+    {
+        $model = $this->findModel($id);
+        $transaction = $model->getDb()->beginTransaction();
+        try {
+            $model->restore();
+            $transaction->commit();
+            return ['message' => 'restore successfully.', 'data' => $this->findModel($id)];   
         } catch (\Throwable $e) { // PHP >= 7.0
             $transaction->rollBack();
             throw $e;

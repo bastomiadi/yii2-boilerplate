@@ -2,9 +2,9 @@
 
 namespace common\models\v1\search;
 
+use common\models\v1\Sections;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\v1\Sections;
 
 /**
  * SectionsSearch represents the model behind the search form of `common\models\v1\Sections`.
@@ -17,7 +17,7 @@ class SectionsSearch extends Sections
     public function rules()
     {
         return [
-            [['id', 'classes', 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at', 'isDeleted'], 'integer'],
+            [['id', 'classes', 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at', 'isDeleted', 'restored_by', 'restored_at'], 'integer'],
             [['name'], 'safe'],
         ];
     }
@@ -67,6 +67,8 @@ class SectionsSearch extends Sections
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
             'isDeleted' => $this->isDeleted,
+            'restored_by' => $this->restored_by,
+            'restored_at' => $this->restored_at,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);

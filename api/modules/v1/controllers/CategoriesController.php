@@ -42,7 +42,8 @@ class CategoriesController extends Controller
             'index' => ['GET'],
             'create' => ['POST'],
             'update' => ['PUT','PATCH'],
-            'delete' => ['delete']
+            'delete' => ['DELETE'],
+            'restore' => ['POST'],
         ];
     }
 
@@ -109,6 +110,20 @@ class CategoriesController extends Controller
             $model->delete();
             $transaction->commit();
             return ['message' => 'deleted successfully.', 'data'=> $this->findModel($id)];   
+        } catch (\Throwable $e) { // PHP >= 7.0
+            $transaction->rollBack();
+            throw $e;
+        }
+    }
+
+    public function actionRestore($id)
+    {
+        $model = $this->findModel($id);
+        $transaction = $model->getDb()->beginTransaction();
+        try {
+            $model->restore();
+            $transaction->commit();
+            return ['message' => 'restore successfully.', 'data' => $this->findModel($id)];   
         } catch (\Throwable $e) { // PHP >= 7.0
             $transaction->rollBack();
             throw $e;

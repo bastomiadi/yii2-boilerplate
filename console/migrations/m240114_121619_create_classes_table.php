@@ -28,6 +28,8 @@ class m240114_121619_create_classes_table extends Migration
             'updated_at' => $this->bigInteger()->notNull(),
             'deleted_at' => $this->bigInteger(),
             'isDeleted' => $this->boolean()->notNull()->defaultValue(0),
+            'restored_by' => $this->bigInteger()->null(),
+            'restored_at' => $this->bigInteger(),
         ], $tableOptions);
         
         // add foreign key for table `user`
@@ -80,6 +82,13 @@ class m240114_121619_create_classes_table extends Migration
         // create index for column `deleted_by`
         $this->createIndex(
             '{{%idx-classes-deleted_by}}',
+            '{{%user}}',
+            'id'
+        );
+
+        // create index for column `restored_by`
+        $this->createIndex(
+            '{{%idx-classes-restored_by}}',
             '{{%user}}',
             'id'
         );

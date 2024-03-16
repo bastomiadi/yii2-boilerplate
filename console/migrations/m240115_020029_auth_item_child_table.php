@@ -85,6 +85,7 @@ class m240115_020029_auth_item_child_table extends Migration
             ['admin_restful','/v1/students/create'],
             ['admin_restful','/v1/students/update'],
             ['admin_restful','/v1/students/delete'],
+            ['admin_restful','/v1/students/restore'],
 
             ['admin', 'admin_web'],
             ['admin', 'member_web'],

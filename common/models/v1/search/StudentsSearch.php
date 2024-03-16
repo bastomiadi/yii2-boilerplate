@@ -2,9 +2,9 @@
 
 namespace common\models\v1\search;
 
+use common\models\v1\Students;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\v1\Students;
 
 /**
  * StudentsSearch represents the model behind the search form of `common\models\v1\Students`.
@@ -17,7 +17,7 @@ class StudentsSearch extends Students
     public function rules()
     {
         return [
-            [['id', 'sections', 'classes', 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at', 'isDeleted'], 'integer'],
+            [['id', 'sections', 'classes', 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at', 'isDeleted', 'restored_by', 'restored_at'], 'integer'],
             [['name', 'email', 'address', 'phone_number'], 'safe'],
         ];
     }
@@ -68,6 +68,8 @@ class StudentsSearch extends Students
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
             'isDeleted' => $this->isDeleted,
+            'restored_by' => $this->restored_by,
+            'restored_at' => $this->restored_at,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
