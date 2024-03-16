@@ -104,8 +104,15 @@ class CategoriesController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $model->delete();
-        return ['message' => 'deleted successfully.', 'data'=> $this->findModel($id)];
+        $transaction = $model->getDb()->beginTransaction();
+        try {
+            $model->delete();
+            $transaction->commit();
+            return ['message' => 'deleted successfully.', 'data'=> $this->findModel($id)];   
+        } catch (\Throwable $e) { // PHP >= 7.0
+            $transaction->rollBack();
+            throw $e;
+        }
     }
 
     protected function findModel($id)
