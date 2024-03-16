@@ -7,6 +7,7 @@ use common\models\User;
 use common\models\v1\search\StudentsSearch;
 use common\models\v1\Students;
 use Yii;
+use yii\db\StaleObjectException;
 use yii\rest\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -120,18 +121,8 @@ class StudentsController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-
-        // print_r($model);
-        // die;
-        //$model->scenario = 'delete';
-
-        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '')) {
-            $model->delete();
-        } else {
-            $model->validate();
-        }
-
-        return $model;
+        $model->delete();
+        return ['message' => 'deleted successfully.', 'data'=> $this->findModel($id)];
     }
 
     protected function findModel($id)

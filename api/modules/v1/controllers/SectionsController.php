@@ -120,18 +120,8 @@ class SectionsController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-
-        // print_r($model);
-        // die;
-        //$model->scenario = 'delete';
-
-        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '')) {
-            $model->delete();
-        } else {
-            $model->validate();
-        }
-
-        return $model;
+        $model->delete();
+        return ['message' => 'deleted successfully.', 'data'=> $this->findModel($id)];
     }
 
     protected function findModel($id)
