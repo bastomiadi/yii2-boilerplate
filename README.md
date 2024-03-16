@@ -10,6 +10,7 @@ Feature
 * Ajax Crud [Ajax Crud](https://github.com/biladina/yii2-ajaxcrud)
 * Role-based permissions (RBAC) and Menu [yii2 Admin by mdmsoft](https://github.com/mdmsoft/yii2-admin)
 * Kartik-v Widgets [Kartik-v](https://github.com/kartik-v?tab=repositories)
+* Supported Php 8.1 Version
 * etc.
 
 This project is still early in its development... please feel free to contribute!
