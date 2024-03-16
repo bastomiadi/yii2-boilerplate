@@ -48,6 +48,8 @@ class Profiles extends \yii\db\ActiveRecord
             'first_name', 
             'gender' => fn () => $this->gender0->gender_name ?? $this->gender0,
             'marital' => fn () => $this->marital0->marital_name ?? $this->marital0,
+            'profile_image',
+            'date_of_birth',
             'created_by' => fn () => $this->createdBy->username ?? $this->createdBy,
             'updated_by' => fn () => $this->updatedBy->username ?? $this->createdBy,
             'deleted_by' => fn () => $this->deletedBy->username ?? $this->deletedBy,
