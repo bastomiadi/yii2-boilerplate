@@ -30,9 +30,10 @@
         "kartik-v/yii2-widget-datepicker": "dev-master",
         "kartik-v/yii2-datecontrol": "dev-master",
         "ruturajmaniyar/yii2-audit-log": "dev-master",
-        "wbraganca/yii2-dynamicform": "*",
         "buttflattery/yii2-formwizard": "@dev",
-        "kartik-v/yii2-icons": "^1.4"
+        "kartik-v/yii2-icons": "^1.4",
+        "phpoffice/phpspreadsheet": "^2.1",
+        "yii2-extensions/dynamicform": "^1.0.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
