@@ -127,6 +127,17 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
 <?php endforeach; ?>
         ];
     }
+
+    /**
+     * @return \yii\db\ActiveQuery|SoftDeleteQueryBehavior
+     */
+    public static function find()
+    {
+        $query = parent::find();
+        $query->attachBehavior('softDelete', SoftDeleteQueryBehavior::class);
+        return $query;
+    }
+    
 <?php foreach ($relations as $name => $relation): ?>
 
     /**
