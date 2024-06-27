@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
@@ -26,16 +27,23 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'packet_name',
-            'total_price',
-            'description:ntext',
-            'discount_percent',
-            'discount_rupiah',
-        ],
-    ]) ?>
+    <div class="card mb-4" style="width: 40rem;">
+    <h5 class="card-header"><?= Html::encode($model->packet_name) ?></h5>
+    <div class="card-body">
+        <?php if (!empty($model->packetsDetails)): ?>
+            <ul class="list-group list-group-flush">
+                <?php foreach ($model->packetsDetails as $packetDetail): ?>
+                    <li class="list-group-item"> * <?= Html::encode($packetDetail->name_product_rsgh) ?></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+        <br>
+            <p class="card-text">
+              <h3>  Rp. <?= Html::encode(number_format($model->total_price)) ?> </h3>
+            </p>
+        <a href="<?= Url::to(['update', 'id' => $model->id]) ?>" class="btn btn-primary">Update Packet</a>
+        <a href="<?= Url::to(['offer', 'id' => $model->id]) ?>" class="btn btn-danger">Make Offer</a>
+    </div>
+    </div>
 
 </div>

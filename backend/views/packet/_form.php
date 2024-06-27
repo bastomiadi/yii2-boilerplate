@@ -2,13 +2,12 @@
 
 use common\models\v1\ProductsRsgh;
 use kartik\form\ActiveForm;
+use kartik\money\MaskMoney;
 use kartik\select2\Select2;
 use Yii2\Extensions\DynamicForm\DynamicFormWidget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\web\JsExpression;
-use yii\web\View;
 
 /** @var yii\web\View $this */
 /** @var common\models\v1\Packet $model */
@@ -17,53 +16,6 @@ use yii\web\View;
 /* @var $this yii\web\View */
 /* @var $modelCustomer app\modules\yii2extensions\models\Customer */
 /* @var $modelsDetailPacket app\modules\yii2extensions\models\Address */
-
-// $js = '
-// jQuery(".dynamicform_wrapper").on("afterInsert", function(e, item) {
-//     jQuery(".dynamicform_wrapper .panel-title-address").each(function(index) {
-//         jQuery(this).html("Product: " + (index + 1))
-//         //console.log(index);
-//     });
-// });
-
-// jQuery(".dynamicform_wrapper").on("afterDelete", function(e) {
-//     jQuery(".dynamicform_wrapper .panel-title-address").each(function(index) {
-//         jQuery(this).html("Product: " + (index + 1))
-//     });
-// });
-// ';
-
-// $this->registerJs($js);
-
-// $data = [
-//     ['id' => '1', 'text' => 'Option 1', 'description' => 'This is option 1'],
-//     ['id' => '2', 'text' => 'Option 2', 'description' => 'This is option 2'],
-//     ['id' => '3', 'text' => 'Option 3', 'description' => 'This is option 3']
-// ];
-
-// // Encode the data as a JSON string
-// $jsonData = json_encode($data);
-
-// $this->registerJsVar('data', $jsonData, View::POS_HEAD);
-
-// // JavaScript for custom templates
-// $customScript = <<<JS
-// function formatData(data) {
-//     if (!data.id) {
-//         return data.text;
-//     }
-//     var \$data = \$(
-//         '<div><strong>' + data.id + '</strong><br><small>' + data.description + '</small></div>'
-//     );
-//     return \$data;
-// }
-
-// function formatDataSelection(data) {
-//     return data.text;
-// }
-// JS;
-
-// $this->registerJs($customScript, View::POS_HEAD);
 ?>
 
 <div class="packet-form">
@@ -124,7 +76,9 @@ use yii\web\View;
                             <div class="row">
                                 <div class="col-sm-3">
                                 <?php echo $form->field($modelDetailPacket, "[{$index}]id_product_rsgh")->widget(Select2::classname(), [
-                                    'data' => ArrayHelper::map(ProductsRsgh::find()->orderBy(['created_at' => SORT_DESC, 'id'=> SORT_DESC])->all(), 'id','NAMA_PRODUK'),
+                                    'data' => ArrayHelper::map(ProductsRsgh::find()->orderBy(['created_at' => SORT_DESC, 'id'=> SORT_DESC, 'RKLS_NAMA' => SORT_ASC])->all(), 'id', function($model) {
+                                        return $model->NAMA_PRODUK . ' : Rp. ' . number_format($model->TOTAL_TARIF);
+                                    }, 'RKLS_NAMA'),
                                     //'data' => $data,
                                     'options' => ['placeholder' => 'Select a Product ...', 'class'=>'dynamic-product-id'],
                                     'pluginEvents' => [
@@ -149,7 +103,14 @@ use yii\web\View;
                                     <?= $form->field($modelDetailPacket, "[{$index}]normal_price")->textInput(['maxlength' => true, 'readonly' => true]) ?>
                                 </div>
                                 <div class="col-sm-3">
-                                    <?= $form->field($modelDetailPacket, "[{$index}]custom_price")->textInput(['maxlength' => true]) ?>
+                                    <?php /*echo $form->field($modelDetailPacket, "[{$index}]custom_price")->widget(MaskMoney::classname(), [
+                                        'pluginOptions' => [
+                                            'prefix' => 'Rp ',
+                                            // 'suffix' => ' ¢',
+                                            'allowNegative' => false
+                                        ]
+                                    ]); */?>
+                                    <?php echo $form->field($modelDetailPacket, "[{$index}]custom_price")->textInput(['maxlength' => true]) ?>
                                 </div>
                         </div>
                     </div>
@@ -179,10 +140,9 @@ use yii\web\View;
             <div class="form-group">
                 <?= Html::submitButton($modelDetailPacket->isNewRecord ? 'Create' : 'Update', ['class' => 'btn btn-primary']) ?>
             </div>
+            </div>
         </div>
     </div>
-
-    
 
     <?php ActiveForm::end(); ?>
 

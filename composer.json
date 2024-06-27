@@ -31,9 +31,12 @@
         "kartik-v/yii2-datecontrol": "dev-master",
         "ruturajmaniyar/yii2-audit-log": "dev-master",
         "buttflattery/yii2-formwizard": "@dev",
-        "kartik-v/yii2-icons": "^1.4",
+        "kartik-v/yii2-icons": "@dev",
         "phpoffice/phpspreadsheet": "^2.1",
-        "yii2-extensions/dynamicform": "^1.0.0"
+        "yii2-extensions/dynamicform": "^1.0.0",
+        "kartik-v/yii2-money": "dev-master",
+        "2amigos/yii2-tinymce-widget": "~1.1",
+        "mdmsoft/yii2-autonumber": "~1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

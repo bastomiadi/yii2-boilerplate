@@ -14,6 +14,7 @@ class m240623_104415_create_offers_table extends Migration
     {
         $this->createTable('{{%offers}}', [
             'id' => $this->bigPrimaryKey(),
+            'letter_code' => $this->string(255)->notNull(),
             'to' => $this->string(255)->notNull(),
             'regarding' => $this->string(255)->notNull(),
             'description' => $this->string(255)->notNull(),

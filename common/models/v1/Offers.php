@@ -13,6 +13,7 @@ use yii\db\Expression;
  * This is the model class for table "{{%offers}}".
  *
  * @property int $id
+ * @property string $letter_code
  * @property string $to
  * @property string $regarding
  * @property string $description
@@ -61,6 +62,17 @@ class Offers extends \yii\db\ActiveRecord
             'auditEntryBehaviors' => [
                 'class' => AuditEntryBehaviors::class
             ],
+            'mdm\autonumber\Behavior' => 
+            [
+                'class' => 'mdm\autonumber\Behavior',
+                'attribute' => 'letter_code', // required
+                // 'group' => $this->id_branch, // optional
+                'value' => function () {
+                    $model = $this->romawi;
+                    return '?' . '/MRKT/RSGH/' . $model . '/' . date('Y'); // Example format for auto number
+                },
+                'digit' => 4 // optional, default to null. 
+            ],
         ];
     }
 
@@ -73,7 +85,7 @@ class Offers extends \yii\db\ActiveRecord
             [['to', 'regarding', 'description', 'content', 'officer'], 'required'],
             [['content'], 'string'],
             [['officer', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by', 'isDeleted'], 'integer'],
-            [['to', 'regarding', 'description'], 'string', 'max' => 255],
+            [['letter_code', 'to', 'regarding', 'description'], 'string', 'max' => 255],
             [['officer'], 'exist', 'skipOnError' => true, 'targetClass' => Officer::class, 'targetAttribute' => ['officer' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
@@ -88,6 +100,7 @@ class Offers extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'letter_code' => 'Letter Code',
             'to' => 'To',
             'regarding' => 'Regarding',
             'description' => 'Description',
@@ -142,4 +155,33 @@ class Offers extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
+
+    public static function getRomawi(){ 
+        $n = intval(date('m')); 
+        $hasil = ''; 
+     
+        $nomor_romawi = array( 
+            'M'  => 1000, 
+            'CM' => 900, 
+            'D'  => 500, 
+            'CD' => 400, 
+            'C'  => 100, 
+            'XC' => 90, 
+            'L'  => 50, 
+            'XL' => 40, 
+            'X'  => 10, 
+            'IX' => 9, 
+            'V'  => 5, 
+            'IV' => 4, 
+            'I'  => 1); 
+    
+        foreach ($nomor_romawi as $romawi => $nom){ 
+            $cocok = intval($n / $nom); 
+            $hasil .= str_repeat($romawi, $cocok); 
+            $n = $n % $nom; 
+        } 
+     
+        return $hasil; 
+    } 
+    
 }
