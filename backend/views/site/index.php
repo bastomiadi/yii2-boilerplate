@@ -7,17 +7,17 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
         <div class="col-lg-6">
             <?= \hail812\adminlte\widgets\Alert::widget([
                 'type' => 'success',
-                'body' => '<h3>Congratulations!</h3>',
+                'body' => '<h3>Selamat Datang!</h3>',
             ]) ?>
-            <?= \hail812\adminlte\widgets\Callout::widget([
+            <!-- <?= \hail812\adminlte\widgets\Callout::widget([
                 'type' => 'danger',
                 'head' => 'I am a danger callout!',
                 'body' => 'There is a problem that we need to fix. A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.'
-            ]) ?>
+            ]) ?> -->
         </div>
     </div>
 
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-12 col-sm-6 col-md-3">
             <?= \hail812\adminlte\widgets\InfoBox::widget([
                 'text' => 'CPU Traffic',
@@ -25,9 +25,9 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
                 'icon' => 'fas fa-cog',
             ]) ?>
         </div>
-    </div>
+    </div> -->
 
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-4 col-sm-6 col-12">
             <?= \hail812\adminlte\widgets\InfoBox::widget([
                 'text' => 'Messages',
@@ -51,9 +51,9 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
                 'icon' => 'far fa-copy',
             ]) ?>
         </div>
-    </div>
+    </div> -->
 
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-4 col-sm-6 col-12">
             <?= \hail812\adminlte\widgets\InfoBox::widget([
                 'text' => 'Bookmarks',
@@ -95,9 +95,9 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
                 'loadingStyle' => true
             ]) ?>
         </div>
-    </div>
+    </div> -->
 
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-lg-4 col-md-6 col-sm-6 col-12">
             <?= \hail812\adminlte\widgets\SmallBox::widget([
                 'title' => '150',
@@ -130,5 +130,5 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
                 'loadingStyle' => true
             ]) ?>
         </div>
-    </div>
+    </div> -->
 </div>
