@@ -127,6 +127,7 @@ return [
             ],
         ],
         'errorHandler' => [
+            // 'class' => 'common\components\CustomErrorAction',
             'errorAction' => 'site/error',
         ],
         'urlManager' => [
