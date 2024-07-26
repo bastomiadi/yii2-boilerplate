@@ -79,6 +79,9 @@ class m240115_020029_auth_item_child_table extends Migration
             ['member_web', '/gridview/*'],
             ['member_web', '/products/create'],
             ['member_web', '/products/index'],
+            ['member_web', '/site/index'],
+            ['member_web', '/site/logout'],
+            ['member_web', '/site/profile'],
 
             // for restful permission v1
             ['admin_restful','/v1/categories/index'],
