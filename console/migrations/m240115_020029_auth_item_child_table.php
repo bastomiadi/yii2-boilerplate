@@ -44,17 +44,12 @@ class m240115_020029_auth_item_child_table extends Migration
             ['admin_web', '/admin/user/index'],
             ['admin_web', '/admin/user/signup'],
             ['admin_web', '/categories/*'],
-            ['member_web', '/categories/create'],
             ['admin_web', '/categories/index'],
-            ['member_web', '/categories/index'],
             ['admin_web', '/gii/*'],
             ['admin_web', '/gii/default/index'],
             ['admin_web', '/gridview/*'],
-            ['member_web', '/gridview/*'],
             ['admin_web', '/products/*'],
-            ['member_web', '/products/create'],
             ['admin_web', '/products/index'],
-            ['member_web', '/products/index'],
             ['admin_web', '/site/profile'],
             ['admin_web', '/site/index'],
             ['admin_web', '/audit-entry/*'],
@@ -63,8 +58,29 @@ class m240115_020029_auth_item_child_table extends Migration
             ['admin_web', '/user/index'],
             ['admin_web', '/status-user/*'],
             ['admin_web', '/status-user/index'],
+            ['admin_web', '/debug/*'],
+            ['admin_web', '/site/logout'],
+            ['admin_web', '/genders/index'],
+            ['admin_web', '/genders/*'],
+            ['admin_web', '/marital/index'],
+            ['admin_web', '/marital/*'],
+            ['admin_web', '/profiles/index'],
+            ['admin_web', '/profiles/*'],
+            ['admin_web', '/classes/index'],
+            ['admin_web', '/classes/*'],
+            ['admin_web', '/sections/index'],
+            ['admin_web', '/sections/*'],
+            ['admin_web', '/students/index'],
+            ['admin_web', '/students/*'],
 
-            //for restful permission v1
+            // for member web
+            ['member_web', '/categories/create'],
+            ['member_web', '/categories/index'],
+            ['member_web', '/gridview/*'],
+            ['member_web', '/products/create'],
+            ['member_web', '/products/index'],
+
+            // for restful permission v1
             ['admin_restful','/v1/categories/index'],
             ['admin_restful','/v1/categories/create'],
             ['admin_restful','/v1/categories/update'],
@@ -87,12 +103,15 @@ class m240115_020029_auth_item_child_table extends Migration
             ['admin_restful','/v1/students/delete'],
             ['admin_restful','/v1/students/restore'],
 
+            // assign permission to role
             ['admin', 'admin_web'],
             ['admin', 'member_web'],
-            ['member', 'member_web'],
-            ['member', 'member_restful'],
             ['admin', 'admin_restful'],
             ['admin', 'member_restful'],
+
+            // assign permission to role
+            ['member', 'member_web'],
+            ['member', 'member_restful'],
         ]);
     }
 

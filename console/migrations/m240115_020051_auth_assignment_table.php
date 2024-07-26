@@ -35,16 +35,14 @@ class m240115_020051_auth_assignment_table extends Migration
             'FOREIGN KEY ([[item_name]]) REFERENCES {{%auth_item}} ([[name]]) ON DELETE CASCADE ON UPDATE CASCADE',
         ], $tableOptions);
 
-        foreach ($users as $key => $value) {
-            $auth->assign($member, $value->id);
-            //$auth->assign($member_web, $value->id);
-        }
+        // foreach ($users as $key => $value) {
+        //     $auth->assign($member, $value->id);
+        //     //$auth->assign($member_web, $value->id);
+        // }
 
         $this->batchInsert('{{%auth_assignment}}', ['item_name', 'user_id', 'created_at'], [
-            //['admin_web', 1, NULL],
             ['admin', 1, NULL],
-            //['member_web', 2, NULL],
-            //['member', 2, NULL],
+            ['member', 2, NULL],
         ]);
 
     }

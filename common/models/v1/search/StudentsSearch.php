@@ -2,28 +2,29 @@
 
 namespace common\models\v1\search;
 
-use common\models\v1\Students;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use common\models\v1\Students;
 
 /**
- * StudentsSearch represents the model behind the search form of `common\models\v1\Students`.
+ * StudentsSearch represents the model behind the search form about `common\models\v1\Students`.
  */
 class StudentsSearch extends Students
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'sections', 'classes', 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at', 'isDeleted', 'restored_by', 'restored_at'], 'integer'],
-            [['name', 'email', 'address', 'phone_number'], 'safe'],
+            [['id', 'sections', 'classes', 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at', 'restored_by', 'restored_at'], 'integer'],
+            [['name', 'email', 'address', 'phone_number', 'isDeleted'], 'safe'],
         ];
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function scenarios()
     {
@@ -42,8 +43,6 @@ class StudentsSearch extends Students
     {
         $query = Students::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -56,7 +55,6 @@ class StudentsSearch extends Students
             return $dataProvider;
         }
 
-        // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'sections' => $this->sections,
@@ -67,7 +65,6 @@ class StudentsSearch extends Students
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
-            'isDeleted' => $this->isDeleted,
             'restored_by' => $this->restored_by,
             'restored_at' => $this->restored_at,
         ]);
@@ -75,7 +72,8 @@ class StudentsSearch extends Students
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'phone_number', $this->phone_number]);
+            ->andFilterWhere(['like', 'phone_number', $this->phone_number])
+            ->andFilterWhere(['like', 'isDeleted', $this->isDeleted]);
 
         return $dataProvider;
     }

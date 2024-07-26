@@ -68,7 +68,21 @@ class m240115_020019_auth_item_table extends Migration
                ['/user/index', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
                ['/status-user/*', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
                ['/status-user/index', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
-
+               ['/debug/*', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
+               ['/site/logout', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
+               ['/genders/index', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
+               ['/genders/*', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
+               ['/marital/index', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
+               ['/marital/*', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
+               ['/profiles/index', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
+               ['/profiles/*', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
+               ['/classes/index', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
+               ['/classes/*', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
+               ['/sections/index', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
+               ['/sections/*', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
+               ['/students/index', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
+               ['/students/*', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
+               
                //for restful permission v1
                ['/v1/categories/index', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],
                ['/v1/categories/create', 2, NULL, NULL, NULL, new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())')],

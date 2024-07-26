@@ -2,28 +2,29 @@
 
 namespace common\models\v1\search;
 
-use common\models\v1\Sections;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use common\models\v1\Sections;
 
 /**
- * SectionsSearch represents the model behind the search form of `common\models\v1\Sections`.
+ * SectionsSearch represents the model behind the search form about `common\models\v1\Sections`.
  */
 class SectionsSearch extends Sections
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'classes', 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at', 'isDeleted', 'restored_by', 'restored_at'], 'integer'],
-            [['name'], 'safe'],
+            [['id', 'classes', 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at', 'restored_by', 'restored_at'], 'integer'],
+            [['name', 'isDeleted'], 'safe'],
         ];
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function scenarios()
     {
@@ -42,8 +43,6 @@ class SectionsSearch extends Sections
     {
         $query = Sections::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -56,7 +55,6 @@ class SectionsSearch extends Sections
             return $dataProvider;
         }
 
-        // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'classes' => $this->classes,
@@ -66,12 +64,12 @@ class SectionsSearch extends Sections
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
-            'isDeleted' => $this->isDeleted,
             'restored_by' => $this->restored_by,
             'restored_at' => $this->restored_at,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'isDeleted', $this->isDeleted]);
 
         return $dataProvider;
     }
