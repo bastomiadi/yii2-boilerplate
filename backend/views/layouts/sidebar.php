@@ -19,7 +19,7 @@ use yii\debug\models\search\Profile;
                 <img src="<?= Profiles::getProfileImage() ?>" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block"><?= Profiles::getProfileName() ?></a>
+                <a href="#" class="d-block"><?= Yii::$app->user->identity->username ?></a>
             </div>
         </div>
 
@@ -87,9 +87,21 @@ use yii\debug\models\search\Profile;
         </nav> -->
         
         <nav class="mt-2">
+            <?php 
+                $callback = function($menu){
+                    return [
+                        'label' => $menu['name'], 
+                        'url' => [$menu['route']],
+                        'icon' => isset($menu['data']) ? json_decode($menu['data'])->icon : 'circle',  // Default icon
+                        'items' => $menu['children'],
+                        'iconStyle' => isset($menu['data']) ? json_decode($menu['data'])->iconStyle : 'fas',
+                    ];
+                }; 
+                $items = MenuHelper::getAssignedMenu(Yii::$app->user->id, null, $callback);
+            ?>
+            
             <?= \hail812\adminlte\widgets\Menu::widget([
-                    'items' =>  MenuHelper::getAssignedMenu(Yii::$app->user->id),
-                    //'submenuTemplate' => "\n<ul><u>\n{items}\n</u></ul>\n"
+                    'items' =>  $items
                 ]);
             ?>
         </nav>
