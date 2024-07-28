@@ -7,7 +7,7 @@ use yii\db\Migration;
  */
 class m240116_065811_create_products_table extends Migration
 {
-   /**
+    /**
      * {@inheritdoc}
      */
     public function safeUp()
@@ -27,20 +27,87 @@ class m240116_065811_create_products_table extends Migration
             'created_by' => $this->bigInteger()->notNull(),
             'updated_by' => $this->bigInteger()->notNull(),
             'deleted_by' => $this->bigInteger()->null(),
-            'isDeleted' => $this->boolean()->notNull()->defaultValue(0),
+            'isDeleted' => $this->boolean()->notNull()->defaultValue(false),
             'restored_by' => $this->bigInteger()->null(),
             'restored_at' => $this->bigInteger(),
-            'FOREIGN KEY ([[category]]) REFERENCES {{%categories}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
-            'FOREIGN KEY ([[created_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
-            'FOREIGN KEY ([[updated_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
-            'FOREIGN KEY ([[deleted_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
-            'FOREIGN KEY ([[restored_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
-            'INDEX idx_category ([[category]])',
-            'INDEX idx_created_by ([[created_by]])',
-            'INDEX idx_updated_by ([[updated_by]])',
-            'INDEX idx_deleted_by ([[deleted_by]])',
-            'INDEX idx_restored_by ([[restored_by]])',
         ], $tableOptions);
+
+        // Adding foreign keys
+        $this->addForeignKey(
+            'fk-products-category',
+            '{{%products}}',
+            'category',
+            '{{%categories}}',
+            'id',
+            'CASCADE'
+        );
+
+        $this->addForeignKey(
+            'fk-products-created_by',
+            '{{%products}}',
+            'created_by',
+            '{{%user}}',
+            'id',
+            'CASCADE'
+        );
+
+        $this->addForeignKey(
+            'fk-products-updated_by',
+            '{{%products}}',
+            'updated_by',
+            '{{%user}}',
+            'id',
+            'CASCADE'
+        );
+
+        $this->addForeignKey(
+            'fk-products-deleted_by',
+            '{{%products}}',
+            'deleted_by',
+            '{{%user}}',
+            'id',
+            'CASCADE'
+        );
+
+        $this->addForeignKey(
+            'fk-products-restored_by',
+            '{{%products}}',
+            'restored_by',
+            '{{%user}}',
+            'id',
+            'CASCADE'
+        );
+
+        // Adding indexes
+        $this->createIndex(
+            'idx-products-category',
+            '{{%products}}',
+            'category'
+        );
+
+        $this->createIndex(
+            'idx-products-created_by',
+            '{{%products}}',
+            'created_by'
+        );
+
+        $this->createIndex(
+            'idx-products-updated_by',
+            '{{%products}}',
+            'updated_by'
+        );
+
+        $this->createIndex(
+            'idx-products-deleted_by',
+            '{{%products}}',
+            'deleted_by'
+        );
+
+        $this->createIndex(
+            'idx-products-restored_by',
+            '{{%products}}',
+            'restored_by'
+        );
     }
 
     /**
@@ -48,6 +115,58 @@ class m240116_065811_create_products_table extends Migration
      */
     public function safeDown()
     {
+        // Dropping foreign keys
+        $this->dropForeignKey(
+            'fk-products-category',
+            '{{%products}}'
+        );
+
+        $this->dropForeignKey(
+            'fk-products-created_by',
+            '{{%products}}'
+        );
+
+        $this->dropForeignKey(
+            'fk-products-updated_by',
+            '{{%products}}'
+        );
+
+        $this->dropForeignKey(
+            'fk-products-deleted_by',
+            '{{%products}}'
+        );
+
+        $this->dropForeignKey(
+            'fk-products-restored_by',
+            '{{%products}}'
+        );
+
+        // Dropping indexes
+        $this->dropIndex(
+            'idx-products-category',
+            '{{%products}}'
+        );
+
+        $this->dropIndex(
+            'idx-products-created_by',
+            '{{%products}}'
+        );
+
+        $this->dropIndex(
+            'idx-products-updated_by',
+            '{{%products}}'
+        );
+
+        $this->dropIndex(
+            'idx-products-deleted_by',
+            '{{%products}}'
+        );
+
+        $this->dropIndex(
+            'idx-products-restored_by',
+            '{{%products}}'
+        );
+
         $this->dropTable('{{%products}}');
     }
 }

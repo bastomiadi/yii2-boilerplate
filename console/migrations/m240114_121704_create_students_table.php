@@ -1,5 +1,4 @@
 <?php
-
 use yii\db\Migration;
 
 /**
@@ -14,7 +13,7 @@ class m240114_121704_create_students_table extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            // https://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+            // MySQL specific table options
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
@@ -32,13 +31,13 @@ class m240114_121704_create_students_table extends Migration
             'created_at' => $this->bigInteger()->notNull(),
             'updated_at' => $this->bigInteger()->notNull(),
             'deleted_at' => $this->bigInteger(),
-            'isDeleted' => $this->boolean()->notNull()->defaultValue(0),
+            'isDeleted' => $this->boolean()->notNull()->defaultValue(false),
             'restored_by' => $this->bigInteger()->null(),
             'restored_at' => $this->bigInteger(),
         ], $tableOptions);
 
-         // add foreign key for table `sections`
-         $this->addForeignKey(
+        // add foreign key for table `sections`
+        $this->addForeignKey(
             '{{%fk-students-sections}}',
             '{{%students}}',
             'sections',
@@ -59,7 +58,7 @@ class m240114_121704_create_students_table extends Migration
             'CASCADE'
         );
 
-         // add foreign key for table `user`
+        // add foreign key for table `user`
         $this->addForeignKey(
             '{{%fk-students-created_by}}',
             '{{%students}}',
@@ -92,48 +91,42 @@ class m240114_121704_create_students_table extends Migration
             'CASCADE'
         );
 
-        // create index for column `sections`
+        // create indexes
         $this->createIndex(
             '{{%idx-students-sections}}',
-            '{{%sections}}',
-            'id'
+            '{{%students}}',
+            'sections'
         );
 
-        // create index for column `classes`
-         $this->createIndex(
+        $this->createIndex(
             '{{%idx-students-classes}}',
-            '{{%classes}}',
-            'id'
+            '{{%students}}',
+            'classes'
         );
 
-        // create index for column `created_by`
         $this->createIndex(
             '{{%idx-students-created_by}}',
-            '{{%user}}',
-            'id'
+            '{{%students}}',
+            'created_by'
         );
 
-        // create index for column `updated_by`
         $this->createIndex(
             '{{%idx-students-updated_by}}',
-            '{{%user}}',
-            'id'
+            '{{%students}}',
+            'updated_by'
         );
 
-        // create index for column `deleted_by`
         $this->createIndex(
             '{{%idx-students-deleted_by}}',
-            '{{%user}}',
-            'id'
+            '{{%students}}',
+            'deleted_by'
         );
 
-        // create index for column `restored_by`
         $this->createIndex(
             '{{%idx-students-restored_by}}',
-            '{{%user}}',
-            'id'
+            '{{%students}}',
+            'restored_by'
         );
-
     }
 
     /**
@@ -141,6 +134,64 @@ class m240114_121704_create_students_table extends Migration
      */
     public function safeDown()
     {
+        // drop foreign keys
+        $this->dropForeignKey(
+            '{{%fk-students-sections}}',
+            '{{%students}}'
+        );
+
+        $this->dropForeignKey(
+            '{{%fk-students-classes}}',
+            '{{%students}}'
+        );
+
+        $this->dropForeignKey(
+            '{{%fk-students-created_by}}',
+            '{{%students}}'
+        );
+
+        $this->dropForeignKey(
+            '{{%fk-students-updated_by}}',
+            '{{%students}}'
+        );
+
+        $this->dropForeignKey(
+            '{{%fk-students-deleted_by}}',
+            '{{%students}}'
+        );
+
+        // drop indexes
+        $this->dropIndex(
+            '{{%idx-students-sections}}',
+            '{{%students}}'
+        );
+
+        $this->dropIndex(
+            '{{%idx-students-classes}}',
+            '{{%students}}'
+        );
+
+        $this->dropIndex(
+            '{{%idx-students-created_by}}',
+            '{{%students}}'
+        );
+
+        $this->dropIndex(
+            '{{%idx-students-updated_by}}',
+            '{{%students}}'
+        );
+
+        $this->dropIndex(
+            '{{%idx-students-deleted_by}}',
+            '{{%students}}'
+        );
+
+        $this->dropIndex(
+            '{{%idx-students-restored_by}}',
+            '{{%students}}'
+        );
+
+        // drop table
         $this->dropTable('{{%students}}');
     }
 }

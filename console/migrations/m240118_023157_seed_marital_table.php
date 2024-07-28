@@ -8,21 +8,23 @@ use yii\db\Migration;
  */
 class m240118_023157_seed_marital_table extends Migration
 {
-
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
+        // Determine the appropriate expression for current timestamp
+        $currentTimestamp = $this->db->driverName === 'mysql' ? new Expression('unix_timestamp(NOW())') : new Expression('extract(epoch from now())');
 
-        $this->batchInsert('{{%marital}}', ['marital_name','created_at','updated_at','deleted_at','created_by','updated_by','deleted_by','isDeleted',], [
-            ['Married', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
-            ['Widowed', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
-            ['Separated', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
-            ['Divorced', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
-            ['Single', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
+        $this->batchInsert('{{%marital}}', [
+            'marital_name', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by', 'isDeleted'
+        ], [
+            ['Married', $currentTimestamp, $currentTimestamp, null, 1, 1, null, 0],
+            ['Widowed', $currentTimestamp, $currentTimestamp, null, 1, 1, null, 0],
+            ['Separated', $currentTimestamp, $currentTimestamp, null, 1, 1, null, 0],
+            ['Divorced', $currentTimestamp, $currentTimestamp, null, 1, 1, null, 0],
+            ['Single', $currentTimestamp, $currentTimestamp, null, 1, 1, null, 0],
         ]);
-            
     }
 
     /**
@@ -30,23 +32,6 @@ class m240118_023157_seed_marital_table extends Migration
      */
     public function safeDown()
     {
-        echo "m240118_023157_seed_marital_table cannot be reverted.\n";
-
-        return false;
+        $this->delete('{{%marital}}', ['marital_name' => ['Married', 'Widowed', 'Separated', 'Divorced', 'Single']]);
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m240118_023157_seed_marital_table cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

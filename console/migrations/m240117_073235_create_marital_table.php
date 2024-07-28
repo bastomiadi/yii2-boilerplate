@@ -3,7 +3,7 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `{{%genders}}`.
+ * Handles the creation of table `{{%marital}}`.
  */
 class m240117_073235_create_marital_table extends Migration
 {
@@ -14,7 +14,7 @@ class m240117_073235_create_marital_table extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            // https://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+            // MySQL specific table options
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
@@ -27,14 +27,17 @@ class m240117_073235_create_marital_table extends Migration
             'created_by' => $this->bigInteger()->notNull(),
             'updated_by' => $this->bigInteger()->notNull(),
             'deleted_by' => $this->bigInteger()->null(),
-            'isDeleted' => $this->boolean()->notNull()->defaultValue(0),
-            'FOREIGN KEY ([[created_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
-            'FOREIGN KEY ([[updated_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
-            'FOREIGN KEY ([[deleted_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
-            'INDEX idx_created_by ([[created_by]])',
-            'INDEX idx_updated_by ([[updated_by]])',
-            'INDEX idx_deleted_by ([[deleted_by]])',
+            'isDeleted' => $this->boolean()->notNull()->defaultValue(false),
         ], $tableOptions);
+
+        // Add foreign keys and indexes
+        $this->addForeignKey('fk-marital-created_by', '{{%marital}}', 'created_by', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk-marital-updated_by', '{{%marital}}', 'updated_by', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk-marital-deleted_by', '{{%marital}}', 'deleted_by', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
+
+        $this->createIndex('idx-marital-created_by', '{{%marital}}', 'created_by');
+        $this->createIndex('idx-marital-updated_by', '{{%marital}}', 'updated_by');
+        $this->createIndex('idx-marital-deleted_by', '{{%marital}}', 'deleted_by');
     }
 
     /**
@@ -42,6 +45,15 @@ class m240117_073235_create_marital_table extends Migration
      */
     public function safeDown()
     {
+        // Drop foreign keys and indexes
+        $this->dropForeignKey('fk-marital-created_by', '{{%marital}}');
+        $this->dropForeignKey('fk-marital-updated_by', '{{%marital}}');
+        $this->dropForeignKey('fk-marital-deleted_by', '{{%marital}}');
+
+        $this->dropIndex('idx-marital-created_by', '{{%marital}}');
+        $this->dropIndex('idx-marital-updated_by', '{{%marital}}');
+        $this->dropIndex('idx-marital-deleted_by', '{{%marital}}');
+
         $this->dropTable('{{%marital}}');
     }
 }

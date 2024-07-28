@@ -13,12 +13,17 @@ class m240118_023204_seed_gender_table extends Migration
      */
     public function safeUp()
     {
-        $this->batchInsert('{{%genders}}', ['gender_name', 'created_at','updated_at','deleted_at','created_by','updated_by','deleted_by','isDeleted',], [
-            ['Tidak diketahui', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
-            ['Laki-Laki', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
-            ['Perempuan', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
-            ['Tidak Dapat Ditentukan', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
-            ['Tidak Mengisi', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
+        // Determine the appropriate expression for current timestamp
+        $currentTimestamp = $this->db->driverName === 'mysql' ? new Expression('unix_timestamp(NOW())') : new Expression('extract(epoch from now())');
+
+        $this->batchInsert('{{%genders}}', [
+            'gender_name', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by', 'isDeleted'
+        ], [
+            ['Tidak diketahui', $currentTimestamp, $currentTimestamp, null, 1, 1, null, 0],
+            ['Laki-Laki', $currentTimestamp, $currentTimestamp, null, 1, 1, null, 0],
+            ['Perempuan', $currentTimestamp, $currentTimestamp, null, 1, 1, null, 0],
+            ['Tidak Dapat Ditentukan', $currentTimestamp, $currentTimestamp, null, 1, 1, null, 0],
+            ['Tidak Mengisi', $currentTimestamp, $currentTimestamp, null, 1, 1, null, 0],
         ]);
     }
 
@@ -27,23 +32,8 @@ class m240118_023204_seed_gender_table extends Migration
      */
     public function safeDown()
     {
-        echo "m240118_023204_seed_gender_table cannot be reverted.\n";
-
-        return false;
+        $this->delete('{{%genders}}', ['gender_name' => [
+            'Tidak diketahui', 'Laki-Laki', 'Perempuan', 'Tidak Dapat Ditentukan', 'Tidak Mengisi'
+        ]]);
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m240118_023204_seed_gender_table cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

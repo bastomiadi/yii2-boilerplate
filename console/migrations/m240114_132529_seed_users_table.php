@@ -22,6 +22,8 @@ class m240114_132529_seed_users_table extends Migration
      */
     public function safeUp()
     {
+        $timestampExpression = ($this->db->driverName === 'mysql') ? new Expression('UNIX_TIMESTAMP(NOW())') : new Expression("EXTRACT(EPOCH FROM NOW())");
+        
         // for ($i = 0; $i < $this->count; $i++) {
         //     $user = new User();
         //     $user->username = $this->faker->userName;
@@ -41,8 +43,8 @@ class m240114_132529_seed_users_table extends Migration
             'password_reset_token' => null,
             'email' => 'admin@mail.com',
             'status' => 10,
-            'created_at' => new Expression('unix_timestamp(NOW())'),
-            'updated_at' => new Expression('unix_timestamp(NOW())'),
+            'created_at' => $timestampExpression,
+            'updated_at' => $timestampExpression,
             'verification_token' => Yii::$app->security->generateRandomString() . '_' . time(),
         ]);
 
@@ -54,8 +56,8 @@ class m240114_132529_seed_users_table extends Migration
             'password_reset_token' => null,
             'email' => 'member@mail.com',
             'status' => 10,
-            'created_at' => new Expression('unix_timestamp(NOW())'),
-            'updated_at' => new Expression('unix_timestamp(NOW())'),
+            'created_at' => $timestampExpression,
+            'updated_at' => $timestampExpression,
             'verification_token' => Yii::$app->security->generateRandomString() . '_' . time(),
         ]);
 

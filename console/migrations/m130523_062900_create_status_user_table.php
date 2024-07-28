@@ -15,7 +15,6 @@ class m130523_062900_create_status_user_table extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            // https://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
@@ -28,13 +27,15 @@ class m130523_062900_create_status_user_table extends Migration
             'created_at' => $this->bigInteger()->notNull(),
             'updated_at' => $this->bigInteger()->notNull(),
             'deleted_at' => $this->bigInteger(),
-            'isDeleted' => $this->boolean()->notNull()->defaultValue(0),
-        ],$tableOptions);
+            'isDeleted' => $this->boolean()->notNull()->defaultValue(false),
+        ], $tableOptions);
 
-        $this->batchInsert('{{%status_user}}', ['id','status', 'created_at','updated_at','deleted_at','created_by','updated_by','deleted_by','isDeleted',], [
-            [1,'Deleted', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
-            [9,'Inactive', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
-            [10,'Active', new Expression('unix_timestamp(NOW())'), new Expression('unix_timestamp(NOW())'), NULL, 1, 1, NULL, 0],
+        $now = $this->db->driverName === 'mysql' ? new Expression('unix_timestamp(NOW())') : new Expression('EXTRACT(epoch FROM NOW())');
+
+        $this->batchInsert('{{%status_user}}', ['id', 'status', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by', 'isDeleted'], [
+            [1, 'Deleted', $now, $now, null, 1, 1, null, 0],
+            [9, 'Inactive', $now, $now, null, 1, 1, null, 0],
+            [10, 'Active', $now, $now, null, 1, 1, null, 0],
         ]);
     }
 

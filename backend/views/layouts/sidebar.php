@@ -89,12 +89,14 @@ use yii\debug\models\search\Profile;
         <nav class="mt-2">
             <?php 
                 $callback = function($menu){
+                    $data = isset($menu['data']) ? (string)$menu['data'] : null;
+                    $decodedData = $data ? json_decode($data, true) : null;
                     return [
                         'label' => $menu['name'], 
                         'url' => [$menu['route']],
-                        'icon' => isset($menu['data']) ? json_decode($menu['data'])->icon : 'circle',  // Default icon
+                        'icon' => isset($decodedData['icon']) ? $decodedData['icon'] : 'circle',  // Default icon
                         'items' => $menu['children'],
-                        'iconStyle' => isset($menu['data']) ? json_decode($menu['data'])->iconStyle : 'fas',
+                        'iconStyle' => isset($decodedData['iconStyle']) ? $decodedData['iconStyle'] : 'fas',
                     ];
                 }; 
                 $items = MenuHelper::getAssignedMenu(Yii::$app->user->id, null, $callback);

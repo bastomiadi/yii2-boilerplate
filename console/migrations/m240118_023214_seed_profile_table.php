@@ -11,13 +11,11 @@ use yii\db\Migration;
  */
 class m240118_023214_seed_profile_table extends Migration
 {
-
     public $faker;
 
     function __construct() {
         $this->faker = \Faker\Factory::create();
     }
-
 
     /**
      * {@inheritdoc}
@@ -28,28 +26,34 @@ class m240118_023214_seed_profile_table extends Migration
         $gender = Genders::find()->all();
         $marital = Marital::find()->all();
         $data = [];
+
+        // Determine the appropriate expression for current timestamp
+        $currentTimestamp = $this->db->driverName === 'mysql' ? new Expression('unix_timestamp(NOW())') : new Expression('extract(epoch from now())');
+
         foreach ($users as $key => $value) {
             $data[$key]['user' ] = $value->id;
-            $data[$key]['first_name' ] = $this->faker->name;
-            $data[$key]['last_name' ] = $this->faker->name;
+            $data[$key]['first_name' ] = $this->faker->firstName;
+            $data[$key]['last_name' ] = $this->faker->lastName;
             $data[$key]['phone_number'] = $this->faker->phoneNumber;
             $data[$key]['address' ] = $this->faker->address;
             $data[$key]['gender' ] = $this->faker->randomElement($gender)->id;
-            $data[$key]['marital'] = $this->faker->randomElement($marital)->id;;
-            //$data[$key]['profile_image' ] = $this->faker->imageUrl($width = 640, $height = 480);
+            $data[$key]['marital'] = $this->faker->randomElement($marital)->id;
             $data[$key]['profile_image' ] = 'https://adminlte.io/themes/v3/dist/img/user2-160x160.jpg';
             $data[$key]['date_of_birth'] = $this->faker->date($format = 'Y-m-d', $max = 'now');
-            $data[$key]['created_at'] = new Expression('unix_timestamp(NOW())');
-            $data[$key]['updated_at'] = new Expression('unix_timestamp(NOW())');
+            $data[$key]['created_at'] = $currentTimestamp;
+            $data[$key]['updated_at'] = $currentTimestamp;
             $data[$key]['deleted_at'] = null;
             $data[$key]['created_by'] = $value->id;
             $data[$key]['updated_by'] = $value->id;
             $data[$key]['deleted_by'] = null;
-            $data[$key]['isDeleted'] = 0;
+            $data[$key]['isDeleted'] = false;
         }
 
-        $this->batchInsert('{{%profiles}}', ['user','first_name','last_name','phone_number','address','gender','marital','profile_image','date_of_birth', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by', 'isDeleted'], 
-        $data);
+        $this->batchInsert('{{%profiles}}', [
+            'user', 'first_name', 'last_name', 'phone_number', 'address', 'gender', 'marital', 
+            'profile_image', 'date_of_birth', 'created_at', 'updated_at', 'deleted_at', 
+            'created_by', 'updated_by', 'deleted_by', 'isDeleted'
+        ], $data);
     }
 
     /**
@@ -57,23 +61,6 @@ class m240118_023214_seed_profile_table extends Migration
      */
     public function safeDown()
     {
-        echo "m240118_023214_seed_profile_table cannot be reverted.\n";
-
-        return false;
+        $this->delete('{{%profiles}}');
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m240118_023214_seed_profile_table cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

@@ -7,12 +7,13 @@ use yii\db\Migration;
  */
 class m240116_065804_create_categories_table extends Migration
 {
-   /**
+    /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
         $tableOptions = null;
+
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
@@ -26,18 +27,75 @@ class m240116_065804_create_categories_table extends Migration
             'created_by' => $this->bigInteger()->notNull(),
             'updated_by' => $this->bigInteger()->notNull(),
             'deleted_by' => $this->bigInteger()->null(),
-            'isDeleted' => $this->boolean()->notNull()->defaultValue(0),
+            'isDeleted' => $this->boolean()->notNull()->defaultValue(false),
             'restored_by' => $this->bigInteger()->null(),
             'restored_at' => $this->bigInteger(),
-            'FOREIGN KEY ([[created_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
-            'FOREIGN KEY ([[updated_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
-            'FOREIGN KEY ([[deleted_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
-            'FOREIGN KEY ([[restored_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
-            'INDEX idx_created_by ([[created_by]])',
-            'INDEX idx_updated_by ([[updated_by]])',
-            'INDEX idx_deleted_by ([[deleted_by]])',
-            'INDEX idx_restored_by ([[restored_by]])',
         ], $tableOptions);
+
+        $this->addForeignKey(
+            'fk-categories-created_by',
+            '{{%categories}}',
+            'created_by',
+            '{{%user}}',
+            'id',
+            'CASCADE'
+        );
+
+        $this->addForeignKey(
+            'fk-categories-updated_by',
+            '{{%categories}}',
+            'updated_by',
+            '{{%user}}',
+            'id',
+            'CASCADE'
+        );
+
+        $this->addForeignKey(
+            'fk-categories-deleted_by',
+            '{{%categories}}',
+            'deleted_by',
+            '{{%user}}',
+            'id',
+            'CASCADE'
+        );
+
+        $this->addForeignKey(
+            'fk-categories-restored_by',
+            '{{%categories}}',
+            'restored_by',
+            '{{%user}}',
+            'id',
+            'CASCADE'
+        );
+
+        $this->createIndex(
+            'idx-categories-created_by',
+            '{{%categories}}',
+            'created_by'
+        );
+
+        $this->createIndex(
+            'idx-categories-updated_by',
+            '{{%categories}}',
+            'updated_by'
+        );
+
+        $this->createIndex(
+            'idx-categories-deleted_by',
+            '{{%categories}}',
+            'deleted_by'
+        );
+
+        $this->createIndex(
+            'idx-categories-restored_by',
+            '{{%categories}}',
+            'restored_by'
+        );
+
+        // Reset the sequence for PostgreSQL
+        if ($this->db->driverName === 'pgsql') {
+            $this->execute("SELECT setval(pg_get_serial_sequence('{{%categories}}', 'id'), COALESCE((SELECT MAX(id) + 1 FROM {{%categories}}), 1), false)");
+        }
     }
 
     /**
@@ -45,6 +103,46 @@ class m240116_065804_create_categories_table extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey(
+            'fk-categories-created_by',
+            '{{%categories}}'
+        );
+
+        $this->dropForeignKey(
+            'fk-categories-updated_by',
+            '{{%categories}}'
+        );
+
+        $this->dropForeignKey(
+            'fk-categories-deleted_by',
+            '{{%categories}}'
+        );
+
+        $this->dropForeignKey(
+            'fk-categories-restored_by',
+            '{{%categories}}'
+        );
+
+        $this->dropIndex(
+            'idx-categories-created_by',
+            '{{%categories}}'
+        );
+
+        $this->dropIndex(
+            'idx-categories-updated_by',
+            '{{%categories}}'
+        );
+
+        $this->dropIndex(
+            'idx-categories-deleted_by',
+            '{{%categories}}'
+        );
+
+        $this->dropIndex(
+            'idx-categories-restored_by',
+            '{{%categories}}'
+        );
+
         $this->dropTable('{{%categories}}');
     }
 }

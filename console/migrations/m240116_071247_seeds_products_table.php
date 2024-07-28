@@ -6,7 +6,6 @@ use common\models\v1\User;
 use yii\db\Expression;
 use yii\db\Migration;
 
-
 /**
  * Class m240116_071247_seeds_products_table
  */
@@ -14,10 +13,11 @@ class m240116_071247_seeds_products_table extends Migration
 {
     public $faker, $count, $chunk;
 
-    function __construct() {
+    public function __construct() {
         $this->faker = \Faker\Factory::create();
-        $this->count = 1000;
+        $this->count = 9000000;
         $this->chunk = 1000;
+        parent::__construct();  // Make sure to call parent constructor
     }
 
     /**
@@ -25,58 +25,37 @@ class m240116_071247_seeds_products_table extends Migration
      */
     public function safeUp()
     {
-        $data = array();
+        $data = [];
         $users = User::find()->all();
         $categories = Categories::find()->all();
 
-        for ($i=1; $i <= $this->count; $i++) { 
-            $data[$i]['product_name'] = $this->faker->name;
-            $data[$i]['category'] = $this->faker->randomElement($categories)->id;
-            $data[$i]['created_at'] = new Expression('unix_timestamp(NOW())');
-            $data[$i]['updated_at'] = new Expression('unix_timestamp(NOW())');
-            $data[$i]['deleted_at'] = null;
-            $data[$i]['created_by'] = $this->faker->randomElement($users)->id;
-            $data[$i]['updated_by'] = $this->faker->randomElement($users)->id;
-            $data[$i]['deleted_by'] = null;
-        }
+        $batchSize = 10; // Process 10,000 records per batch
+        $totalRecords = 100; // Total records to generate
+        $batch = [];
+        $timestampExpression = $this->db->driverName === 'mysql' ? new Expression('UNIX_TIMESTAMP()') : new Expression("EXTRACT(EPOCH FROM NOW())::bigint");
 
-        // $chunk_data = array_chunk($data, $this->chunk);
-        // if (isset($chunk_data) && !empty($chunk_data)){
-        //     foreach ($chunk_data as $key => $value) {
-        //         $this->batchInsert('{{%products}}', ['product_name', 'category', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], $value);
-        //     }
-        // }
+        for ($i = 0; $i < $totalRecords; $i++) {
+            $batch[] = [
+                'product_name' => $this->faker->name,
+                'category' => $this->faker->randomElement($categories)->id,
+                'created_at' => $timestampExpression,
+                'updated_at' => $timestampExpression,
+                'deleted_at' => null,
+                'created_by' => $this->faker->randomElement($users)->id,
+                'updated_by' => $this->faker->randomElement($users)->id,
+                'deleted_by' => null,
+            ];
 
-        // Specify the size of each chunk
-        $chunkSize = 100; // You can adjust this based on your needs
-
-        // Get the database connection
-        $db = Yii::$app->db;
-
-        // Start a database transaction
-        $transaction = $db->beginTransaction();
-
-        try {
-
-            // Loop through the data in chunks
-            foreach (array_chunk($data, $chunkSize) as $chunk) {
-                // Use batchInsert to insert the chunk into the database
-                $db->createCommand()->batchInsert('{{%products}}', ['product_name', 'category', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], $chunk)->execute();
+            if (count($batch) >= $batchSize) {
+                Yii::$app->db->createCommand()->batchInsert('{{%products}}', ['product_name', 'category', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], $batch)->execute();
+                $batch = [];
             }
-
-            // Commit the transaction
-            $transaction->commit();
-
-            // Do any other necessary post-insertion tasks
-
-        } catch (\Exception $e) {
-            // If an exception occurs, roll back the transaction
-            $transaction->rollBack();
-
-            // Handle the exception as needed
-            throw $e;
         }
 
+        // Insert any remaining records
+        if (count($batch) > 0) {
+            Yii::$app->db->createCommand()->batchInsert('{{%products}}', ['product_name', 'category', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], $batch)->execute();
+        }
     }
 
     /**
@@ -85,7 +64,6 @@ class m240116_071247_seeds_products_table extends Migration
     public function safeDown()
     {
         echo "m240116_071247_seeds_products_table cannot be reverted.\n";
-
         return false;
     }
 

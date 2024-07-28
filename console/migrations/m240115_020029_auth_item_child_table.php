@@ -7,7 +7,7 @@ use yii\db\Migration;
  */
 class m240115_020029_auth_item_child_table extends Migration
 {
-   /**
+    /**
      * @inheritdoc
      */
     public function safeUp()
@@ -27,7 +27,6 @@ class m240115_020029_auth_item_child_table extends Migration
         ], $tableOptions);
 
         $this->batchInsert('{{%auth_item_child}}', ['parent', 'child'], [
-
             ['admin_web', '/admin/assignment/*'],
             ['admin_web', '/admin/assignment/index'],
             ['admin_web', '/admin/menu/*'],
@@ -84,27 +83,27 @@ class m240115_020029_auth_item_child_table extends Migration
             ['member_web', '/site/profile'],
 
             // for restful permission v1
-            ['admin_restful','/v1/categories/index'],
-            ['admin_restful','/v1/categories/create'],
-            ['admin_restful','/v1/categories/update'],
-            ['admin_restful','/v1/categories/delete'],
-            ['admin_restful','/v1/products/index'],
-            ['admin_restful','/v1/products/create'],
-            ['admin_restful','/v1/products/update'],
-            ['admin_restful','/v1/products/delete'],
-            ['admin_restful','/v1/classes/index'],
-            ['admin_restful','/v1/classes/create'],
-            ['admin_restful','/v1/classes/update'],
-            ['admin_restful','/v1/classes/delete'],
-            ['admin_restful','/v1/sections/index'],
-            ['admin_restful','/v1/sections/create'],
-            ['admin_restful','/v1/sections/update'],
-            ['admin_restful','/v1/sections/delete'],
-            ['admin_restful','/v1/students/index'],
-            ['admin_restful','/v1/students/create'],
-            ['admin_restful','/v1/students/update'],
-            ['admin_restful','/v1/students/delete'],
-            ['admin_restful','/v1/students/restore'],
+            ['admin_restful', '/v1/categories/index'],
+            ['admin_restful', '/v1/categories/create'],
+            ['admin_restful', '/v1/categories/update'],
+            ['admin_restful', '/v1/categories/delete'],
+            ['admin_restful', '/v1/products/index'],
+            ['admin_restful', '/v1/products/create'],
+            ['admin_restful', '/v1/products/update'],
+            ['admin_restful', '/v1/products/delete'],
+            ['admin_restful', '/v1/classes/index'],
+            ['admin_restful', '/v1/classes/create'],
+            ['admin_restful', '/v1/classes/update'],
+            ['admin_restful', '/v1/classes/delete'],
+            ['admin_restful', '/v1/sections/index'],
+            ['admin_restful', '/v1/sections/create'],
+            ['admin_restful', '/v1/sections/update'],
+            ['admin_restful', '/v1/sections/delete'],
+            ['admin_restful', '/v1/students/index'],
+            ['admin_restful', '/v1/students/create'],
+            ['admin_restful', '/v1/students/update'],
+            ['admin_restful', '/v1/students/delete'],
+            ['admin_restful', '/v1/students/restore'],
 
             // assign permission to role
             ['admin', 'admin_web'],

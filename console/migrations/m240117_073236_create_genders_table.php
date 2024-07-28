@@ -14,7 +14,7 @@ class m240117_073236_create_genders_table extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            // https://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+            // MySQL specific table options
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
@@ -27,14 +27,17 @@ class m240117_073236_create_genders_table extends Migration
             'created_by' => $this->bigInteger()->notNull(),
             'updated_by' => $this->bigInteger()->notNull(),
             'deleted_by' => $this->bigInteger()->null(),
-            'isDeleted' => $this->boolean()->notNull()->defaultValue(0),
-            'FOREIGN KEY ([[created_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
-            'FOREIGN KEY ([[updated_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
-            'FOREIGN KEY ([[deleted_by]]) REFERENCES {{%user}} ([[id]]) ON DELETE CASCADE ON UPDATE CASCADE',
-            'INDEX idx_created_by ([[created_by]])',
-            'INDEX idx_updated_by ([[updated_by]])',
-            'INDEX idx_deleted_by ([[deleted_by]])',
+            'isDeleted' => $this->boolean()->notNull()->defaultValue(false),
         ], $tableOptions);
+
+        // Add foreign keys and indexes
+        $this->addForeignKey('fk-genders-created_by', '{{%genders}}', 'created_by', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk-genders-updated_by', '{{%genders}}', 'updated_by', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk-genders-deleted_by', '{{%genders}}', 'deleted_by', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
+
+        $this->createIndex('idx-genders-created_by', '{{%genders}}', 'created_by');
+        $this->createIndex('idx-genders-updated_by', '{{%genders}}', 'updated_by');
+        $this->createIndex('idx-genders-deleted_by', '{{%genders}}', 'deleted_by');
     }
 
     /**
@@ -42,6 +45,15 @@ class m240117_073236_create_genders_table extends Migration
      */
     public function safeDown()
     {
+        // Drop foreign keys and indexes
+        $this->dropForeignKey('fk-genders-created_by', '{{%genders}}');
+        $this->dropForeignKey('fk-genders-updated_by', '{{%genders}}');
+        $this->dropForeignKey('fk-genders-deleted_by', '{{%genders}}');
+
+        $this->dropIndex('idx-genders-created_by', '{{%genders}}');
+        $this->dropIndex('idx-genders-updated_by', '{{%genders}}');
+        $this->dropIndex('idx-genders-deleted_by', '{{%genders}}');
+
         $this->dropTable('{{%genders}}');
     }
 }
