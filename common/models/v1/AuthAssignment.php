@@ -2,6 +2,7 @@
 
 namespace common\models\v1;
 
+use common\components\DateHelper;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
@@ -36,7 +37,7 @@ class AuthAssignment extends \yii\db\ActiveRecord
                 'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'created_at',
                 'updatedAtAttribute' => false,
-                'value' => new Expression('NOW()'),
+                'value' => DateHelper::getUnixTimestampExpression(),
             ],
         ];
     }

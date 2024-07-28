@@ -25,6 +25,11 @@ class m240118_023157_seed_marital_table extends Migration
             ['Divorced', $currentTimestamp, $currentTimestamp, null, 1, 1, null, 0],
             ['Single', $currentTimestamp, $currentTimestamp, null, 1, 1, null, 0],
         ]);
+
+        // Reset the sequence for PostgreSQL
+        if ($this->db->driverName === 'pgsql') {
+            $this->execute("SELECT setval(pg_get_serial_sequence('{{%marital}}', 'id'), COALESCE((SELECT MAX(id) + 1 FROM {{%marital}}), 1), false)");
+        }
     }
 
     /**

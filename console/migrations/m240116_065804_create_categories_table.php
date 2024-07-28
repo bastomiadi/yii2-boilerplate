@@ -91,11 +91,6 @@ class m240116_065804_create_categories_table extends Migration
             '{{%categories}}',
             'restored_by'
         );
-
-        // Reset the sequence for PostgreSQL
-        if ($this->db->driverName === 'pgsql') {
-            $this->execute("SELECT setval(pg_get_serial_sequence('{{%categories}}', 'id'), COALESCE((SELECT MAX(id) + 1 FROM {{%categories}}), 1), false)");
-        }
     }
 
     /**

@@ -25,6 +25,11 @@ class m240118_023204_seed_gender_table extends Migration
             ['Tidak Dapat Ditentukan', $currentTimestamp, $currentTimestamp, null, 1, 1, null, 0],
             ['Tidak Mengisi', $currentTimestamp, $currentTimestamp, null, 1, 1, null, 0],
         ]);
+
+        // Reset the sequence for PostgreSQL
+        if ($this->db->driverName === 'pgsql') {
+            $this->execute("SELECT setval(pg_get_serial_sequence('{{%genders}}', 'id'), COALESCE((SELECT MAX(id) + 1 FROM {{%genders}}), 1), false)");
+        }
     }
 
     /**

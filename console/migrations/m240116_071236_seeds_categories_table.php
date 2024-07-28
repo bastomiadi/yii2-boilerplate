@@ -14,7 +14,7 @@ class m240116_071236_seeds_categories_table extends Migration
     public function __construct()
     {
         $this->faker = \Faker\Factory::create();
-        $this->count = 1000;
+        $this->count = 5;
         parent::__construct();  // Ensure the parent constructor is called
     }
 
@@ -29,7 +29,6 @@ class m240116_071236_seeds_categories_table extends Migration
 
         for ($i = 1; $i <= $this->count; $i++) {
             $data[] = [
-                'id' => $i,
                 'category_name' => $this->faker->name,
                 'created_at' => $timestampExpression,
                 'updated_at' => $timestampExpression,
@@ -41,7 +40,12 @@ class m240116_071236_seeds_categories_table extends Migration
         }
 
         // Perform batch insert
-        Yii::$app->db->createCommand()->batchInsert('{{%categories}}', ['id', 'category_name', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], $data)->execute();
+        Yii::$app->db->createCommand()->batchInsert('{{%categories}}', ['category_name', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'], $data)->execute();
+
+        // Reset the sequence for PostgreSQL
+        // if ($this->db->driverName === 'pgsql') {
+        //     $this->execute("SELECT setval(pg_get_serial_sequence('{{%categories}}', 'id'), COALESCE((SELECT MAX(id) + 1 FROM {{%categories}}), 1), false)");
+        // }
     }
 
     /**

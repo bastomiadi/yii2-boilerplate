@@ -36,7 +36,6 @@ class m240114_132529_seed_users_table extends Migration
         // }
 
         $this->insert('{{%user}}', [
-            'id' => 1,
             'username' => 'superadmin',
             'auth_key' => Yii::$app->security->generateRandomString(),
             'password_hash' => Yii::$app->getSecurity()->generatePasswordHash('password'),
@@ -49,7 +48,6 @@ class m240114_132529_seed_users_table extends Migration
         ]);
 
         $this->insert('{{%user}}', [
-            'id' => 2,
             'username' => 'member',
             'auth_key' => Yii::$app->security->generateRandomString(),
             'password_hash' => Yii::$app->getSecurity()->generatePasswordHash('password'),

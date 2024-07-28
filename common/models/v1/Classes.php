@@ -2,13 +2,13 @@
 
 namespace common\models\v1;
 
+use common\components\AuditEntryBehaviors;
+use common\components\DateHelper;
 use common\models\User;
-use ruturajmaniyar\mod\audit\behaviors\AuditEntryBehaviors;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
-use yii\db\Expression;
 
 /**
  * This is the model class for table "{{%classes}}".
@@ -70,7 +70,7 @@ class Classes extends \yii\db\ActiveRecord
                 'class' => SoftDeleteBehavior::class,
                 'softDeleteAttributeValues' => [
                     'isDeleted' => true,
-                    'deleted_at' => new Expression('unix_timestamp(NOW())'),
+                    'deleted_at' => DateHelper::getUnixTimestampExpression(),
                     'deleted_by' => Yii::$app->user->identity->id ?? $this->deletedBy
                 ],
                 'restoreAttributeValues' => [
@@ -78,7 +78,7 @@ class Classes extends \yii\db\ActiveRecord
                     'deleted_at' => NULL,
                     'deleted_by' => NULL,
                     'restored_by' =>  Yii::$app->user->identity->id ?? $this->restoredBy,
-                    'restored_at' => new Expression('unix_timestamp(NOW())'),
+                    'restored_at' => DateHelper::getUnixTimestampExpression(),
                 ],
                 'replaceRegularDelete' => true // mutate native `delete()` method
             ],

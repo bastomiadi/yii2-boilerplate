@@ -2,13 +2,13 @@
 
 namespace common\models\v1;
 
+use common\components\AuditEntryBehaviors;
+use common\components\DateHelper;
 use mdm\admin\models\AuthItem;
-use ruturajmaniyar\mod\audit\behaviors\AuditEntryBehaviors;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\db\Expression;
 use yii\web\ForbiddenHttpException;
 use yii\web\IdentityInterface;
 
@@ -110,7 +110,7 @@ class User extends ActiveRecord implements IdentityInterface {
                 'class' => SoftDeleteBehavior::class,
                 'softDeleteAttributeValues' => [
                     'status' => self::STATUS_DELETED,
-                    'deleted_at' => new Expression('NOW()'),
+                    'deleted_at' => DateHelper::getUnixTimestampExpression(),
                     'deleted_by' => Yii::$app->user->identity->id ?? $this->deletedBy
                 ],
                 'replaceRegularDelete' => true // mutate native `delete()` method

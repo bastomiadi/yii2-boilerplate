@@ -2,14 +2,14 @@
 
 namespace backend\controllers;
 
-use Yii;
+use \yii\web\Response;
 use common\models\v1\Categories;
 use common\models\v1\Search\CategoriesSearch;
+use Yii;
+use yii\filters\VerbFilter;
+use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use \yii\web\Response;
-use yii\helpers\Html;
 
 /**
  * CategoriesController implements the CRUD actions for Categories model.
@@ -156,6 +156,7 @@ class CategoriesController extends Controller
     {
         $request = Yii::$app->request;
         $model = $this->findModel($id);       
+        
 
         if($request->isAjax)
         {
