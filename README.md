@@ -11,6 +11,7 @@ Feature
 * Role-based permissions (RBAC) and Menu [yii2 Admin by mdmsoft](https://github.com/mdmsoft/yii2-admin)
 * Kartik-v Widgets [Kartik-v](https://github.com/kartik-v?tab=repositories)
 * Supported Php 8.1 Version
+* Supported Mysql or Postgresql
 * etc.
 
 This project is still early in its development... please feel free to contribute!
@@ -240,6 +241,7 @@ Which environment do you want the application to be initialized in?
 
 ```bash
 # /common/config/main-local.php file
+# For Mysql example
 'db' => [
             'class' => \yii\db\Connection::class,
             'dsn' => 'mysql:host=localhost;dbname=yii2-boilerplate',
@@ -247,6 +249,15 @@ Which environment do you want the application to be initialized in?
             'password' => '',
             'charset' => 'utf8',
             'tablePrefix' => 'tbl_'
+        ],
+# For Postgresql example
+'db' => [
+            'class' => \yii\db\Connection::class,
+            'dsn' => 'pgsql:host=localhost;dbname=yii2-boilerplate',
+            'username' => 'postgres',
+            'password' => '',
+            'charset' => 'utf8',
+            'tablePrefix' => 'tbl_',
         ],
 ```
 **5.** Run migrate 
