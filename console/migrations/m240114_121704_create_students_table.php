@@ -31,7 +31,7 @@ class m240114_121704_create_students_table extends Migration
             'created_at' => $this->bigInteger()->notNull(),
             'updated_at' => $this->bigInteger()->notNull(),
             'deleted_at' => $this->bigInteger(),
-            'isDeleted' => $this->boolean()->notNull()->defaultValue(false),
+            'isDeleted' => $this->integer()->notNull()->defaultValue(0),
             'restored_by' => $this->bigInteger()->null(),
             'restored_at' => $this->bigInteger(),
         ], $tableOptions);

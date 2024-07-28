@@ -35,7 +35,7 @@ class m240117_073237_create_profiles_table extends Migration
             'created_by' => $this->bigInteger()->null(),
             'updated_by' => $this->bigInteger()->null(),
             'deleted_by' => $this->bigInteger()->null(),
-            'isDeleted' => $this->boolean()->notNull()->defaultValue(false),
+            'isDeleted' => $this->integer()->notNull()->defaultValue(0),
         ], $tableOptions);
 
         // Add foreign keys and indexes

@@ -189,6 +189,8 @@ class CategoriesController extends Controller
             }
             else
             {
+                print_r($model->isDelete);
+                Yii::error($model->getErrors());
                  return [
                     'title' => Yii::t('yii2-ajaxcrud', 'Update')." Categories #".$id,
                     'content' => $this->renderAjax('update', [

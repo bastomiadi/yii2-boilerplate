@@ -27,7 +27,7 @@ class m240117_073235_create_marital_table extends Migration
             'created_by' => $this->bigInteger()->notNull(),
             'updated_by' => $this->bigInteger()->notNull(),
             'deleted_by' => $this->bigInteger()->null(),
-            'isDeleted' => $this->boolean()->notNull()->defaultValue(false),
+            'isDeleted' => $this->integer()->notNull()->defaultValue(0),
         ], $tableOptions);
 
         // Add foreign keys and indexes

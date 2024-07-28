@@ -27,7 +27,7 @@ class m130523_062900_create_status_user_table extends Migration
             'created_at' => $this->bigInteger()->notNull(),
             'updated_at' => $this->bigInteger()->notNull(),
             'deleted_at' => $this->bigInteger(),
-            'isDeleted' => $this->boolean()->notNull()->defaultValue(false),
+            'isDeleted' => $this->integer()->notNull()->defaultValue(0),
         ], $tableOptions);
 
         $now = $this->db->driverName === 'mysql' ? new Expression('unix_timestamp(NOW())') : new Expression('EXTRACT(epoch FROM NOW())');

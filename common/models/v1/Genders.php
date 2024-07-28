@@ -68,13 +68,6 @@ class Genders extends \yii\db\ActiveRecord
                     'deleted_at' => DateHelper::getUnixTimestampExpression(),
                     'deleted_by' => Yii::$app->user->identity->id ?? $this->deletedBy
                 ],
-                'restoreAttributeValues' => [
-                    'isDeleted' => false,
-                    'deleted_at' => NULL,
-                    'deleted_by' => NULL,
-                    'restored_by' =>  Yii::$app->user->identity->id ?? $this->restoredBy,
-                    'restored_at' => DateHelper::getUnixTimestampExpression(),
-                ],
                 'replaceRegularDelete' => true // mutate native `delete()` method
             ],
             'auditEntryBehaviors' => [

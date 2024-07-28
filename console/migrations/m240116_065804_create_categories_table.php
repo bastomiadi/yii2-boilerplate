@@ -27,7 +27,7 @@ class m240116_065804_create_categories_table extends Migration
             'created_by' => $this->bigInteger()->notNull(),
             'updated_by' => $this->bigInteger()->notNull(),
             'deleted_by' => $this->bigInteger()->null(),
-            'isDeleted' => $this->boolean()->notNull()->defaultValue(false),
+            'isDeleted' => $this->integer()->notNull()->defaultValue(0),
             'restored_by' => $this->bigInteger()->null(),
             'restored_at' => $this->bigInteger(),
         ], $tableOptions);
