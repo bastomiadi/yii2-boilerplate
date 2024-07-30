@@ -27,9 +27,9 @@ class m240118_023204_seed_gender_table extends Migration
         ]);
 
         // Reset the sequence for PostgreSQL
-        if ($this->db->driverName === 'pgsql') {
-            $this->execute("SELECT setval(pg_get_serial_sequence('{{%genders}}', 'id'), COALESCE((SELECT MAX(id) + 1 FROM {{%genders}}), 1), false)");
-        }
+        // if ($this->db->driverName === 'pgsql') {
+        //     $this->execute("SELECT setval(pg_get_serial_sequence('{{%genders}}', 'id'), COALESCE((SELECT MAX(id) + 1 FROM {{%genders}}), 1), false)");
+        // }
     }
 
     /**
